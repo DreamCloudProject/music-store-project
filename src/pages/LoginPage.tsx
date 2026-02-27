@@ -1,27 +1,29 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import logo from "../assets/group18539.svg";
+import React, { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 interface LoginPageProps {
-  onLogin: () => void;
+  onLogin: () => void
 }
 
 export default function LoginPage({ onLogin }: LoginPageProps) {
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (login && password) onLogin();
-  };
+    e.preventDefault()
+    if (login && password) onLogin()
+  }
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] flex items-center justify-center p-4">
       <div className="w-full max-w-sm bg-white rounded-2xl p-10 flex flex-col items-center gap-7 animate-slide-up shadow-2xl">
+
         {/* Logo */}
         <div className="flex flex-col items-center gap-2">
-          <img src={logo} alt="Logo" className="w-14 h-14" />
+          <div className="w-16 h-16 rounded-2xl overflow-hidden">
+            <img src="/assets/app-icon.png" alt="MusicLab" className="w-full h-full object-cover" />
+          </div>
           <span className="text-[10px] font-bold tracking-[0.3em] text-gray-400 font-display">
             MUSICLAB
           </span>
@@ -33,7 +35,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             type="text"
             placeholder="Логин"
             value={login}
-            onChange={(e) => setLogin(e.target.value)}
+            onChange={e => setLogin(e.target.value)}
             autoComplete="username"
             className="border-0 border-b border-gray-200 rounded-none px-0 focus-visible:ring-0 focus-visible:border-violet-500 text-gray-700 placeholder:text-gray-300 transition-colors bg-transparent"
           />
@@ -41,7 +43,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             type="password"
             placeholder="Пароль"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             autoComplete="current-password"
             className="border-0 border-b border-gray-200 rounded-none px-0 focus-visible:ring-0 focus-visible:border-violet-500 text-gray-700 placeholder:text-gray-300 transition-colors bg-transparent"
           />
@@ -65,5 +67,5 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
         </form>
       </div>
     </div>
-  );
+  )
 }

@@ -13,7 +13,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
-import { Search, User, Clock, ChevronDown } from 'lucide-react'
+import { Search, Clock, ChevronDown, LogOut } from 'lucide-react'
 import type { SortYear } from '@/types'
 import { cn } from '@/lib/utils'
 
@@ -57,7 +57,7 @@ export default function TracksPage() {
           />
         </div>
         <button className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:border-primary hover:text-primary transition-colors">
-          <User size={16} />
+          <LogOut size={16} />
         </button>
       </header>
 
@@ -204,10 +204,13 @@ export default function TracksPage() {
             <Link
               key={pl.id}
               to={`/playlist/${pl.id}`}
-              className="h-20 rounded-xl flex items-end p-3 transition-transform hover:scale-[1.02] overflow-hidden"
+              className="h-20 rounded-xl flex items-end p-3 transition-transform hover:scale-[1.02] overflow-hidden relative"
               style={{ background: pl.gradient }}
             >
-              <span className="font-display text-[13px] font-bold text-white leading-tight">{pl.title}</span>
+              {pl.cover && (
+                <img src={pl.cover} alt={pl.title} className="absolute inset-0 w-full h-full object-cover opacity-40" />
+              )}
+              <span className="font-display text-[13px] font-bold text-white leading-tight relative z-10">{pl.title}</span>
             </Link>
           ))}
         </div>

@@ -1,9 +1,8 @@
-import { Outlet } from "react-router-dom";
-import Player from "./Player";
-import { Separator } from "@/components/ui/separator";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import logo from "../assets/group18539.svg";
+import { Outlet } from 'react-router-dom'
+import Player from './Player'
+import { Separator } from '@/components/ui/separator'
+import { Menu } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 export default function Layout() {
   return (
@@ -11,18 +10,14 @@ export default function Layout() {
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <aside className="w-[60px] bg-card border-r border-border flex flex-col items-center py-4 gap-5 shrink-0">
-          <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, #9333ea, #4f46e5)" }}
-          >
-            <img src={logo} alt="Logo" className="w-5 h-5 object-contain" />
+          {/* Logo — real MusicLab app icon */}
+          <div className="w-9 h-9 rounded-xl overflow-hidden shrink-0">
+            <img src="/assets/app-icon.png" alt="MusicLab" className="w-full h-full object-cover" />
           </div>
+
           <Separator className="w-8" />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground hover:text-foreground"
-          >
+
+          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
             <Menu size={18} />
           </Button>
         </aside>
@@ -36,5 +31,5 @@ export default function Layout() {
       {/* Player */}
       <Player />
     </div>
-  );
+  )
 }

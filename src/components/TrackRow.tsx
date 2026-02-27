@@ -1,7 +1,7 @@
 import { usePlayer } from '@/hooks/usePlayer'
 import type { Track } from '@/types'
 import { Button } from '@/components/ui/button'
-import { Heart, Music2 } from 'lucide-react'
+import { Heart, Music2, Play, Pause } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface TrackRowProps {
@@ -9,7 +9,7 @@ interface TrackRowProps {
 }
 
 export default function TrackRow({ track }: TrackRowProps) {
-  const { currentTrack, playTrack, toggleLike } = usePlayer()
+  const { currentTrack, isPlaying, playTrack, toggleLike } = usePlayer()
   const isActive = currentTrack?.id === track.id
 
   return (
@@ -22,8 +22,23 @@ export default function TrackRow({ track }: TrackRowProps) {
       onDoubleClick={() => playTrack(track)}
     >
       {/* Thumb */}
-      <div className="w-9 h-9 bg-muted rounded flex items-center justify-center shrink-0">
-        <Music2 size={14} className="text-muted-foreground" />
+      <div
+        className="w-9 h-9 bg-muted rounded overflow-hidden shrink-0 relative cursor-pointer"
+        onClick={() => playTrack(track)}
+      >
+        {track.cover
+          ? <img src={track.cover} alt={track.title} className={cn("w-full h-full object-cover transition-opacity", "group-hover:opacity-40", isActive && "opacity-40")} />
+          : <Music2 size={14} className={cn("text-muted-foreground transition-opacity m-auto mt-2.5", "group-hover:opacity-0", isActive && "opacity-0")} />
+        }
+        <div className={cn(
+          "absolute inset-0 flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100",
+          isActive && "opacity-100"
+        )}>
+          {isActive && isPlaying
+            ? <Pause size={14} className="text-white" />
+            : <Play size={14} className={cn("text-white")} />
+          }
+        </div>
       </div>
 
       {/* Title */}

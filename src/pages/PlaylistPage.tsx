@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import { PLAYLISTS, PLAYLIST_DAY_TRACKS } from '@/data/tracks'
 import TrackRow from '@/components/TrackRow'
 import { Input } from '@/components/ui/input'
-import { Search, User, Clock } from 'lucide-react'
+import { Search, Clock, LogOut } from 'lucide-react'
 
 export default function PlaylistPage() {
   const { id } = useParams<{ id: string }>()
@@ -24,7 +24,7 @@ export default function PlaylistPage() {
           to="/tracks"
           className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:border-primary hover:text-primary transition-colors"
         >
-          <User size={16} />
+          <LogOut size={16} />
         </Link>
       </header>
 
