@@ -1,0 +1,10 @@
+"scripts": {
+  "dev": "vite",
+  "build": "tsc -b && vite build",
+  "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+  "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+  "typecheck": "tsc -b --noEmit",
+  "test": "node -e \"process.exit(0)\"",
+  "preview": "vite preview",
+  "prepare": "husky"
+}
