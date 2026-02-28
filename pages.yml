@@ -1,0 +1,81 @@
+# Build and deploy static app (Vite/React) to GitHub Pages
+name: Build and deploy to GitHub Pages
+
+on:
+  push:
+    branches: ['main']
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Ветка, тег или коммит (SHA). Пусто — сборка с ветки, выбранной выше'
+        required: false
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+
+      - name: Set Node version
+        id: node
+        run: |
+          if [ -f .nvmrc ]; then
+            echo "version=$(cat .nvmrc | tr -d '\n')" >> $GITHUB_OUTPUT
+          else
+            echo "version=${{ vars.NODE_VERSION || '20' }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.node.outputs.version }}
+          cache: 'npm'
+
+      - name: Inject repository variables
+        run: |
+          VARS_JSON='${{ toJSON(vars) }}'
+          if [ -n "$VARS_JSON" ] && [ "$VARS_JSON" != '{}' ]; then
+            echo "$VARS_JSON" | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' >> $GITHUB_ENV
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@4
