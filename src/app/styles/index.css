@@ -57,3 +57,12 @@
     --chart-5: 340 75% 55%
   }
 }
+
+@layer components {
+  * {
+    @apply scrollbar scrollbar-w-[4px] scrollbar-thumb-scrollbarThumb scrollbar-track-scrollbarTrack scrollbar-thumb-rounded-scrollbar scrollbar-track-rounded-scrollbar scrollbar-color-initial;
+  }
+  .search-field:has(input:not(:placeholder-shown)) > span {
+    color: white;
+  }
+}

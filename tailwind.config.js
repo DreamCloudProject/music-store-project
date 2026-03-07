@@ -10,9 +10,12 @@ export default {
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			sm: 'calc(var(--radius) - 4px)',
+  			scrollbar: '10px'
   		},
   		colors: {
+  			scrollbarTrack: '#4B4949',
+  			scrollbarThumb: '#fff',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -56,6 +59,16 @@ export default {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("tailwind-scrollbar")({ nocompatible: true }),
+    function ({ addUtilities }) {
+      addUtilities({
+        ".scrollbar-color-initial": { "scrollbar-color": "initial" },
+        ".scrollbar-color-auto": { "scrollbar-color": "auto" },
+        ".scrollbar-color-default": { "scrollbar-color": "var(--scrollbar-thumb) var(--scrollbar-track)" },
+      });
+    },
+  ],
 }
 
