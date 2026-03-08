@@ -1,4 +1,4 @@
-import { Button } from "@/shared/ui/button"
+import { Button } from "@/shared/ui/button";
 
 function App() {
   return (
@@ -6,7 +6,7 @@ function App() {
       <h1 className="text-4xl text-green-500">Music store</h1>
       <Button>Click me</Button>
     </div>
-  )
+  );
 }
 
 export default App;
