@@ -6,13 +6,13 @@
 
 # Стек
 
-* React
-* TypeScript
-* Vite
-* Zustand
-* Tailwind CSS
-* shadcn/ui
-* TanStack Router
+- React
+- TypeScript
+- Vite
+- Zustand
+- Tailwind CSS
+- shadcn/ui
+- TanStack Router
 
 ---
 
