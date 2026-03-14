@@ -5,7 +5,7 @@ FROM node:${NODE_VERSION}-alpine AS builder
 WORKDIR /app
 
 # Как в pages.yml: зависимости строго по lockfile. .nvmrc — при смене версии ноды пересоберётся слой
-COPY package.json package-lock.json .nvmrc ./
+COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
