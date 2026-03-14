@@ -5,6 +5,7 @@ import axios from "axios";
 import { setupWorker } from "msw/browser";
 
 import { handlers } from "./mocks/handlers";
+import { AppProvider } from "./context/AppContext";
 import App from "./App.tsx";
 import "./styles/index.css";
 
@@ -26,7 +27,9 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <AppProvider>
+        <App />
+      </AppProvider>
     </QueryClientProvider>
   </StrictMode>,
 );

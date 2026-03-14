@@ -1,7 +1,9 @@
-﻿import { Button } from "@/shared/ui/button";
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 
 import { getTracks } from "./api/tracks";
+import { TracksFiltersPanel } from "@/widgets/tracks-filters";
+
+import { HeaderSearch } from "./ui/HeaderSearch";
 
 function App() {
   const {
@@ -14,26 +16,39 @@ function App() {
   });
 
   return (
-    <div className="p-10">
-      <h1 className="text-4xl text-green-500">Music store</h1>
-      <Button>Click me</Button>
-      {isLoading ? <p className="mt-4">Loading tracks...</p> : null}
-      {isError ? (
-        <p className="mt-4 text-red-500">Failed to load tracks</p>
-      ) : null}
+    <div className="musiclab-layout min-h-screen bg-[#181818] text-white">
+      <header className="flex items-center justify-between gap-4 pt-[23px] px-9 pb-0 mb-[50px]">
+        <HeaderSearch />
+      </header>
 
-      {tracks ? (
-        <ul className="mt-4 space-y-2">
-          {tracks.map((track) => (
-            <li key={track._id} className="rounded border p-3">
-              <p className="font-semibold">{track.name}</p>
-              <p className="text-sm text-neutral-400">
-                {track.author} · {track.album}
-              </p>
-            </li>
-          ))}
-        </ul>
-      ) : null}
+      <main className="px-9 pb-20">
+        <h1 className="text-[60px] leading-[1.1] font-normal tracking-[-0.013em] mb-11">
+          Треки
+        </h1>
+
+        <TracksFiltersPanel />
+
+        {isLoading ? <p className="mt-8">Loading tracks...</p> : null}
+        {isError ? (
+          <p className="mt-8 text-red-400">Failed to load tracks</p>
+        ) : null}
+
+        {tracks ? (
+          <ul className="mt-8 space-y-2">
+            {tracks.map((track) => (
+              <li
+                key={track._id}
+                className="rounded border border-white/10 bg-white/5 p-3"
+              >
+                <p className="font-medium">{track.name}</p>
+                <p className="text-sm text-white/60">
+                  {track.author} · {track.album}
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </main>
     </div>
   );
 }
