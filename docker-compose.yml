@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        NODE_VERSION: ${NODE_VERSION:-22}
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
