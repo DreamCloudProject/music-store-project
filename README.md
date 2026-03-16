@@ -39,3 +39,13 @@ npm run dev
 Приложение будет доступно:
 
 http://localhost:5173
+
+## Запуск в Docker
+
+Из корня репозитория:
+
+```bash
+docker compose up --build
+```
+
+Приложение будет доступно на http://localhost:8080.
