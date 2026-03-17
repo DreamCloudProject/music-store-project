@@ -1,0 +1,35 @@
+[
+  {
+    "_id": "1",
+    "name": "Billie Jean",
+    "author": "Michael Jackson",
+    "releaseDate": "1983-01-02",
+    "genre": "pop",
+    "durationInSeconds": 294,
+    "album": "Thriller",
+    "previewUrl": "https://example.com/previews/billie-jean.mp3",
+    "trackUrl": "https://example.com/tracks/billie-jean.mp3"
+  },
+  {
+    "_id": "2",
+    "name": "Fly Me to the Moon",
+    "author": "Frank Sinatra",
+    "releaseDate": "1964-04-11",
+    "genre": "jazz",
+    "durationInSeconds": 148,
+    "album": "It Might as Well Be Swing",
+    "previewUrl": "https://example.com/previews/fly-me-to-the-moon.mp3",
+    "trackUrl": "https://example.com/tracks/fly-me-to-the-moon.mp3"
+  },
+  {
+    "_id": "3",
+    "name": "Blame",
+    "author": "Calvin Harris",
+    "releaseDate": "2014-09-07",
+    "genre": "electronic",
+    "durationInSeconds": 212,
+    "album": "Motion",
+    "previewUrl": "https://example.com/previews/blame.mp3",
+    "trackUrl": "https://example.com/tracks/blame.mp3"
+  }
+]
