@@ -6,12 +6,27 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Roboto", "sans-serif"],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        auth: {
+          DEFAULT: "hsl(var(--auth-button))",
+          hover: "hsl(var(--auth-button-hover))",
+          foreground: "hsl(var(--auth-button-text))",
+          active: "hsl(var(--auth-button-active))",
+        },
+        outline: {
+          DEFAULT: "hsl(var(--outline))",
+          hover: "hsl(var(--outline-hover))",
+          text: "hsl(var(--outline-text))",
+          active: "hsl(var(--outline-active))",
+        },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -44,6 +59,7 @@ export default {
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
+        placeholder: "hsl(var(--placeholder-text))",
         ring: "hsl(var(--ring))",
         chart: {
           1: "hsl(var(--chart-1))",

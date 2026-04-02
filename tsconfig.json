@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "erasableSyntaxOnly": false
   },
   "files": [],
   "references": [
