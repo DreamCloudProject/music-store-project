@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { User } from "../api/auth";
-import { getMe, logout } from "../api/auth";
+import { refresh, getMe, logout } from "../api/auth";
 
 interface AuthState {
   user: User | null;
@@ -18,16 +18,21 @@ export const useAuthStore = create<AuthState>((set) => ({
   setUser: (user) => set({ user, isAuthenticated: !!user }),
   clear: () => set({ user: null, isAuthenticated: false }),
   init: async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) {
       set({ isInitializing: false });
       return;
     }
     try {
+      const success = await refresh();
+      if (!success) {
+        set({ isInitializing: false });
+        return;
+      }
       const user = await getMe();
       set({ user, isAuthenticated: true, isInitializing: false });
     } catch {
-      logout();
+      await logout();
       set({ isInitializing: false });
     }
   },

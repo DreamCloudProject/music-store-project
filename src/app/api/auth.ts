@@ -1,37 +1,62 @@
-import { apiClient } from "./client";
+import { apiClient, setAccessToken } from "./client";
 
 export interface User {
-  id: string;
-  username: string;
+  _id: string;
+  email: string;
 }
 
-interface LoginResponse {
-  token: string;
-  user: User;
+export interface ApiError {
+  code: string;
+  message: string;
 }
 
-export async function register(username: string, password: string) {
-  const { data } = await apiClient.post("/register", { username, password });
+interface AuthResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export async function getMe(): Promise<User> {
+  const { data } = await apiClient.get<User>("/users/me");
+  return data;
+}
+
+export async function register(email: string, password: string) {
+  const { data } = await apiClient.post("/auth/register", { email, password });
   return data;
 }
 
 export async function login(
-  username: string,
+  email: string,
   password: string,
-): Promise<LoginResponse> {
-  const { data } = await apiClient.post<LoginResponse>("/login", {
-    username,
+): Promise<{ user: User }> {
+  const { data } = await apiClient.post<AuthResponse>("/auth/login", {
+    email,
     password,
   });
-  localStorage.setItem("token", data.token);
-  return data;
+  setAccessToken(data.accessToken);
+  localStorage.setItem("refreshToken", data.refreshToken);
+  return { user: await getMe() };
 }
 
-export async function getMe(): Promise<User> {
-  const { data } = await apiClient.get<User>("/me");
-  return data;
+export async function refresh(): Promise<boolean> {
+  const refreshToken = localStorage.getItem("refreshToken");
+  if (!refreshToken) return false;
+
+  try {
+    const { data } = await apiClient.post<AuthResponse>("/auth/refresh");
+    setAccessToken(data.accessToken);
+    localStorage.setItem("refreshToken", data.refreshToken);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
-export function logout() {
-  localStorage.removeItem("token");
+export async function logout() {
+  try {
+    await apiClient.get("/auth/logout");
+  } finally {
+    setAccessToken(null);
+    localStorage.removeItem("refreshToken");
+  }
 }

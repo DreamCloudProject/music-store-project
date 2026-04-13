@@ -43,7 +43,7 @@ function App() {
         <ul className="mt-4 space-y-2">
           {tracks.map((track) => (
             <li key={track._id} className="rounded border p-3">
-              <p className="font-semibold">{track.name}</p>
+              <p className="font-semibold text-neutral-400">{track.name}</p>
               <p className="text-sm text-neutral-400">
                 {track.author} · {track.album}
               </p>

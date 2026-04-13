@@ -9,13 +9,14 @@ import { getErrorMessage } from "@/app/api/client";
 
 export function SignInForm() {
   const router = useRouter();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const setUser = useAuthStore((s) => s.setUser);
 
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: () => login(username, password),
+  const { mutate, isPending, error, reset } = useMutation({
+    mutationFn: () => login(email, password),
     onSuccess: (data) => {
-      useAuthStore.getState().setUser(data.user);
+      setUser(data.user);
       router.navigate({ to: "/" });
     },
   });
@@ -23,19 +24,25 @@ export function SignInForm() {
   return (
     <div className="flex w-full flex-col gap-[20px]">
       <Input
-        placeholder="Логин"
-        type="text"
-        name="username"
-        autoComplete="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Email"
+        type="email"
+        name="email"
+        autoComplete="email"
+        value={email}
+        onChange={(e) => {
+          setEmail(e.target.value);
+          reset();
+        }}
       />
       <Input
         placeholder="Пароль"
         type="password"
         name="password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => {
+          setPassword(e.target.value);
+          reset();
+        }}
       />
       <div className="h-5">
         {error && (
@@ -48,7 +55,7 @@ export function SignInForm() {
         <Button
           variant="auth"
           onClick={() => mutate()}
-          disabled={isPending || !username.trim() || !password.trim()}
+          disabled={isPending || !email.trim() || !password.trim()}
         >
           {isPending ? "Входим..." : "Войти"}
         </Button>

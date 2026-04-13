@@ -8,15 +8,15 @@ import { getErrorMessage } from "@/app/api/client";
 
 export function SignUpForm() {
   const router = useRouter();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [validationError, setValidationError] = useState("");
   const checkInfo =
-    !username.trim() || !password.trim() || !passwordConfirm.trim();
+    !email.trim() || !password.trim() || !passwordConfirm.trim();
 
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: () => register(username, password),
+  const { mutate, isPending, error, reset } = useMutation({
+    mutationFn: () => register(email, password),
     onSuccess: () => router.navigate({ to: "/sign-in" }),
   });
 
@@ -41,26 +41,35 @@ export function SignUpForm() {
       }}
     >
       <Input
-        placeholder="Логин"
-        type="text"
-        name="username"
-        autoComplete="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Email"
+        type="email"
+        name="email"
+        autoComplete="email"
+        value={email}
+        onChange={(e) => {
+          setEmail(e.target.value);
+          reset();
+        }}
       />
       <Input
         placeholder="Пароль"
         type="password"
         name="password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => {
+          setPassword(e.target.value);
+          setValidationError("");
+        }}
       />
       <Input
         placeholder="Повторите пароль"
         type="password"
         name="passwordConfirm"
         value={passwordConfirm}
-        onChange={(e) => setPasswordConfirm(e.target.value)}
+        onChange={(e) => {
+          setPasswordConfirm(e.target.value);
+          setValidationError("");
+        }}
       />
       <div className="h-5">
         {(validationError || error) && (
