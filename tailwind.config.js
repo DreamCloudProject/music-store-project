@@ -1,4 +1,6 @@
 import tailwindcssAnimate from "tailwindcss-animate";
+import tailwindScrollbar from "tailwind-scrollbar";
+import plugin from "tailwindcss/plugin";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -10,6 +12,7 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        scrollbar: "10px",
       },
       colors: {
         background: "hsl(var(--background))",
@@ -52,8 +55,18 @@ export default {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
+        scrollbarThumb: "#ffffff",
+        scrollbarTrack: "#4b4949",
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [
+    tailwindcssAnimate,
+    tailwindScrollbar({ nocompatible: true }),
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        ".w-scrollbar": { "--scrollbar-width": "4px" },
+      });
+    }),
+  ],
 };

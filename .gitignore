@@ -10,6 +10,18 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+storybook-static
+playwright-report
+test-results
+coverage
+vitest-report
+html-report
+
+.env
+.env.*
+!.env.example
+.env.local
+.env.*.local
 *.local
 
 # Editor directories and files
