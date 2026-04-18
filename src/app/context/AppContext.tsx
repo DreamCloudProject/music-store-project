@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 export interface FilterOption {
   value: string;
@@ -40,14 +46,31 @@ export interface AppContextValue {
 
 const AppContext = createContext<AppContextValue | null>(null);
 
+function getSearchQueryFromLocation(): string {
+  return (
+    (globalThis?.location &&
+      new URLSearchParams(globalThis.location.search).get("search")) ??
+    ""
+  );
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(getSearchQueryFromLocation);
   const [selectedArtists, setSelectedArtists] = useState<string[]>([
     "michael-jackson",
     "frank-sinatra",
   ]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [yearOrder, setYearOrder] = useState<YearOrder>("newer");
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setSearchQuery(getSearchQueryFromLocation());
+    };
+
+    globalThis.addEventListener("popstate", handlePopState);
+    return () => globalThis.removeEventListener("popstate", handlePopState);
+  }, []);
 
   const value: AppContextValue = {
     searchQuery,

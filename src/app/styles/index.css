@@ -81,6 +81,8 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --scrollbar-thumb: #ffffff;
+    --scrollbar-track: #4b4949;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -111,10 +113,23 @@
 }
 
 @layer components {
-  * {
-    @apply scrollbar scrollbar-w-[4px] scrollbar-thumb-scrollbarThumb scrollbar-track-scrollbarTrack scrollbar-thumb-rounded-scrollbar scrollbar-track-rounded-scrollbar scrollbar-color-initial;
+  html,
+  body {
+    @apply scrollbar w-scrollbar scrollbar-thumb-scrollbarThumb scrollbar-track-scrollbarTrack scrollbar-thumb-rounded-scrollbar scrollbar-track-rounded-scrollbar;
+    scrollbar-width: unset;
+    scrollbar-color: unset;
   }
-  .search-field:has(input:not(:placeholder-shown)) > span {
+
+  @supports not selector(::-webkit-scrollbar) {
+    html,
+    body {
+      scrollbar-width: thin;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    }
+  }
+
+  .search-field:has(input:not(:placeholder-shown))
+    [data-slot="input-group-addon"] {
     color: white;
   }
 }

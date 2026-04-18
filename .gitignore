@@ -13,6 +13,12 @@ dist
 # Генерируется: npx msw init … && patch-worker (npm run msw:worker)
 public/mockServiceWorker.js
 dist-ssr
+
+.env
+.env.*
+!.env.example
+.env.local
+.env.*.local
 *.local
 
 # Editor directories and files
