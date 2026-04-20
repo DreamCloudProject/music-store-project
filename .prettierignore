@@ -5,3 +5,6 @@ coverage/
 *.log
 .DS_Store
 package-lock.json
+
+# Якорь патча должен совпадать с шаблоном MSW побайтно; Prettier ломает отступы.
+scripts/msw/worker-fetch-patch.js

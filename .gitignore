@@ -9,6 +9,9 @@ lerna-debug.log*
 
 node_modules
 dist
+
+# Генерируется: npx msw init … && patch-worker (npm run msw:worker)
+public/mockServiceWorker.js
 dist-ssr
 *.local
 
