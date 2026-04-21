@@ -1,8 +1,7 @@
 import type { FormEvent } from "react";
 
+import { useAppContext } from "@/shared/lib";
 import { SearchField } from "@/shared/ui/search-field";
-
-import { useAppContext } from "../context/AppContext";
 
 export function HeaderSearch() {
   const { searchQuery, setSearchQuery } = useAppContext();

@@ -1,9 +1,8 @@
 ﻿import { useQuery } from "@tanstack/react-query";
 
 import { getTracks } from "./api/tracks";
+import { HeaderSearch } from "@/widgets/header-search";
 import { TracksFiltersPanel } from "@/widgets/tracks-filters";
-
-import { HeaderSearch } from "./ui/HeaderSearch";
 
 function App() {
   const {

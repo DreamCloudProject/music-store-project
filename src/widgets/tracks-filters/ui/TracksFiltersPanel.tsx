@@ -1,5 +1,5 @@
-import { useAppContext } from "@/app/context/AppContext";
-import { cn } from "@/shared/lib/utils";
+import { useAppContext } from "@/shared/lib";
+import { cn } from "@/shared/lib";
 
 import { FilterByArtist } from "./FilterByArtist";
 import { FilterByGenre } from "./FilterByGenre";
