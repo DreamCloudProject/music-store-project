@@ -1,24 +1,11 @@
 import type { FormEvent } from "react";
 
-import { useAppContext } from "@/shared/lib";
 import { SearchField } from "@/shared/ui/search-field";
 
+import { useSearchStore } from "../model/search-store.context";
+
 export function HeaderSearch() {
-  const { searchQuery, setSearchQuery } = useAppContext();
-
-  const submitSearch = (query: string) => {
-    const url = new URL(globalThis.location.href);
-
-    if (query) url.searchParams.set("search", query);
-    else url.searchParams.delete("search");
-
-    const nextUrl = `${url.pathname}${url.search}${url.hash}`;
-    const currentUrl = `${globalThis.location.pathname}${globalThis.location.search}${globalThis.location.hash}`;
-
-    if (nextUrl !== currentUrl) {
-      globalThis.history.pushState({}, "", nextUrl);
-    }
-  };
+  const { searchQuery, setSearchQuery, submitSearch } = useSearchStore();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

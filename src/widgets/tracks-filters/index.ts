@@ -11,3 +11,6 @@ export {
   defaultArtistOptions,
   defaultGenreOptions,
 } from "./model/filter-options";
+
+export { TracksFiltersStoreProvider } from "./model/filters-store";
+export { useTracksFiltersStore } from "./model/filters-store.context";

@@ -5,7 +5,8 @@ import axios from "axios";
 import { setupWorker } from "msw/browser";
 
 import { handlers } from "./mocks/handlers";
-import { AppProvider } from "./context/AppContext";
+import { SearchStoreProvider } from "@/widgets/header-search";
+import { TracksFiltersStoreProvider } from "@/widgets/tracks-filters";
 import App from "./App.tsx";
 import "./styles/index.css";
 
@@ -27,9 +28,11 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <AppProvider>
-        <App />
-      </AppProvider>
+      <SearchStoreProvider>
+        <TracksFiltersStoreProvider>
+          <App />
+        </TracksFiltersStoreProvider>
+      </SearchStoreProvider>
     </QueryClientProvider>
   </StrictMode>,
 );

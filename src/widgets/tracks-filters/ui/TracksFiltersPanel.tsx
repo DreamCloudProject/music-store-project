@@ -1,9 +1,13 @@
-import { useAppContext } from "@/shared/lib";
 import { cn } from "@/shared/lib";
 
 import { FilterByArtist } from "./FilterByArtist";
 import { FilterByGenre } from "./FilterByGenre";
 import { FilterByYear } from "./FilterByYear";
+import {
+  defaultArtistOptions,
+  defaultGenreOptions,
+} from "../model/filter-options";
+import { useTracksFiltersStore } from "../model/filters-store.context";
 
 export interface TracksFiltersPanelProps {
   label?: string;
@@ -15,15 +19,13 @@ export function TracksFiltersPanel({
   className,
 }: TracksFiltersPanelProps) {
   const {
-    artistOptions,
     selectedArtists,
     setSelectedArtists,
-    genreOptions,
     selectedGenres,
     setSelectedGenres,
     yearOrder,
     setYearOrder,
-  } = useAppContext();
+  } = useTracksFiltersStore();
 
   return (
     <div
@@ -36,13 +38,13 @@ export function TracksFiltersPanel({
       </span>
       <div className="flex gap-[10px]">
         <FilterByArtist
-          options={artistOptions}
+          options={defaultArtistOptions}
           selected={selectedArtists}
           onSelectedChange={setSelectedArtists}
         />
         <FilterByYear value={yearOrder} onValueChange={setYearOrder} />
         <FilterByGenre
-          options={genreOptions}
+          options={defaultGenreOptions}
           selected={selectedGenres}
           onSelectedChange={setSelectedGenres}
         />
