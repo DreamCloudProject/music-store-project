@@ -6,3 +6,8 @@ export { FilterByYear } from "./ui/FilterByYear";
 export type { YearOrder, FilterByYearProps } from "./ui/FilterByYear";
 export { FilterByGenre } from "./ui/FilterByGenre";
 export type { GenreOption, FilterByGenreProps } from "./ui/FilterByGenre";
+
+export {
+  defaultArtistOptions,
+  defaultGenreOptions,
+} from "./model/filter-options";

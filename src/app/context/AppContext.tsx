@@ -2,11 +2,14 @@ import { useEffect, useState, type ReactNode } from "react";
 
 import {
   AppContext,
-  defaultArtistOptions,
-  defaultGenreOptions,
   getSearchQueryFromLocation,
   type AppContextValue,
 } from "@/shared/lib/app-context";
+
+import {
+  defaultArtistOptions,
+  defaultGenreOptions,
+} from "@/widgets/tracks-filters";
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [searchQuery, setSearchQuery] = useState(getSearchQueryFromLocation);
