@@ -5,6 +5,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
 import prettier from "eslint-config-prettier";
+import checkFile from "eslint-plugin-check-file";
 
 export default defineConfig([
   globalIgnores(["dist", "public/mockServiceWorker.js"]),
@@ -41,6 +42,36 @@ export default defineConfig([
       "no-console": "warn",
       "prefer-const": "error",
       "no-var": "error",
+    },
+  },
+  {
+    files: ["src/**/ui/**/*.tsx", "src/app/*.tsx"],
+    rules: {
+      "check-file/filename-naming-convention": [
+        "error",
+        { "src/**/ui/**/*.tsx": "PASCAL_CASE", "src/app/*.tsx": "PASCAL_CASE" },
+        { ignoreMiddleExtensions: true },
+      ],
+    },
+    plugins: {
+      "check-file": checkFile,
+    },
+  },
+  {
+    files: [
+      "src/**/{model,lib,api,config}/**/*.{ts,tsx}",
+      "!src/**/index.{ts,tsx}",
+      "!src/**/*.d.ts",
+    ],
+    rules: {
+      "check-file/filename-naming-convention": [
+        "error",
+        { "src/**/{model,lib,api,config}/**/*.{ts,tsx}": "KEBAB_CASE" },
+        { ignoreMiddleExtensions: true },
+      ],
+    },
+    plugins: {
+      "check-file": checkFile,
     },
   },
   {

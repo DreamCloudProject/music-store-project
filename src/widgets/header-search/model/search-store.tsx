@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 
-import { usePopState } from "@/shared/lib/usePopState";
+import { usePopState } from "@/shared/lib/use-pop-state";
 
 import {
   SearchStoreContext,
