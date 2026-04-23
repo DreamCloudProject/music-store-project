@@ -12,12 +12,7 @@ export interface Track {
   trackUrl: string;
 }
 
-function buildTracksUrl() {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
-  return `${baseUrl}/track`;
-}
-
 export async function getTracks(): Promise<Track[]> {
-  const { data } = await axios.get<Track[]>(buildTracksUrl());
+  const { data } = await axios.get<Track[]>("/track");
   return data;
 }
