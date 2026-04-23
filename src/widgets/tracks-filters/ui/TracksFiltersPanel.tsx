@@ -1,8 +1,8 @@
 import { cn } from "@/shared/lib";
 
-import { FilterByArtist } from "./FilterByArtist";
-import { FilterByGenre } from "./FilterByGenre";
-import { FilterByYear } from "./FilterByYear";
+import { FilterByArtist } from "../ui/FilterByArtist";
+import { FilterByGenre } from "../ui/FilterByGenre";
+import { FilterByYear } from "../ui/FilterByYear";
 import {
   defaultArtistOptions,
   defaultGenreOptions,

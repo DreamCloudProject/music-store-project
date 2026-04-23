@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { cn } from "@/shared/lib/utils";
+import { cn } from "../lib/utils";
 
-import { Input } from "./input";
+import { Input } from "../ui/input";
 
 type InputGroupAddonAlign =
   | "inline-start"

@@ -4,7 +4,7 @@ import {
   TracksFiltersStoreContext,
   type TracksFiltersStoreValue,
   type YearOrder,
-} from "./filters-store.context";
+} from "../model/filters-store.context";
 
 export function TracksFiltersStoreProvider({
   children,

@@ -5,7 +5,7 @@ import { usePopState } from "@/shared/lib/use-pop-state";
 import {
   SearchStoreContext,
   type SearchStoreValue,
-} from "./search-store.context";
+} from "../model/search-store.context";
 
 function getSearchQueryFromLocation(): string {
   return (

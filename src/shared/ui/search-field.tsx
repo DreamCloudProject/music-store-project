@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Search } from "lucide-react";
 
-import { cn } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
+import { cn } from "../lib/utils";
+import { Button } from "../ui/button";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/shared/ui/input-group";
+} from "../ui/input-group";
 
 export interface SearchFieldProps extends React.ComponentPropsWithoutRef<
   typeof InputGroupInput

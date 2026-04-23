@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { Badge } from "@/shared/ui/badge";
-import { Button } from "@/shared/ui/button";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -10,9 +10,9 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "@/shared/ui/dropdown-menu";
-import { ScrollArea } from "@/shared/ui/scroll-area";
-import { cn } from "@/shared/lib/utils";
+} from "../ui/dropdown-menu";
+import { ScrollArea } from "../ui/scroll-area";
+import { cn } from "../lib/utils";
 
 export interface FilterSelectOption {
   value: string;
