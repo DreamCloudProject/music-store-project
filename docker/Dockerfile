@@ -11,7 +11,7 @@ RUN npm ci
 COPY . .
 
 # Проверки перед сборкой (как в CI)
-RUN npm run lint && npm run typecheck && npm run test
+RUN npm run ci
 RUN npm run build
 
 # Финальный образ: Chainguard nginx — минимальная база (Wolfi), без shell/apk, обновления и меньше CVE.
