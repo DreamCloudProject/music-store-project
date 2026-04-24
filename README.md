@@ -6,13 +6,17 @@
 
 # Стек
 
-- React
-- TypeScript
 - Vite
-- Zustand
-- Tailwind CSS
-- shadcn/ui
+- TypeScript
+- React
 - TanStack Router
+- Zustand
+- TanStack Query
+- shadcn/ui
+- MSW
+- Axios
+- Tailwind CSS
+- Lucide
 
 ---
 
@@ -24,21 +28,32 @@ git clone https://github.com/DreamCloudProject/music-store-project.git
 
 cd music-store-project
 
----
-
 ### 2. Установить зависимости
 
-npm install
+```bash
+nvm use $(cat .nvmrc)
+npm ci
+# npm ci --omit=dev - for production
+```
 
----
+(или `npm install` — обновит lock при необходимости.)
 
 ### 3. Запустить dev-сервер
 
+```bash
 npm run dev
+```
 
-Приложение будет доступно:
+Приложение будет доступно: http://localhost:5173
 
-http://localhost:5173
+### Сборка
+
+```bash
+npm run build
+npm run preview
+```
+
+---
 
 ## Запуск в Docker
 
