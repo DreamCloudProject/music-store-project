@@ -1,0 +1,54 @@
+import { cn } from "@/shared/lib";
+
+import { FilterByArtist } from "../ui/FilterByArtist";
+import { FilterByGenre } from "../ui/FilterByGenre";
+import { FilterByYear } from "../ui/FilterByYear";
+import {
+  defaultArtistOptions,
+  defaultGenreOptions,
+} from "../model/filter-options";
+import { useTracksFiltersStore } from "../model/filters-store.context";
+
+export interface TracksFiltersPanelProps {
+  label?: string;
+  className?: string;
+}
+
+export function TracksFiltersPanel({
+  label = "Искать по:",
+  className,
+}: TracksFiltersPanelProps) {
+  const {
+    selectedArtists,
+    setSelectedArtists,
+    selectedGenres,
+    setSelectedGenres,
+    yearOrder,
+    setYearOrder,
+  } = useTracksFiltersStore();
+
+  return (
+    <div
+      className={cn("flex gap-[15px] items-center mb-[51px]", className)}
+      role="toolbar"
+      aria-label="Фильтры по трекам"
+    >
+      <span className="text-base leading-[1.15] text-white font-normal tracking-[0.001em]">
+        {label}
+      </span>
+      <div className="flex gap-[10px]">
+        <FilterByArtist
+          options={defaultArtistOptions}
+          selected={selectedArtists}
+          onSelectedChange={setSelectedArtists}
+        />
+        <FilterByYear value={yearOrder} onValueChange={setYearOrder} />
+        <FilterByGenre
+          options={defaultGenreOptions}
+          selected={selectedGenres}
+          onSelectedChange={setSelectedGenres}
+        />
+      </div>
+    </div>
+  );
+}

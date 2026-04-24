@@ -1,0 +1,34 @@
+import type { FormEvent } from "react";
+
+import { SearchField } from "@/shared/ui/search-field";
+
+import { useSearchStore } from "../model/search-store.context";
+
+export function HeaderSearch() {
+  const { searchQuery, setSearchQuery, submitSearch } = useSearchStore();
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const nextQuery = searchQuery.trim();
+    setSearchQuery(nextQuery);
+    submitSearch(nextQuery);
+  };
+
+  return (
+    <form
+      className="flex-1 flex max-w-[1200px]"
+      role="search"
+      onSubmit={handleSubmit}
+    >
+      <SearchField
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        iconButtonProps={{
+          type: "submit",
+          "aria-label": "Искать",
+        }}
+        className="text-white placeholder:text-[#4e4e4e] border-[#4e4e4e] hover:shadow-[inset_0_-1px_0_0_#4e4e4e] focus-visible:shadow-[inset_0_-1px_0_0_#4e4e4e]"
+      />
+    </form>
+  );
+}
