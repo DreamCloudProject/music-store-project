@@ -1,39 +1,69 @@
-﻿import { Button } from "@/shared/ui/button";
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import {
+  createRouter,
+  createRoute,
+  createRootRoute,
+  RouterProvider,
+  Outlet,
+  redirect,
+} from "@tanstack/react-router";
+import Layout from "@/widgets/layout/Layout";
+import LoginPage from "@/pages/login/LoginPage";
+import TracksPage from "@/pages/tracks/TracksPage";
+import PlaylistPage from "@/pages/playlist/PlaylistPage";
 
-import { getTracks } from "./api/tracks";
+// ── Route tree ────────────────────────────────────────────────────────────────
 
-function App() {
-  const {
-    data: tracks,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["tracks"],
-    queryFn: getTracks,
-  });
+const rootRoute = createRootRoute({
+  component: () => <Outlet />,
+});
 
-  return (
-    <div className="p-10">
-      <h1 className="text-4xl text-green-500">Music store</h1>
-      <Button>Click me</Button>
-      {isLoading ? <p className="mt-4">Loading tracks...</p> : null}
-      {isError ? <p className="mt-4 text-red-500">Failed to load tracks</p> : null}
+const layoutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  id: "layout",
+  component: Layout,
+});
 
-      {tracks ? (
-        <ul className="mt-4 space-y-2">
-          {tracks.map((track) => (
-            <li key={track._id} className="rounded border p-3">
-              <p className="font-semibold">{track.name}</p>
-              <p className="text-sm text-neutral-400">
-                {track.author} · {track.album}
-              </p>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-    </div>
-  );
+const indexRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: "/",
+  beforeLoad: () => {
+    throw redirect({ to: "/tracks" });
+  },
+});
+
+const tracksRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: "/tracks",
+  component: TracksPage,
+});
+
+const playlistRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: "/playlist/$id",
+  component: PlaylistPage,
+});
+
+const routeTree = rootRoute.addChildren([
+  layoutRoute.addChildren([indexRoute, tracksRoute, playlistRoute]),
+]);
+
+const router = createRouter({ routeTree });
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
 }
 
-export default App;
+// ── App ───────────────────────────────────────────────────────────────────────
+
+export default function App() {
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  if (!isAuthed) {
+    return <LoginPage onLogin={() => setIsAuthed(true)} />;
+  }
+
+  return <RouterProvider router={router} />;
+}

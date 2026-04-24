@@ -12,7 +12,7 @@ export default {
         "refactor", // рефакторинг без изменения поведения
         "perf", // улучшение производительности
         "test", // тесты
-        "chore", // обслуживание (deps, configs)
+        "chore", // обслуживание (deps, configs)git checkout -b feature/MUS-10/home-page
         "ci", // CI/CD
         "revert", // откат коммита
       ],
