@@ -5,3 +5,5 @@ coverage/
 *.log
 .DS_Store
 package-lock.json
+
+scripts/msw/worker-fetch-patch.js
