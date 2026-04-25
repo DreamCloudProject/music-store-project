@@ -1,1 +1,1 @@
-npx lint-staged --diff="HEAD"
+npx lint-staged
