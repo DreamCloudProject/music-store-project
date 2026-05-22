@@ -18,7 +18,9 @@ function App() {
       <h1 className="text-4xl text-green-500">Music store</h1>
       <Button>Click me</Button>
       {isLoading ? <p className="mt-4">Loading tracks...</p> : null}
-      {isError ? <p className="mt-4 text-red-500">Failed to load tracks</p> : null}
+      {isError ? (
+        <p className="mt-4 text-red-500">Failed to load tracks</p>
+      ) : null}
 
       {tracks ? (
         <ul className="mt-4 space-y-2">
