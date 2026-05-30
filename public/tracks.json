@@ -1,35 +1,282 @@
-[
-  {
-    "_id": "1",
-    "name": "Billie Jean",
-    "author": "Michael Jackson",
-    "releaseDate": "1983-01-02",
-    "genre": "pop",
-    "durationInSeconds": 294,
-    "album": "Thriller",
-    "previewUrl": "https://example.com/previews/billie-jean.mp3",
-    "trackUrl": "https://example.com/tracks/billie-jean.mp3"
-  },
-  {
-    "_id": "2",
-    "name": "Fly Me to the Moon",
-    "author": "Frank Sinatra",
-    "releaseDate": "1964-04-11",
-    "genre": "jazz",
-    "durationInSeconds": 148,
-    "album": "It Might as Well Be Swing",
-    "previewUrl": "https://example.com/previews/fly-me-to-the-moon.mp3",
-    "trackUrl": "https://example.com/tracks/fly-me-to-the-moon.mp3"
-  },
-  {
-    "_id": "3",
-    "name": "Blame",
-    "author": "Calvin Harris",
-    "releaseDate": "2014-09-07",
-    "genre": "electronic",
-    "durationInSeconds": 212,
-    "album": "Motion",
-    "previewUrl": "https://example.com/previews/blame.mp3",
-    "trackUrl": "https://example.com/tracks/blame.mp3"
+{
+  "result": {
+    "pages": [
+      {
+        "number": 1,
+        "value": 1,
+        "numberOfElements": 2
+      }
+    ],
+    "data": {
+      "content": [
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1778747435.982,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1779608007.983,
+          "id": "sellerSku1",
+          "type": "DIGITAL",
+          "name": "MS000001",
+          "inventory": {
+            "id": "inventory1",
+            "embeddedSellerSKU": {
+              "id": "sellerSku1",
+              "name": "MS000001",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "sick-individuals",
+              "name": "Sick Individuals",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [
+            "/cdn/seller14/seller-skus/sellerSku1/sick-individuals-justin-prime-feat-bymia-not-alone.jpg"
+          ],
+          "keywords": "",
+          "searchTerms": "Sick Individuals & Justin Prime feat. Bymia - Not Alone",
+          "embeddedSku": {
+            "id": "sick-individuals-justin-prime-feat-bymia-not-alone",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Alexander Yanchin (ayanchin85@gmail.com)",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av4",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Sick Individuals",
+              "minValue": 0.0,
+              "maxValue": 0.0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av5",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Not Alone",
+              "minValue": 0.0,
+              "maxValue": 0.0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av6",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [
+                {
+                  "id": "rock",
+                  "fallIntoAttributes": [],
+                  "searchTerms": "",
+                  "imageURLs": [],
+                  "translations": []
+                },
+                {
+                  "id": "edm",
+                  "fallIntoAttributes": [],
+                  "searchTerms": "",
+                  "imageURLs": [],
+                  "translations": []
+                },
+                {
+                  "id": "pop",
+                  "fallIntoAttributes": [],
+                  "searchTerms": "",
+                  "imageURLs": [],
+                  "translations": []
+                }
+              ],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "edm",
+              "minValue": 0.0,
+              "maxValue": 0.0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-edm",
+          "simpleTypeFilters": "artist-Sick Individuals|album-Not Alone",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [
+            {
+              "url": "cdn/seller14/seller-skus/sellerSku1/documents/sick-individuals-justin-prime-feat-bymia-not-alone_cjCtpPgG.mp3",
+              "name": "sick-individuals-justin-prime-feat-bymia-not-alone_cjCtpPgG.mp3",
+              "type": "SELLER_SKU"
+            }
+          ],
+          "publishedForSale": true,
+          "randomGenerated": false
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1778748508.78,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1779607964.754,
+          "id": "sellerSku2",
+          "type": "DIGITAL",
+          "name": "MS000002",
+          "inventory": {
+            "id": "inventory2",
+            "embeddedSellerSKU": {
+              "id": "sellerSku2",
+              "name": "MS000002",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "faderx",
+              "name": "FaderX",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [
+            "/cdn/seller14/seller-skus/sellerSku2/faderx-arrival.jpg"
+          ],
+          "keywords": "",
+          "searchTerms": "FaderX - The Arrival",
+          "embeddedSku": {
+            "id": "faderx-the-arrival",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Alexander Yanchin (ayanchin85@gmail.com)",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av3",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [
+                {
+                  "id": "rock",
+                  "fallIntoAttributes": [],
+                  "searchTerms": "",
+                  "imageURLs": [],
+                  "translations": []
+                },
+                {
+                  "id": "edm",
+                  "fallIntoAttributes": [],
+                  "searchTerms": "",
+                  "imageURLs": [],
+                  "translations": []
+                },
+                {
+                  "id": "pop",
+                  "fallIntoAttributes": [],
+                  "searchTerms": "",
+                  "imageURLs": [],
+                  "translations": []
+                }
+              ],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "edm",
+              "minValue": 0.0,
+              "maxValue": 0.0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av1",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "The Arrival",
+              "minValue": 0.0,
+              "maxValue": 0.0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av2",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "FaderX",
+              "minValue": 0.0,
+              "maxValue": 0.0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-edm",
+          "simpleTypeFilters": "artist-FaderX|album-The Arrival",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [
+            {
+              "url": "cdn/seller14/seller-skus/sellerSku2/documents/faderx-the-arrival_A912jexk.mp3",
+              "name": "faderx-the-arrival_A912jexk.mp3",
+              "type": "SELLER_SKU"
+            }
+          ],
+          "publishedForSale": true,
+          "randomGenerated": false
+        }
+      ],
+      "pageable": {
+        "sort": {
+          "empty": false,
+          "sorted": true,
+          "unsorted": false
+        },
+        "offset": 0,
+        "pageNumber": 0,
+        "pageSize": 10,
+        "paged": true,
+        "unpaged": false
+      },
+      "totalElements": 2,
+      "totalPages": 1,
+      "last": true,
+      "size": 10,
+      "number": 0,
+      "sort": {
+        "empty": false,
+        "sorted": true,
+        "unsorted": false
+      },
+      "numberOfElements": 2,
+      "first": true,
+      "empty": false
+    }
   }
-]
+}

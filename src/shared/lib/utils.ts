@@ -32,3 +32,17 @@ export function normalizeString(
 
   return result;
 }
+
+export function chunkList<T>(items: readonly T[], size: number): T[][] {
+  if (size <= 0) {
+    throw new RangeError("size must be positive");
+  }
+  if (items.length === 0) {
+    return [];
+  }
+  return items.reduce<T[][]>(
+    (acc, _, index) =>
+      index % size === 0 ? acc.concat(items.slice(index, index + size)) : acc,
+    [],
+  );
+}

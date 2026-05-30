@@ -1,13 +1,9 @@
-import { cn } from "@/shared/lib";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 
-import { FilterByArtist } from "../ui/FilterByArtist";
-import { FilterByGenre } from "../ui/FilterByGenre";
-import { FilterByYear } from "../ui/FilterByYear";
-import {
-  defaultArtistOptions,
-  defaultGenreOptions,
-} from "../model/filter-options";
-import { useTracksFiltersStore } from "../model/filters-store.context";
+import { cn } from "@/shared/lib";
+import { FilterSelect } from "@/shared/ui/filter-select";
+
+import { useTrackFiltersQuery } from "../api/track-filters.query";
 
 export interface TracksFiltersPanelProps {
   label?: string;
@@ -18,14 +14,17 @@ export function TracksFiltersPanel({
   label = "Искать по:",
   className,
 }: TracksFiltersPanelProps) {
+  const navigate = useNavigate({ from: "/" });
   const {
-    selectedArtists,
-    setSelectedArtists,
-    selectedGenres,
-    setSelectedGenres,
-    yearOrder,
-    setYearOrder,
-  } = useTracksFiltersStore();
+    artists: selectedArtists,
+    genres: selectedGenres,
+    year: selectedYear,
+  } = useSearch({
+    from: "/",
+  });
+
+  const { data: { artists = [], genres = [], years = [] } = {} } =
+    useTrackFiltersQuery();
 
   return (
     <div
@@ -37,16 +36,63 @@ export function TracksFiltersPanel({
         {label}
       </span>
       <div className="flex gap-[10px]">
-        <FilterByArtist
-          options={defaultArtistOptions}
+        <FilterSelect
+          multiselect
+          options={artists}
           selected={selectedArtists}
-          onSelectedChange={setSelectedArtists}
+          onSelectedChange={(next) =>
+            void navigate({
+              search: (prev) => ({
+                ...prev,
+                artists: next,
+              }),
+              replace: true,
+            })
+          }
+          triggerLabel="исполнителю"
+          aria-label={
+            selectedArtists.length
+              ? `Выбрать исполнителя, ${selectedArtists.length} в наборе`
+              : "Выбрать исполнителя"
+          }
         />
-        <FilterByYear value={yearOrder} onValueChange={setYearOrder} />
-        <FilterByGenre
-          options={defaultGenreOptions}
+        <FilterSelect
+          multiselect={false}
+          showControls
+          options={years}
+          value={selectedYear}
+          onValueChange={(next) =>
+            void navigate({
+              search: (prev) => ({
+                ...prev,
+                year: next,
+              }),
+              replace: true,
+            })
+          }
+          triggerLabel="году выпуска"
+          horizontal
+          aria-label="Выбрать порядок по году выпуска"
+        />
+        <FilterSelect
+          multiselect
+          options={genres}
           selected={selectedGenres}
-          onSelectedChange={setSelectedGenres}
+          onSelectedChange={(next) =>
+            void navigate({
+              search: (prev) => ({
+                ...prev,
+                genres: next,
+              }),
+              replace: true,
+            })
+          }
+          triggerLabel="жанру"
+          aria-label={
+            selectedGenres.length
+              ? `Выбрать жанр, ${selectedGenres.length} в наборе`
+              : "Выбрать жанр"
+          }
         />
       </div>
     </div>

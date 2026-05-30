@@ -45,7 +45,7 @@ export type FilterSelectPropsMulti = FilterSelectPropsBase & {
 
 export type FilterSelectPropsSingle = FilterSelectPropsBase & {
   multiselect: false;
-  value: string;
+  value?: string;
   onValueChange: (value: string) => void;
 } & (
     | {
@@ -113,7 +113,6 @@ export function FilterSelect(props: FilterSelectProps) {
     : (props.selected ?? []);
   const value = props.value ?? selected[0] ?? "";
   const selectedSet = new Set(selected);
-
   return (
     <div className={cn("relative", className)}>
       <DropdownMenu>
@@ -152,7 +151,7 @@ export function FilterSelect(props: FilterSelectProps) {
               "text-xl leading-[1.2] w-full min-h-0 min-w-0",
               horizontal
                 ? "h-[calc(1.2em+1px)]"
-                : "h-[calc(5*1.2em+4*28px+1px)]",
+                : `max-h-[calc(5*1.2em+4*28px+1px)]`,
             )}
           >
             {React.createElement(
@@ -162,9 +161,11 @@ export function FilterSelect(props: FilterSelectProps) {
                   ? {}
                   : {
                       value,
-                      onValueChange: (nextValue: string) => {
-                        updateSelection(props, nextValue ? [nextValue] : []);
-                      },
+                      onValueChange: (nextValue: string) =>
+                        updateSelection(
+                          props,
+                          nextValue && nextValue !== value ? [nextValue] : [],
+                        ),
                     }),
                 className: cn(
                   "tracks-filter-list outline-none font-normal text-xl leading-[1.2] text-white m-0 p-0",
@@ -196,7 +197,7 @@ export function FilterSelect(props: FilterSelectProps) {
                     onSelect: (e: Event) => e.preventDefault(),
                     className: cn(
                       cn(
-                        "flex items-center gap-3 cursor-pointer select-text text-xl leading-[1.2] text-white outline-none transition-colors !bg-transparent focus:!bg-transparent hover:!text-[#D9B6FF] data-[highlighted]:!bg-[rgba(182,114,255,0.2)] data-[highlighted]:text-[#D9B6FF] rounded-sm px-0 py-0",
+                        "flex items-center gap-3 cursor-pointer select-text text-xl leading-[1.2] text-white outline-none transition-colors !bg-transparent focus:!bg-transparent hover:!text-[#D9B6FF] data-[highlighted]:!bg-transparent data-[highlighted]:text-[#D9B6FF] rounded-sm px-0 py-0",
                         selectedSet.has(opt.value) &&
                           "text-[#B672FF] underline underline-offset-[3px] hover:no-underline hover:!text-[#D9B6FF] data-[highlighted]:text-[#D9B6FF]",
                       ),

@@ -55,6 +55,52 @@
 }
 
 @layer base {
+  ::selection {
+    background: #d9b6ff;
+    color: #181818;
+  }
+
+  ::-moz-selection {
+    background: #d9b6ff;
+    color: #181818;
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    html,
+    body {
+      scrollbar-width: thin;
+      scrollbar-color: #ffffff #4b4949;
+    }
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    width: 4px;
+    margin: 2px;
+  }
+
+  html::-webkit-scrollbar-button,
+  body::-webkit-scrollbar-button {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+
+  html::-webkit-scrollbar-track,
+  body::-webkit-scrollbar-track {
+    margin: 2px;
+    background: #4b4949;
+    border-radius: 10px;
+  }
+
+  html::-webkit-scrollbar-thumb,
+  body::-webkit-scrollbar-thumb {
+    background: #ffffff;
+    border-radius: 10px;
+  }
+}
+
+@layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
