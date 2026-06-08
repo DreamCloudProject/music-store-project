@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { z } from "zod";
 
 import { fetchTrackFilters } from "../api/track-filters.api";
 import type { TrackFiltersResponse } from "../api/track-filters.types";
@@ -15,8 +14,8 @@ export function useTrackFiltersQuery() {
     queryFn: fetchTrackFilters,
     initialData: {
       artists: [
-        { value: "faderx", label: "FaderX" },
-        { value: "sick-individuals", label: "Sick Individuals" },
+        { value: "FaderX", label: "FaderX" },
+        { value: "Sick Individuals", label: "Sick Individuals" },
       ],
       genres: [{ value: "edm", label: "EDM" }],
       years: [
@@ -24,18 +23,7 @@ export function useTrackFiltersQuery() {
         { value: "older", label: "Более старые" },
       ],
     },
-    select: (raw): TrackFiltersResponse =>
-      ((p) => (p.success ? p.data : { artists: [], genres: [], years: [] }))(
-        z
-          .object({
-            artists: z.array(
-              z.object({ value: z.string(), label: z.string() }),
-            ),
-            genres: z.array(z.object({ value: z.string(), label: z.string() })),
-            years: z.array(z.object({ value: z.string(), label: z.string() })),
-          })
-          .safeParse(raw),
-      ),
-    staleTime: Number.POSITIVE_INFINITY,
+    staleTime: 0,
+    gcTime: 1000 * 60 * 5,
   });
 }

@@ -49,15 +49,15 @@ export async function fetchTracksPage(
                   year: z.string().optional(),
                 })
                 .transform((argsInput): CmsSellerSkuSearchArgs => {
-                  const artist = argsInput.artists[0];
-                  const genre = argsInput.genres[0];
+                  const artists = argsInput.artists.filter(Boolean);
+                  const genres = argsInput.genres.filter(Boolean);
                   const search = argsInput.search?.trim();
                   return {
                     type: "SellerSKU",
                     query: {
                       isPublishedForSale: true,
-                      ...(artist ? { artist } : {}),
-                      ...(genre ? { genre } : {}),
+                      ...(artists.length ? { artist: artists.join("|") } : {}),
+                      ...(genres.length ? { genre: genres.join("|") } : {}),
                     },
                     ignoreRegexWrap: [
                       "name",
@@ -69,7 +69,11 @@ export async function fetchTracksPage(
                     limit: argsInput.limit,
                     visiblePages: 10,
                     page,
-                    filteringStrategy: "INCLUDE",
+                    ...(search
+                      ? { searchTerm: search, filteringStrategy: "EXCLUDE" }
+                      : artists.length || genres.length
+                        ? { filteringStrategy: "INCLUDE" }
+                        : {}),
                     ...(argsInput.year === "newer" || argsInput.year === "older"
                       ? {
                           sortName: "lastModifiedDate",
@@ -77,7 +81,6 @@ export async function fetchTracksPage(
                             argsInput.year === "older" ? "ASC" : "DESC",
                         }
                       : {}),
-                    ...(search ? { searchTerm: search } : {}),
                   };
                 })
                 .parse(input))(page),
@@ -176,14 +179,17 @@ export function parseTracksRequestBody(body: unknown): FetchTracksPageInput {
       .transform((bean) => {
         const inner = bean.args?.[0]?.["0"];
         if (!inner) return defaults;
-        const artist = inner.query?.artist?.trim();
-        const genre = inner.query?.genre?.trim();
+        const splitPipe = (raw?: string) =>
+          raw
+            ?.split("|")
+            .map((part) => part.trim())
+            .filter(Boolean) ?? [];
         return {
           offset: inner.offset ?? defaults.offset,
           limit: inner.limit ?? defaults.limit,
           search: inner.searchTerm,
-          artists: artist ? [artist] : [],
-          genres: genre ? [genre] : [],
+          artists: splitPipe(inner.query?.artist),
+          genres: splitPipe(inner.query?.genre),
           year:
             inner.sortDirection === "ASC"
               ? "older"

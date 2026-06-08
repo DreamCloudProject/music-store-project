@@ -21,6 +21,7 @@ export interface CmsBeanSearchRequest {
 }
 
 export interface CmsAttributeValue {
+  id?: string;
   attributeId: string;
   value?: string | null;
 }
