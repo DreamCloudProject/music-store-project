@@ -4,10 +4,10 @@ export interface CmsSellerSkuSearchArgs {
   searchTerm?: string;
   query: Record<string, unknown>;
   ignoreRegexWrap: string[];
-  offset: number;
-  limit: number;
-  visiblePages: number;
-  page: number;
+  offset?: number;
+  limit?: number;
+  visiblePages?: number;
+  page?: number;
   sortName?: string;
   sortDirection?: "ASC" | "DESC";
   filteringStrategy?: string;

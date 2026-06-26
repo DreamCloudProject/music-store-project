@@ -1,4 +1,197 @@
 {
+  "artistFilter": {
+    "result": [
+      {
+        "id": "av2",
+        "filterId": "artist",
+        "count": null,
+        "value": "FaderX",
+        "step": null,
+        "min": null,
+        "max": null
+      },
+      {
+        "id": "av4",
+        "filterId": "artist",
+        "count": null,
+        "value": "Sick Individuals",
+        "step": null,
+        "min": null,
+        "max": null
+      }
+    ]
+  },
+  "genreFilter": {
+    "result": [
+      {
+        "id": "edm",
+        "filterId": null,
+        "count": "1",
+        "value": {
+          "id": "edm",
+          "fallIntoAttributes": [
+            {
+              "id": "genre",
+              "name": "",
+              "repositoryName": "attributeRepository"
+            }
+          ],
+          "searchTerms": "EDM,EDM,EDM",
+          "imageURLs": [],
+          "translations": [
+            {
+              "id": "translation2",
+              "text": "EDM",
+              "lang": {
+                "id": "lang2",
+                "name": "English",
+                "isoCode": "en",
+                "translations": [],
+                "fallIntoObjects": []
+              },
+              "fallIntoObjects": [
+                {
+                  "id": "edm",
+                  "name": null,
+                  "repositoryName": "categoryRepository"
+                }
+              ]
+            },
+            {
+              "id": "translation3",
+              "text": "EDM",
+              "lang": {
+                "id": "lang3",
+                "name": "Russian",
+                "isoCode": "ru",
+                "translations": [],
+                "fallIntoObjects": []
+              },
+              "fallIntoObjects": [
+                {
+                  "id": "edm",
+                  "name": null,
+                  "repositoryName": "categoryRepository"
+                }
+              ]
+            },
+            {
+              "id": "translation1",
+              "text": "EDM",
+              "lang": {
+                "id": "lang1",
+                "name": "German",
+                "isoCode": "de",
+                "translations": [],
+                "fallIntoObjects": []
+              },
+              "fallIntoObjects": [
+                {
+                  "id": "edm",
+                  "name": null,
+                  "repositoryName": "categoryRepository"
+                }
+              ]
+            }
+          ]
+        },
+        "step": null,
+        "min": null,
+        "max": null
+      },
+      {
+        "id": "rock",
+        "filterId": null,
+        "count": "1",
+        "value": {
+          "id": "rock",
+          "fallIntoAttributes": [
+            {
+              "id": "genre",
+              "name": "",
+              "repositoryName": "attributeRepository"
+            }
+          ],
+          "searchTerms": "Рок,Rock,Rock",
+          "imageURLs": [],
+          "translations": [
+            {
+              "id": "translation6",
+              "text": "Рок",
+              "lang": {
+                "id": "lang3",
+                "name": "Russian",
+                "isoCode": "ru",
+                "translations": [],
+                "fallIntoObjects": []
+              },
+              "fallIntoObjects": [
+                {
+                  "id": "rock",
+                  "name": null,
+                  "repositoryName": "optionRepository"
+                },
+                {
+                  "id": "Rock",
+                  "name": null,
+                  "repositoryName": "categoryRepository"
+                }
+              ]
+            },
+            {
+              "id": "translation4",
+              "text": "Rock",
+              "lang": {
+                "id": "lang1",
+                "name": "German",
+                "isoCode": "de",
+                "translations": [],
+                "fallIntoObjects": []
+              },
+              "fallIntoObjects": [
+                {
+                  "id": "rock",
+                  "name": null,
+                  "repositoryName": "optionRepository"
+                },
+                {
+                  "id": "Rock",
+                  "name": null,
+                  "repositoryName": "categoryRepository"
+                }
+              ]
+            },
+            {
+              "id": "translation5",
+              "text": "Rock",
+              "lang": {
+                "id": "lang2",
+                "name": "English",
+                "isoCode": "en",
+                "translations": [],
+                "fallIntoObjects": []
+              },
+              "fallIntoObjects": [
+                {
+                  "id": "rock",
+                  "name": null,
+                  "repositoryName": "optionRepository"
+                },
+                {
+                  "id": "Rock",
+                  "name": null,
+                  "repositoryName": "categoryRepository"
+                }
+              ]
+            }
+          ]
+        },
+        "step": null,
+        "min": null,
+        "max": null
+      }
+    ]
+  },
   "result": {
     "pages": [
       {
@@ -59,8 +252,8 @@
               "type": "SIMPLE",
               "areaUsageType": "PRODUCT_RELATED_DATA",
               "value": "Sick Individuals",
-              "minValue": 0.0,
-              "maxValue": 0.0,
+              "minValue": 0,
+              "maxValue": 0,
               "active": true,
               "checked": "checked"
             },
@@ -73,8 +266,8 @@
               "type": "SIMPLE",
               "areaUsageType": "PRODUCT_RELATED_DATA",
               "value": "Not Alone",
-              "minValue": 0.0,
-              "maxValue": 0.0,
+              "minValue": 0,
+              "maxValue": 0,
               "active": true,
               "checked": "checked"
             },
@@ -109,8 +302,8 @@
               "type": "LIST",
               "areaUsageType": "PRODUCT_RELATED_DATA",
               "value": "edm",
-              "minValue": 0.0,
-              "maxValue": 0.0,
+              "minValue": 0,
+              "maxValue": 0,
               "active": true,
               "checked": "checked"
             }
@@ -134,7 +327,7 @@
           "createdBy": "musicadmin",
           "createdDate": 1778748508.78,
           "lastModifiedBy": "musicadmin",
-          "lastModifiedDate": 1779607964.754,
+          "lastModifiedDate": 1780150620.594,
           "id": "sellerSku2",
           "type": "DIGITAL",
           "name": "MS000002",
@@ -201,9 +394,9 @@
               ],
               "type": "LIST",
               "areaUsageType": "PRODUCT_RELATED_DATA",
-              "value": "edm",
-              "minValue": 0.0,
-              "maxValue": 0.0,
+              "value": "rock",
+              "minValue": 0,
+              "maxValue": 0,
               "active": true,
               "checked": "checked"
             },
@@ -216,8 +409,8 @@
               "type": "SIMPLE",
               "areaUsageType": "PRODUCT_RELATED_DATA",
               "value": "The Arrival",
-              "minValue": 0.0,
-              "maxValue": 0.0,
+              "minValue": 0,
+              "maxValue": 0,
               "active": true,
               "checked": "checked"
             },
@@ -230,14 +423,14 @@
               "type": "SIMPLE",
               "areaUsageType": "PRODUCT_RELATED_DATA",
               "value": "FaderX",
-              "minValue": 0.0,
-              "maxValue": 0.0,
+              "minValue": 0,
+              "maxValue": 0,
               "active": true,
               "checked": "checked"
             }
           ],
           "logicalTypeFilters": "",
-          "listTypeFilters": "genre-edm",
+          "listTypeFilters": "genre-rock",
           "simpleTypeFilters": "artist-FaderX|album-The Arrival",
           "rangeFilters": [],
           "numericFilters": [],

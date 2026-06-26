@@ -24,7 +24,7 @@ function filterAndPaginate(
     search: parsed.search ?? "",
   });
 
-  if (parsed.limit >= Number.MAX_SAFE_INTEGER / 2) {
+  if (parsed.catalogAll) {
     return {
       content: filtered,
       totalElements: filtered.length,
@@ -151,9 +151,12 @@ export const handlers = [
           content,
           totalElements,
           last: nextOffset === null,
-          number:
-            parsed.limit > 0 ? Math.floor(parsed.offset / parsed.limit) : 0,
-          size: parsed.limit,
+          number: parsed.catalogAll
+            ? 0
+            : parsed.limit > 0
+              ? Math.floor(parsed.offset / parsed.limit)
+              : 0,
+          size: parsed.catalogAll ? totalElements : parsed.limit,
         },
       },
     } satisfies CmsSearchResultPayload);

@@ -19,7 +19,11 @@ import { chunkList } from "@/shared/lib";
 import { HeaderSearch } from "@/widgets/header-search";
 import { TracksFiltersPanel } from "@/widgets/tracks-filters";
 
-import { fetchTracksCatalogAll, fetchTracksPage } from "./api/tracks.api";
+import {
+  fetchTracksCatalogAll,
+  fetchTracksPage,
+  tracksCatalogCacheTtlMs,
+} from "./api/tracks.api";
 import type {
   CmsSellerSkuItem,
   TrackListItem,
@@ -74,8 +78,8 @@ function App() {
     enabled: !skipCatalog,
     retry: false,
     queryFn: async () => fetchTracksCatalogAll(),
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 5,
+    staleTime: tracksCatalogCacheTtlMs,
+    gcTime: tracksCatalogCacheTtlMs,
   });
 
   useEffect(() => {
@@ -106,8 +110,8 @@ function App() {
     number
   >({
     queryKey: ["tracks", "paged", params],
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 5,
+    staleTime: tracksCatalogCacheTtlMs,
+    gcTime: tracksCatalogCacheTtlMs,
     initialPageParam: 0,
     select: (infinite) =>
       z
@@ -156,7 +160,11 @@ function App() {
       const catalog = catalogCacheToItems(
         queryClient.getQueryData<unknown>(["tracks", "catalog-full"]),
       );
-      if (catalogState?.status === "success" && catalog != null) {
+      if (
+        catalogState?.status === "success" &&
+        catalog != null &&
+        catalog.length > 0
+      ) {
         const filtered = filterTracksForUi(catalog, params);
         const limit = 10;
         const items = filtered.slice(pageParam, pageParam + limit);

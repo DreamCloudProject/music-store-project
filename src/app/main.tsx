@@ -14,20 +14,23 @@ const worker = setupWorker(...handlers);
 
 const mswRestartQueue = new AsyncQueuer<StartOptions | null>(
   async (options) => {
-    worker.stop();
-    await worker.start(
-      options ??
-        ({
-          onUnhandledRequest: "bypass" as const,
-          serviceWorker: {
-            url: new URL(
-              "mockServiceWorker.js",
-              new URL(import.meta.env.BASE_URL, location.origin),
-            ).href,
-          },
-          quiet: true,
-        } satisfies StartOptions),
-    );
+    // eslint-disable-next-line
+    false && worker.stop();
+    // eslint-disable-next-line
+    false &&
+      (await worker.start(
+        options ??
+          ({
+            onUnhandledRequest: "bypass" as const,
+            serviceWorker: {
+              url: new URL(
+                "mockServiceWorker.js",
+                new URL(import.meta.env.BASE_URL, location.origin),
+              ).href,
+            },
+            quiet: true,
+          } satisfies StartOptions),
+      ));
   },
   {
     key: "msw-restart",
