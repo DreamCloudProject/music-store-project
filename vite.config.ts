@@ -40,6 +40,9 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: env.VITE_APP_BASE_URL,
+    server: {
+      host: true,
+    },
     define: {
       "import.meta.env.VITE_APP_BASE_URL": JSON.stringify(
         env.VITE_APP_BASE_URL,
