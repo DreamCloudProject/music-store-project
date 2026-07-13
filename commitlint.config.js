@@ -19,5 +19,7 @@ export default {
     ],
     // тема не длиннее 72 символов
     "subject-max-length": [2, "always", 72],
+    // body без лимита длины строк
+    "body-max-line-length": [0],
   },
 };
