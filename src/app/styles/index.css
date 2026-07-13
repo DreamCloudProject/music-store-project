@@ -155,3 +155,133 @@
     --chart-5: 340 75% 55%;
   }
 }
+
+@layer components {
+  .player-bar-control--primary {
+    color: #d9d9d9;
+  }
+
+  .player-bar-control--primary:hover {
+    color: #acacac;
+  }
+
+  .player-bar-control--primary:active {
+    color: #ffffff;
+  }
+
+  .player-bar-control--primary:focus-visible {
+    color: #acacac;
+  }
+
+  .player-bar-control--alt {
+    color: #696969;
+  }
+
+  .player-bar-control--alt:hover {
+    color: #acacac;
+  }
+
+  .player-bar-control--alt:active {
+    color: #d9d9d9;
+  }
+
+  .player-bar-control--alt[data-pressed="true"] {
+    color: #ffffff;
+  }
+
+  .player-bar-control--alt[data-pressed="true"]:hover {
+    color: #acacac;
+  }
+
+  .player-bar-control--alt[data-pressed="true"]:active {
+    color: #696969;
+  }
+
+  .player-bar-control--alt:focus-visible {
+    color: #acacac;
+  }
+
+  .player-bar-play-icon {
+    display: none;
+  }
+
+  .player-bar-control--play[data-playing="false"] .player-bar-pause-icon {
+    display: none;
+  }
+
+  .player-bar-control--play[data-playing="false"] .player-bar-play-icon {
+    display: block;
+  }
+
+  .player-bar-control--play[data-playing="false"]:active .player-bar-play-icon {
+    display: none;
+  }
+
+  .player-bar-control--play[data-playing="false"]:active
+    .player-bar-pause-icon {
+    display: block;
+  }
+
+  .player-bar-control--play[data-playing="true"]:active .player-bar-pause-icon {
+    display: none;
+  }
+
+  .player-bar-control--play[data-playing="true"]:active .player-bar-play-icon {
+    display: block;
+  }
+
+  .track-fav-toggle {
+    --fav-fill: transparent;
+    --fav-stroke: #696969;
+    color: var(--fav-stroke);
+  }
+
+  .track-fav-toggle:hover {
+    --fav-stroke: #acacac;
+  }
+
+  .track-fav-toggle:active {
+    --fav-stroke: #ffffff;
+    --fav-fill: #696969;
+  }
+
+  .track-fav-toggle:focus-visible {
+    --fav-stroke: #acacac;
+  }
+
+  .track-fav-toggle[data-favorite="true"] {
+    --fav-fill: #696969;
+    --fav-stroke: #ffffff;
+  }
+
+  .track-fav-toggle[data-favorite="true"]:hover {
+    --fav-stroke: #acacac;
+  }
+
+  .track-fav-toggle[data-favorite="true"]:active {
+    --fav-fill: transparent;
+    --fav-stroke: #696969;
+  }
+
+  .fav-icon__heart {
+    fill: var(--fav-fill);
+    stroke: currentColor;
+    stroke-width: 1.1;
+    transition:
+      fill 0.2s,
+      stroke 0.2s;
+  }
+
+  .fav-icon__cross {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.1;
+    stroke-linecap: round;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .track-fav-toggle[data-favorite="true"] .fav-icon__cross {
+    opacity: 1;
+  }
+}
