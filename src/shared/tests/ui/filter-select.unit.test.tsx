@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
-import { FilterSelect } from "@/shared/ui/filter-select";
+import { FilterSelect } from "../../ui/filter-select";
 
 const options = [
   { value: "rock", label: "Рок" },

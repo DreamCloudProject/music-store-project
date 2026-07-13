@@ -70,6 +70,11 @@ test("updates filter trigger labels after changing selections", async ({
 
   await artistItem.click();
   await expect(artistItem).toHaveAttribute("aria-checked", "true");
+  await expect(
+    page.getByRole("menu", {
+      name: "Выбрать исполнителя, 1 в наборе",
+    }),
+  ).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(
     page.getByRole("button", {
@@ -89,6 +94,11 @@ test("updates filter trigger labels after changing selections", async ({
 
   await genreItem.click();
   await expect(genreItem).toHaveAttribute("aria-checked", "true");
+  await expect(
+    page.getByRole("menu", {
+      name: "Выбрать жанр, 1 в наборе",
+    }),
+  ).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(
     page.getByRole("button", {

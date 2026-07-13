@@ -1,4 +1,4 @@
-﻿import "array.prototype.tosorted/auto";
+import "array.prototype.tosorted/auto";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 import { AsyncQueuer } from "@tanstack/pacer";
@@ -12,25 +12,27 @@ import "./styles/index.css";
 
 const worker = setupWorker(...handlers);
 
+const enableMsw = import.meta.env.VITE_ENABLE_MSW === "true";
+let mswStarted = false;
+
 const mswRestartQueue = new AsyncQueuer<StartOptions | null>(
   async (options) => {
-    // eslint-disable-next-line
-    false && worker.stop();
-    // eslint-disable-next-line
-    false &&
-      (await worker.start(
-        options ??
-          ({
-            onUnhandledRequest: "bypass" as const,
-            serviceWorker: {
-              url: new URL(
-                "mockServiceWorker.js",
-                new URL(import.meta.env.BASE_URL, location.origin),
-              ).href,
-            },
-            quiet: true,
-          } satisfies StartOptions),
-      ));
+    if (!enableMsw) return;
+    if (mswStarted) worker.stop();
+    await worker.start(
+      options ??
+        ({
+          onUnhandledRequest: "bypass" as const,
+          serviceWorker: {
+            url: new URL(
+              "mockServiceWorker.js",
+              new URL(import.meta.env.BASE_URL, location.origin),
+            ).href,
+          },
+          quiet: true,
+        } satisfies StartOptions),
+    );
+    mswStarted = true;
   },
   {
     key: "msw-restart",

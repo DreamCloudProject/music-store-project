@@ -9,6 +9,11 @@ export const vitestSharedConfig = defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  define: {
+    "import.meta.env.VITE_APP_BASE_URL": JSON.stringify("/"),
+    "import.meta.env.VITE_API_BASE_URL": JSON.stringify("/api/v1/bean"),
+    "import.meta.env.VITE_ENABLE_MSW": JSON.stringify("true"),
+  },
   test: {
     globals: true,
     environment: "jsdom",

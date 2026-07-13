@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { SearchField } from "@/shared/ui/search-field";
+import { SearchField } from "../../ui/search-field";
 
 describe("SearchField", () => {
   it("renders a searchbox with default labels and submit button", () => {

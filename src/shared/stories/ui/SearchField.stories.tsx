@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 
-import { SearchField } from "@/shared/ui/search-field";
+import { SearchField } from "../../ui/search-field";
 
 function SearchFieldSurface({ children }: { children: React.ReactNode }) {
   return (

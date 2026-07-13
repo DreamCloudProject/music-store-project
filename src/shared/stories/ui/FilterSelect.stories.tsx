@@ -6,7 +6,7 @@ import {
   FilterSelect,
   type FilterSelectPropsMulti,
   type FilterSelectPropsSingle,
-} from "@/shared/ui/filter-select";
+} from "../../ui/filter-select";
 
 const options = [
   { value: "rock", label: "Рок" },
@@ -21,7 +21,7 @@ function FilterSelectSurface({ children }: { children: React.ReactNode }) {
 
 function ControlledMultiSelect(args: FilterSelectPropsMulti) {
   const [selected, setSelected] = useState(args.selected);
-  const [value, setValue] = useState(args.value);
+  const [value, setValue] = useState(args.value ?? "");
 
   return (
     <FilterSelectSurface>
@@ -43,8 +43,10 @@ function ControlledMultiSelect(args: FilterSelectPropsMulti) {
 }
 
 function ControlledSingleSelect(args: FilterSelectPropsSingle) {
-  const [selected, setSelected] = useState(args.selected ?? [args.value]);
-  const [value, setValue] = useState(args.value);
+  const [selected, setSelected] = useState(
+    args.selected ?? (args.value ? [args.value] : []),
+  );
+  const [value, setValue] = useState(args.value ?? "");
 
   return (
     <FilterSelectSurface>

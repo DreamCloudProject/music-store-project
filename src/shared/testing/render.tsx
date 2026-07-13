@@ -58,10 +58,5 @@ export function renderWithProviders(
   options?: Omit<RenderOptions, "wrapper"> & { initialEntry?: string },
 ) {
   const { initialEntry, ...rest } = options ?? {};
-  return render(
-    createTestProviders({ children: ui, initialEntry }),
-    rest,
-  );
+  return render(createTestProviders({ children: ui, initialEntry }), rest);
 }
-
-export * from "@testing-library/react";

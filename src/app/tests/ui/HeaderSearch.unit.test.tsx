@@ -23,7 +23,7 @@ describe("HeaderSearch", () => {
 
     renderWithProviders(<HeaderSearch />);
 
-    const searchbox = screen.getByRole("searchbox", {
+    const searchbox = await screen.findByRole("searchbox", {
       name: "Поиск по трекам",
     });
 
