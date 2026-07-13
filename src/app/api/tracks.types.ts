@@ -34,8 +34,10 @@ export interface CmsSellerSkuItem {
   lastModifiedDate?: number;
   productsRef?: { id: string; name: string }[];
   attributeValues?: CmsAttributeValue[];
+  imageURLs?: string[];
   documentURLs?: { url: string; name?: string; type?: string }[];
   publishedForSale?: boolean;
+  favorite?: boolean;
 }
 
 export interface CmsSearchResultPayload {
@@ -68,11 +70,4 @@ export type TracksUiParams = Required<
 export interface TracksPageResponse {
   items: CmsSellerSkuItem[];
   nextOffset: number | null;
-}
-
-export interface TrackListItem {
-  id: string;
-  title: string;
-  artist: string;
-  album: string;
 }

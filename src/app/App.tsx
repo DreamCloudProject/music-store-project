@@ -15,9 +15,11 @@ import {
 import { useInView } from "react-intersection-observer";
 import { z } from "zod";
 
+import { mapCmsTracks, type Track } from "@/entities/track";
 import { chunkList } from "@/shared/lib";
 import { HeaderSearch } from "@/widgets/header-search";
 import { TracksFiltersPanel } from "@/widgets/tracks-filters";
+import { TracksTable } from "@/widgets/tracks-table";
 
 import {
   fetchTracksCatalogAll,
@@ -26,7 +28,6 @@ import {
 } from "./api/tracks.api";
 import type {
   CmsSellerSkuItem,
-  TrackListItem,
   TracksPageResponse,
   TracksUiParams,
 } from "./api/tracks.types";
@@ -105,7 +106,7 @@ function App() {
   } = useInfiniteQuery<
     TracksPageResponse,
     Error,
-    TrackListItem[],
+    Track[],
     (string | TracksUiParams)[],
     number
   >({
@@ -113,45 +114,7 @@ function App() {
     staleTime: tracksCatalogCacheTtlMs,
     gcTime: tracksCatalogCacheTtlMs,
     initialPageParam: 0,
-    select: (infinite) =>
-      z
-        .array(
-          z
-            .looseObject({
-              id: z.string(),
-              name: z.string().nullish(),
-              searchTerms: z.string().optional(),
-              attributeValues: z
-                .array(
-                  z.object({
-                    attributeId: z.string(),
-                    value: z.string().nullish(),
-                  }),
-                )
-                .optional(),
-            })
-            .transform((item) => {
-              const searchTerms = item.searchTerms?.trim() ?? "";
-              const dashIdx = searchTerms.indexOf(" - ");
-              const title =
-                (dashIdx >= 0
-                  ? searchTerms.slice(dashIdx + 3).trim()
-                  : searchTerms) ||
-                item.name?.trim() ||
-                item.id;
-              const attributeValue = (attributeId: string) =>
-                item.attributeValues
-                  ?.find((av) => av.attributeId === attributeId)
-                  ?.value?.trim() ?? "";
-              return {
-                id: item.id,
-                title,
-                artist: attributeValue("artist"),
-                album: attributeValue("album"),
-              };
-            }),
-        )
-        .parse(infinite.pages.flatMap((p) => p.items)),
+    select: (infinite) => mapCmsTracks(infinite.pages.flatMap((p) => p.items)),
     queryFn: async ({ pageParam }) => {
       const catalogState = queryClient.getQueryState([
         "tracks",
@@ -255,9 +218,6 @@ function App() {
             <TracksFiltersPanel />
           </div>
 
-          {isPending && !isError ? (
-            <p className="mt-6 text-white/70">Загрузка...</p>
-          ) : null}
           {isError ? (
             <p className="mt-6 text-red-500">
               Не удалось загрузить треки
@@ -268,25 +228,14 @@ function App() {
             <p className="mt-2 text-sm text-white/50">Обновление…</p>
           ) : null}
 
-          {!isPending && !isError ? (
+          {!isError ? (
             <div className="mt-6">
-              <ul className="space-y-2 pb-4">
-                {tracks.map((track) => (
-                  <li
-                    key={track.id}
-                    className="rounded-xl border border-white/10 bg-white/5 p-4"
-                  >
-                    <p className="font-semibold">{track.title}</p>
-                    <p className="mt-1 text-sm text-white/60">
-                      {track.artist} · {track.album}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-              <div ref={sentinelRef} className="h-4 shrink-0" aria-hidden />
-              {isFetchingNextPage ? (
-                <p className="py-2 text-sm text-white/50">Подгрузка…</p>
-              ) : null}
+              <TracksTable
+                tracks={tracks}
+                isPending={isPending}
+                isFetchingNextPage={isFetchingNextPage}
+                sentinelRef={sentinelRef}
+              />
             </div>
           ) : null}
         </section>

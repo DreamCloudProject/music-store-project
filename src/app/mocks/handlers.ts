@@ -2,8 +2,13 @@ import { http, HttpResponse } from "msw";
 import { z } from "zod";
 
 import { parseTracksRequestBody } from "../api/tracks.api";
-import type { CmsSearchResultPayload } from "../api/tracks.types";
+import type {
+  CmsSearchResultPayload,
+  CmsSellerSkuItem,
+} from "../api/tracks.types";
 import { filterTracksForUi } from "../lib/filter-tracks-for-ui";
+
+const favoriteIds = new Set<string>();
 
 async function loadCmsCatalogFromPublic(): Promise<CmsSearchResultPayload> {
   const response = await fetch(
@@ -12,11 +17,25 @@ async function loadCmsCatalogFromPublic(): Promise<CmsSearchResultPayload> {
   return (await response.json()) as CmsSearchResultPayload;
 }
 
+function withFavorite(item: CmsSellerSkuItem): CmsSellerSkuItem {
+  const favorite = favoriteIds.has(item.id);
+  const attributeValues = [
+    ...(item.attributeValues ?? []).filter(
+      (av) => av.attributeId !== "favorite",
+    ),
+    {
+      attributeId: "favorite",
+      value: favorite ? "true" : "false",
+    },
+  ];
+  return { ...item, favorite, attributeValues };
+}
+
 function filterAndPaginate(
   cmsPayload: CmsSearchResultPayload,
   parsed: ReturnType<typeof parseTracksRequestBody>,
 ) {
-  const cmsItems = cmsPayload.result?.data?.content ?? [];
+  const cmsItems = (cmsPayload.result?.data?.content ?? []).map(withFavorite);
   const filtered = filterTracksForUi(cmsItems, {
     artists: parsed.artists ?? [],
     genres: parsed.genres ?? [],
@@ -46,11 +65,40 @@ export const handlers = [
     const bean = z
       .looseObject({
         functionName: z.string().optional(),
-        args: z.array(z.object({ "0": z.string().optional() })).optional(),
+        args: z
+          .array(
+            z.looseObject({
+              "0": z.union([z.string(), z.boolean()]).optional(),
+              "1": z.boolean().optional(),
+            }),
+          )
+          .optional(),
       })
       .safeParse(body).data;
 
-    if (bean?.functionName === "simpleFilterValues" && bean.args?.[0]?.["0"]) {
+    if (bean?.functionName === "setFavorite") {
+      const id = z.string().safeParse(bean.args?.[0]?.["0"]).data;
+      const favorite = z.boolean().safeParse(bean.args?.[0]?.["1"]).data;
+      if (!id || favorite == null) {
+        return HttpResponse.json({ result: null }, { status: 400 });
+      }
+      if (favorite) favoriteIds.add(id);
+      else favoriteIds.delete(id);
+
+      const cmsItems =
+        (await loadCmsCatalogFromPublic()).result?.data?.content ?? [];
+      const found = cmsItems.find((item) => item.id === id);
+      if (!found) {
+        return HttpResponse.json({ result: null }, { status: 404 });
+      }
+      return HttpResponse.json({ result: withFavorite(found) });
+    }
+
+    if (
+      bean?.functionName === "simpleFilterValues" &&
+      typeof bean.args?.[0]?.["0"] === "string" &&
+      bean.args[0]["0"]
+    ) {
       const cmsItems =
         (await loadCmsCatalogFromPublic()).result?.data?.content ?? [];
       const byId = new Map<string, string>();
@@ -77,7 +125,11 @@ export const handlers = [
       });
     }
 
-    if (bean?.functionName === "listFilterValues" && bean.args?.[0]?.["0"]) {
+    if (
+      bean?.functionName === "listFilterValues" &&
+      typeof bean.args?.[0]?.["0"] === "string" &&
+      bean.args[0]["0"]
+    ) {
       const cmsItems =
         (await loadCmsCatalogFromPublic()).result?.data?.content ?? [];
       const genreLabels: Record<string, string> = {

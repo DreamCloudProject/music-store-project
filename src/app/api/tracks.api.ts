@@ -163,30 +163,31 @@ function parseTracksSearchResponse(
   );
 }
 
+function beanRequestUrl() {
+  return new URL(
+    `${String(import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "")}/request`,
+    location.origin,
+  );
+}
+
 async function postTracksSearch(
   searchArgs: CmsSellerSkuSearchArgs,
   pagination?: { offset: number; limit: number },
 ): Promise<TracksPageResponse> {
-  const response = await fetch(
-    new URL(
-      "request",
-      new URL(import.meta.env.VITE_API_BASE_URL, location.origin),
-    ),
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Site-Context": "site",
-        "Lang-Context": "ru",
-      },
-      body: JSON.stringify({
-        beanId: "searchManagerServiceImpl",
-        scope: "PROTOTYPE",
-        functionName: "search",
-        args: [{ "0": searchArgs }],
-      }),
+  const response = await fetch(beanRequestUrl(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Site-Context": "site",
+      "Lang-Context": "ru",
     },
-  );
+    body: JSON.stringify({
+      beanId: "searchManagerServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "search",
+      args: [{ "0": searchArgs }],
+    }),
+  });
   if (!response.ok) {
     const text = await response.text();
     throw new Error(text || `HTTP ${response.status}`);
