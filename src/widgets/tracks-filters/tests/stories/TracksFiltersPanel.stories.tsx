@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 
-import { handlers } from "@/app/mocks/handlers";
+import { handlers } from "@/app/tests";
 
-import { TracksFiltersPanel } from "../ui/TracksFiltersPanel";
+import { TracksFiltersPanel } from "../../ui/TracksFiltersPanel";
 
 function FiltersSurface() {
   return (

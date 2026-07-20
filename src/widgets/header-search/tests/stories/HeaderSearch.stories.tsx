@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 
-import { HeaderSearch } from "@/widgets/header-search";
+import { HeaderSearch } from "../../";
 
 function HeaderSearchSurface() {
   return (
@@ -14,7 +14,7 @@ function HeaderSearchSurface() {
 }
 
 const meta = {
-  title: "App/HeaderSearch",
+  title: "Widgets/HeaderSearch/HeaderSearch",
   component: HeaderSearch,
   render: () => <HeaderSearchSurface />,
 } satisfies Meta<typeof HeaderSearch>;

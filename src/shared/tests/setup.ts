@@ -6,11 +6,11 @@ import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { afterAll, afterEach, beforeAll } from "vitest";
 
-import { handlers } from "@/app/mocks/handlers";
+import { handlers } from "@/app/tests";
 
 const tracksCatalog = JSON.parse(
   readFileSync(resolve(process.cwd(), "public/tracks.json"), "utf-8"),
-) as unknown;
+) as Record<string, unknown>;
 
 export const server = setupServer(
   http.get(/\/tracks\.json$/, () => HttpResponse.json(tracksCatalog)),

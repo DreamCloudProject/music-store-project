@@ -6,7 +6,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { setupWorker, type StartOptions } from "msw/browser";
 
-import { handlers } from "./mocks/handlers";
+import { handlers } from "./tests";
 import { router } from "./router";
 import "./styles/index.css";
 

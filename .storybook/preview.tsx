@@ -1,7 +1,7 @@
 import type { Preview } from "@storybook/react-vite";
 import { initialize, mswLoader } from "msw-storybook-addon";
 
-import { createTestProviders } from "../src/shared/testing/render";
+import { createTestProviders } from "../src/shared/tests";
 import "../src/app/styles/index.css";
 
 initialize({ onUnhandledRequest: "bypass" });

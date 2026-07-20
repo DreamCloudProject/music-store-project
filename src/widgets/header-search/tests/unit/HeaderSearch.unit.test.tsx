@@ -2,8 +2,8 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 
-import { HeaderSearch } from "@/widgets/header-search";
-import { renderWithProviders } from "@/shared/testing/render";
+import { HeaderSearch } from "../../";
+import { renderWithProviders } from "@/shared/tests";
 
 describe("HeaderSearch", () => {
   it("initializes the input from the search query in the URL", async () => {

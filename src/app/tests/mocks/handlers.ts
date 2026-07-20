@@ -1,9 +1,9 @@
 import { http, HttpResponse } from "msw";
 import { z } from "zod";
 
-import { parseTracksRequestBody } from "../api/tracks.api";
-import type { CmsSearchResultPayload } from "../api/tracks.types";
-import { filterTracksForUi } from "../lib/filter-tracks-for-ui";
+import { parseTracksRequestBody } from "../../api/tracks.api";
+import type { CmsSearchResultPayload } from "../../api/tracks.types";
+import { filterTracksForUi } from "../../lib/filter-tracks-for-ui";
 
 async function loadCmsCatalogFromPublic(): Promise<CmsSearchResultPayload> {
   const response = await fetch(

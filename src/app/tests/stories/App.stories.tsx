@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { handlers } from "../mocks/handlers";
-import App from "../App";
+import { handlers } from "../../tests";
+import App from "../../App";
 
 const meta = {
   title: "App/App",
