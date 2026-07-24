@@ -114,32 +114,34 @@ export function FilterSelect(props: FilterSelectProps) {
   const value = props.value ?? selected[0] ?? "";
   const selectedSet = new Set(selected);
   return (
-    <div className={cn("relative", className)}>
+    <div className={className}>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            className="inline-flex items-center justify-center h-auto pt-[5.5px] pb-[9.5px] px-5 rounded-[60px] gap-0 text-center text-base font-normal leading-[1.15] tracking-[0.001em] border border-white bg-transparent text-white cursor-pointer select-none hover:bg-transparent hover:border-[#D9B6FF] hover:text-[#D9B6FF] active:bg-transparent active:border-[#AD61FF] active:text-[#AD61FF] focus-visible:outline-none focus-visible:ring-0 focus-visible:bg-transparent focus-visible:border-[#D9B6FF] focus-visible:text-[#D9B6FF]"
-            aria-label={
-              props.multiselect
-                ? (ariaLabel ??
-                  (selected.length
-                    ? `${triggerLabel}, ${selected.length} в наборе`
-                    : triggerLabel))
-                : ariaLabel
-            }
-          >
-            {triggerLabel}
-          </Button>
-        </DropdownMenuTrigger>
-        {props.multiselect && selected.length > 0 && (
-          <Badge
-            variant="default"
-            className="absolute -top-2 -right-2 flex h-[26px] w-[26px] items-center justify-center rounded-full bg-[#AD61FF] pt-[7px] pb-[10px] px-0 text-[13px] text-white border-0 leading-none"
-          >
-            {selected.length}
-          </Badge>
-        )}
+        <div className="relative inline-flex">
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="inline-flex items-center justify-center h-auto pt-[5.5px] pb-[9.5px] px-5 rounded-[60px] gap-0 text-center text-base font-normal leading-[1.15] tracking-[0.001em] border border-white bg-transparent text-white cursor-pointer select-none hover:bg-transparent hover:border-[#D9B6FF] hover:text-[#D9B6FF] active:bg-transparent active:border-[#AD61FF] active:text-[#AD61FF] focus-visible:outline-none focus-visible:ring-0 focus-visible:bg-transparent focus-visible:border-[#D9B6FF] focus-visible:text-[#D9B6FF]"
+              aria-label={
+                props.multiselect
+                  ? (ariaLabel ??
+                    (selected.length
+                      ? `${triggerLabel}, ${selected.length} в наборе`
+                      : triggerLabel))
+                  : ariaLabel
+              }
+            >
+              {triggerLabel}
+            </Button>
+          </DropdownMenuTrigger>
+          {props.multiselect && selected.length > 0 && (
+            <Badge
+              variant="default"
+              className="absolute -top-2 -right-2 flex h-[26px] w-[26px] items-center justify-center rounded-full bg-[#AD61FF] pt-[7px] pb-[10px] px-0 text-[13px] text-white border-0 leading-none"
+            >
+              {selected.length}
+            </Badge>
+          )}
+        </div>
         <DropdownMenuContent
           align="start"
           sideOffset={10}
