@@ -17,6 +17,7 @@ import { z } from "zod";
 
 import { chunkList } from "@/shared/lib";
 import { HeaderSearch } from "@/widgets/header-search";
+import { PlayerBar } from "@/widgets/player-bar";
 import { TracksFiltersPanel } from "@/widgets/tracks-filters";
 
 import {
@@ -238,7 +239,7 @@ function App() {
   }, [tracks, fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <main className="min-h-screen bg-[#181818] text-white">
+    <main className="min-h-screen bg-[#181818] pb-[77px] text-white">
       <div className="mx-auto w-full max-w-[1240px] px-6 py-10">
         <header className="mb-[37px]">
           <div className="w-full">
@@ -291,6 +292,8 @@ function App() {
           ) : null}
         </section>
       </div>
+
+      <PlayerBar />
     </main>
   );
 }
