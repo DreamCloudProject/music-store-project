@@ -5,8 +5,10 @@ import { useEffect, useMemo, useRef, useState, type SubmitEvent } from "react";
 import { SearchField } from "@/shared/ui/search-field";
 
 export function HeaderSearch() {
-  const navigate = useNavigate({ from: "/" });
-  const { search: urlSearch } = useSearch({ from: "/" });
+  const navigate = useNavigate();
+  const { search: urlSearch = "" } = useSearch({ strict: false }) as {
+    search?: string;
+  };
   const [search, setSearch] = useState(urlSearch);
   const trimmed = useMemo(() => search.trim(), [search]);
   const lastSearchRef = useRef(urlSearch);
@@ -18,7 +20,11 @@ export function HeaderSearch() {
       (value: string) => {
         lastSearchRef.current = value;
         void navigate({
-          search: (prev) => ({ ...prev, search: value }),
+          to: ".",
+          search: ((prev: Record<string, unknown>) => ({
+            ...prev,
+            search: value,
+          })) as never,
           replace: true,
         });
       },
@@ -41,7 +47,11 @@ export function HeaderSearch() {
       debounceRef.current?.cancel();
       lastSearchRef.current = "";
       void navigate({
-        search: (prev) => ({ ...prev, search: "" }),
+        to: ".",
+        search: ((prev: Record<string, unknown>) => ({
+          ...prev,
+          search: "",
+        })) as never,
         replace: true,
       });
       return;
@@ -55,7 +65,11 @@ export function HeaderSearch() {
     lastSearchRef.current = search.trim();
     setSearch(lastSearchRef.current);
     void navigate({
-      search: (prev) => ({ ...prev, search: lastSearchRef.current }),
+      to: ".",
+      search: ((prev: Record<string, unknown>) => ({
+        ...prev,
+        search: lastSearchRef.current,
+      })) as never,
       replace: false,
     });
   };
