@@ -1,4 +1,4 @@
-import type { InfiniteData } from "@tanstack/react-query";
+﻿import type { InfiniteData } from "@tanstack/react-query";
 import {
   useInfiniteQuery,
   useQuery,
@@ -17,7 +17,7 @@ import { z } from "zod";
 
 import { chunkList } from "@/shared/lib";
 import { HeaderSearch } from "@/widgets/header-search";
-import { PlayerBar } from "@/widgets/player-bar";
+import { PlayerBar, type PlayerBarTrack } from "@/widgets/player-bar";
 import { TracksFiltersPanel } from "@/widgets/tracks-filters";
 
 import {
@@ -68,6 +68,7 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
 function App() {
   const queryClient = useQueryClient();
   const [skipCatalog, setSkipCatalog] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState<PlayerBarTrack | null>(null);
   const { search: urlSearch, artists, genres, year } = useSearch({ from: "/" });
   const params = useMemo((): TracksUiParams => {
     const search = urlSearch.trim();
@@ -272,17 +273,35 @@ function App() {
           {!isPending && !isError ? (
             <div className="mt-6">
               <ul className="space-y-2 pb-4">
-                {tracks.map((track) => (
-                  <li
-                    key={track.id}
-                    className="rounded-xl border border-white/10 bg-white/5 p-4"
-                  >
-                    <p className="font-semibold">{track.title}</p>
-                    <p className="mt-1 text-sm text-white/60">
-                      {track.artist} · {track.album}
-                    </p>
-                  </li>
-                ))}
+                {tracks.map((track) => {
+                  const active = currentTrack?.id === track.id;
+                  return (
+                    <li key={track.id}>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setCurrentTrack({
+                            id: track.id,
+                            title: track.title,
+                            artist: track.artist,
+                          })
+                        }
+                        aria-pressed={active}
+                        aria-label={`Играть ${track.title} — ${track.artist}`}
+                        className={
+                          active
+                            ? "w-full cursor-pointer rounded-xl border border-white/40 bg-white/10 p-4 text-left"
+                            : "w-full cursor-pointer rounded-xl border border-white/10 bg-white/5 p-4 text-left hover:border-white/25"
+                        }
+                      >
+                        <p className="font-semibold">{track.title}</p>
+                        <p className="mt-1 text-sm text-white/60">
+                          {track.artist} · {track.album}
+                        </p>
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
               <div ref={sentinelRef} className="h-4 shrink-0" aria-hidden />
               {isFetchingNextPage ? (
@@ -293,7 +312,15 @@ function App() {
         </section>
       </div>
 
-      <PlayerBar />
+      <PlayerBar
+        track={currentTrack ?? undefined}
+        queue={tracks.map((track) => ({
+          id: track.id,
+          title: track.title,
+          artist: track.artist,
+        }))}
+        onTrackChange={setCurrentTrack}
+      />
     </main>
   );
 }

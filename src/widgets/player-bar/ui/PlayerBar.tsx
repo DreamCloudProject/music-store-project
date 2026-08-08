@@ -32,11 +32,11 @@ export interface PlayerBarTrack {
 }
 
 export interface PlayerBarProps {
-  track: PlayerBarTrack;
+  track?: PlayerBarTrack;
   /** Текущий видимый список (поиск / фильтры / плейлист). */
   queue?: PlayerBarTrack[];
   onTrackChange?: (track: PlayerBarTrack) => void;
-  onDismiss?: () => void;
+  onDismiss?: (() => void) | undefined;
   className?: string;
 }
 
@@ -186,7 +186,11 @@ function ControlButton({
 }
 
 export function PlayerBar({
-  track,
+  track = {
+    title: "Ты та...",
+    artist: "Баста",
+    favorite: false,
+  },
   queue = [],
   onTrackChange,
   onDismiss,
