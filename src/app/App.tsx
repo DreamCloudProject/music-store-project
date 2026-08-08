@@ -17,6 +17,7 @@ import { z } from "zod";
 
 import { chunkList } from "@/shared/lib";
 import { HeaderSearch } from "@/widgets/header-search";
+import { AppMobileNav, AppSidebar } from "@/widgets/sidebar";
 import { PlayerBar } from "@/widgets/player-bar";
 import { TracksFiltersPanel } from "@/widgets/tracks-filters";
 
@@ -239,62 +240,66 @@ function App() {
   }, [tracks, fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <main className="min-h-screen bg-[#181818] pb-[77px] text-white">
-      <div className="mx-auto w-full max-w-[1240px] px-6 py-10">
-        <header className="mb-[37px]">
-          <div className="w-full">
-            <HeaderSearch />
-          </div>
-        </header>
-
-        <section>
-          <h1 className="mb-[49px] text-[3rem] font-semibold leading-[64px]">
-            Треки
-          </h1>
-
-          <div>
-            <TracksFiltersPanel />
-          </div>
-
-          {isPending && !isError ? (
-            <p className="mt-6 text-white/70">Загрузка...</p>
-          ) : null}
-          {isError ? (
-            <p className="mt-6 text-red-500">
-              Не удалось загрузить треки
-              {error instanceof Error ? `: ${error.message}` : ""}
-            </p>
-          ) : null}
-          {!isError && isFetching && !isFetchingNextPage && !isPending ? (
-            <p className="mt-2 text-sm text-white/50">Обновление…</p>
-          ) : null}
-
-          {!isPending && !isError ? (
-            <div className="mt-6">
-              <ul className="space-y-2 pb-4">
-                {tracks.map((track) => (
-                  <li
-                    key={track.id}
-                    className="rounded-xl border border-white/10 bg-white/5 p-4"
-                  >
-                    <p className="font-semibold">{track.title}</p>
-                    <p className="mt-1 text-sm text-white/60">
-                      {track.artist} · {track.album}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-              <div ref={sentinelRef} className="h-4 shrink-0" aria-hidden />
-              {isFetchingNextPage ? (
-                <p className="py-2 text-sm text-white/50">Подгрузка…</p>
-              ) : null}
+    <div className="flex min-h-screen bg-app-bg text-fg">
+      <AppSidebar />
+      <main className="min-w-0 flex-1 min-h-screen bg-[#181818] pb-[77px] text-white">
+        <div className="mx-auto w-full max-w-[1240px] px-6 py-10">
+          <header className="mb-[37px]">
+            <div className="w-full">
+              <AppMobileNav />
+              <HeaderSearch />
             </div>
-          ) : null}
-        </section>
-      </div>
+          </header>
 
-      <PlayerBar />
-    </main>
+          <section>
+            <h1 className="mb-[49px] text-[3rem] font-semibold leading-[64px]">
+              Треки
+            </h1>
+
+            <div>
+              <TracksFiltersPanel />
+            </div>
+
+            {isPending && !isError ? (
+              <p className="mt-6 text-white/70">Загрузка...</p>
+            ) : null}
+            {isError ? (
+              <p className="mt-6 text-red-500">
+                Не удалось загрузить треки
+                {error instanceof Error ? `: ${error.message}` : ""}
+              </p>
+            ) : null}
+            {!isError && isFetching && !isFetchingNextPage && !isPending ? (
+              <p className="mt-2 text-sm text-white/50">Обновление…</p>
+            ) : null}
+
+            {!isPending && !isError ? (
+              <div className="mt-6">
+                <ul className="space-y-2 pb-4">
+                  {tracks.map((track) => (
+                    <li
+                      key={track.id}
+                      className="rounded-xl border border-white/10 bg-white/5 p-4"
+                    >
+                      <p className="font-semibold">{track.title}</p>
+                      <p className="mt-1 text-sm text-white/60">
+                        {track.artist} · {track.album}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+                <div ref={sentinelRef} className="h-4 shrink-0" aria-hidden />
+                {isFetchingNextPage ? (
+                  <p className="py-2 text-sm text-white/50">Подгрузка…</p>
+                ) : null}
+              </div>
+            ) : null}
+          </section>
+        </div>
+
+        <PlayerBar />
+      </main>
+    </div>
   );
 }
 
