@@ -14,10 +14,10 @@ export function useTrackFiltersQuery() {
     queryFn: fetchTrackFilters,
     initialData: {
       artists: [
-        { value: "FaderX", label: "FaderX" },
-        { value: "Sick Individuals", label: "Sick Individuals" },
+        { value: "Ed Sheeran", label: "Ed Sheeran" },
+        { value: "Maroon 5", label: "Maroon 5" },
       ],
-      genres: [{ value: "edm", label: "EDM" }],
+      genres: [{ value: "dance-pop", label: "Dance Pop" }],
       years: [
         { value: "newer", label: "Более новые" },
         { value: "older", label: "Более старые" },

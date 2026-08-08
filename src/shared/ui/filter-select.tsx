@@ -24,6 +24,8 @@ interface FilterSelectPropsBase {
   triggerLabel: string;
   horizontal?: boolean;
   showControls?: boolean;
+  /** Приоритет драга (карусель): не открывать на pointerdown, только тап без сдвига. */
+  preferDrag?: boolean;
   "aria-label"?: string;
   className?: string;
 }
@@ -101,9 +103,34 @@ export function FilterSelect(props: FilterSelectProps) {
     triggerLabel,
     horizontal = false,
     showControls = false,
+    preferDrag = false,
     "aria-label": ariaLabel,
     className,
   } = props;
+
+  const [open, setOpen] = React.useState(false);
+  const trackRef = React.useRef<{
+    id: number;
+    x: number;
+    y: number;
+  } | null>(null);
+  const draggedRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (!preferDrag) return;
+    const onMove = (event: PointerEvent) => {
+      const track = trackRef.current;
+      if (!track || event.pointerId !== track.id) return;
+      const dx = event.clientX - track.x;
+      const dy = event.clientY - track.y;
+      if (dx * dx + dy * dy > 64) {
+        draggedRef.current = true;
+        setOpen(false);
+      }
+    };
+    window.addEventListener("pointermove", onMove);
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [preferDrag]);
 
   const selected = props.value
     ? [
@@ -113,39 +140,105 @@ export function FilterSelect(props: FilterSelectProps) {
     : (props.selected ?? []);
   const value = props.value ?? selected[0] ?? "";
   const selectedSet = new Set(selected);
+  const triggerAriaLabel = props.multiselect
+    ? (ariaLabel ??
+      (selected.length
+        ? `${triggerLabel}, ${selected.length} в наборе`
+        : triggerLabel))
+    : ariaLabel;
+  const triggerClassName =
+    "inline-flex items-center justify-center h-auto pt-[5.5px] pb-[9.5px] px-5 rounded-[60px] gap-0 text-center text-base font-normal leading-[1.15] tracking-[0.001em] border border-border-strong bg-transparent text-fg cursor-pointer select-none hover:bg-transparent hover:border-accent-hover hover:text-accent-hover active:bg-control-active-bg active:border-accent-active active:text-accent-active focus-visible:outline-none focus-visible:ring-0 focus-visible:bg-transparent focus-visible:border-accent-hover focus-visible:text-accent-hover";
+
+  const triggerButton = (
+    <Button
+      variant="outline"
+      className={triggerClassName}
+      aria-label={triggerAriaLabel}
+      aria-haspopup={preferDrag ? "menu" : undefined}
+      aria-expanded={preferDrag ? open : undefined}
+      onPointerDown={
+        preferDrag
+          ? (event) => {
+              if (event.button !== 0) return;
+              trackRef.current = {
+                id: event.pointerId,
+                x: event.clientX,
+                y: event.clientY,
+              };
+              draggedRef.current = false;
+            }
+          : undefined
+      }
+      onPointerUp={
+        preferDrag
+          ? (event) => {
+              if (event.button !== 0) return;
+              const track = trackRef.current;
+              if (!track || event.pointerId !== track.id) return;
+              trackRef.current = null;
+              if (!draggedRef.current) setOpen((was) => !was);
+            }
+          : undefined
+      }
+      onPointerCancel={
+        preferDrag
+          ? () => {
+              trackRef.current = null;
+              draggedRef.current = false;
+            }
+          : undefined
+      }
+      onKeyDown={
+        preferDrag
+          ? (event) => {
+              if (event.key !== "Enter" && event.key !== " ") return;
+              event.preventDefault();
+              setOpen((was) => !was);
+            }
+          : undefined
+      }
+    >
+      {triggerLabel}
+    </Button>
+  );
+
   return (
-    <div className={className}>
-      <DropdownMenu>
-        <div className="relative inline-flex">
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="inline-flex items-center justify-center h-auto pt-[5.5px] pb-[9.5px] px-5 rounded-[60px] gap-0 text-center text-base font-normal leading-[1.15] tracking-[0.001em] border border-white bg-transparent text-white cursor-pointer select-none hover:bg-transparent hover:border-[#D9B6FF] hover:text-[#D9B6FF] active:bg-transparent active:border-[#AD61FF] active:text-[#AD61FF] focus-visible:outline-none focus-visible:ring-0 focus-visible:bg-transparent focus-visible:border-[#D9B6FF] focus-visible:text-[#D9B6FF]"
-              aria-label={
-                props.multiselect
-                  ? (ariaLabel ??
-                    (selected.length
-                      ? `${triggerLabel}, ${selected.length} в наборе`
-                      : triggerLabel))
-                  : ariaLabel
-              }
-            >
-              {triggerLabel}
-            </Button>
-          </DropdownMenuTrigger>
-          {props.multiselect && selected.length > 0 && (
-            <Badge
-              variant="default"
-              className="absolute -top-2 -right-2 flex h-[26px] w-[26px] items-center justify-center rounded-full bg-[#AD61FF] pt-[7px] pb-[10px] px-0 text-[13px] text-white border-0 leading-none"
-            >
-              {selected.length}
-            </Badge>
-          )}
-        </div>
+    <div className={cn("relative", className)}>
+      <DropdownMenu
+        open={preferDrag ? open : undefined}
+        onOpenChange={preferDrag ? setOpen : undefined}
+      >
+        {preferDrag ? (
+          <span className="relative inline-flex">
+            {triggerButton}
+            {/*
+              Триггер Radix только для якоря позиционирования.
+              pointer-events-none: иначе pointerdown открывает меню и preventDefault ломает Embla.
+            */}
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                tabIndex={-1}
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+              />
+            </DropdownMenuTrigger>
+          </span>
+        ) : (
+          <DropdownMenuTrigger asChild>{triggerButton}</DropdownMenuTrigger>
+        )}
+        {props.multiselect && selected.length > 0 && (
+          <Badge
+            variant="default"
+            className="absolute -top-2 -right-2 flex h-[26px] w-[26px] items-center justify-center rounded-full border-0 bg-badge px-0 pt-[7px] pb-[10px] text-[13px] leading-none text-white"
+          >
+            {selected.length}
+          </Badge>
+        )}
         <DropdownMenuContent
           align="start"
           sideOffset={10}
-          className="w-auto min-w-[200px] max-w-[300%] bg-[#313131] border-0 shadow-none rounded-[12px] p-[34px]"
+          className="w-auto min-w-[200px] max-w-[300%] rounded-[12px] border-0 bg-cover-bg p-[34px] text-fg shadow-none"
           onCloseAutoFocus={(e: Event) => e.preventDefault()}
         >
           <ScrollArea
@@ -170,7 +263,7 @@ export function FilterSelect(props: FilterSelectProps) {
                         ),
                     }),
                 className: cn(
-                  "tracks-filter-list outline-none font-normal text-xl leading-[1.2] text-white m-0 p-0",
+                  "tracks-filter-list m-0 p-0 text-xl font-normal leading-[1.2] text-fg outline-none",
                   !horizontal
                     ? "flex flex-col gap-7 pr-5"
                     : "flex flex-row gap-6",
@@ -199,9 +292,9 @@ export function FilterSelect(props: FilterSelectProps) {
                     onSelect: (e: Event) => e.preventDefault(),
                     className: cn(
                       cn(
-                        "flex items-center gap-3 cursor-pointer select-text text-xl leading-[1.2] text-white outline-none transition-colors !bg-transparent focus:!bg-transparent hover:!text-[#D9B6FF] data-[highlighted]:!bg-transparent data-[highlighted]:text-[#D9B6FF] rounded-sm px-0 py-0",
+                        "flex cursor-pointer items-center gap-3 rounded-sm px-0 py-0 text-xl leading-[1.2] text-fg outline-none transition-colors select-text !bg-transparent hover:!text-accent-hover focus:!bg-transparent data-[highlighted]:!bg-transparent data-[highlighted]:text-accent-hover",
                         selectedSet.has(opt.value) &&
-                          "text-[#B672FF] underline underline-offset-[3px] hover:no-underline hover:!text-[#D9B6FF] data-[highlighted]:text-[#D9B6FF]",
+                          "text-accent-selected underline underline-offset-[3px] hover:no-underline hover:!text-accent-hover data-[highlighted]:text-accent-hover",
                       ),
                       showControls
                         ? cn(
