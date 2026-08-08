@@ -1,10 +1,10 @@
-import type { InfiniteData } from "@tanstack/react-query";
+﻿import type { InfiniteData } from "@tanstack/react-query";
 import {
   useInfiniteQuery,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useSearch } from "@tanstack/react-router";
+import { Link, useParams, useSearch } from "@tanstack/react-router";
 import {
   startTransition,
   useCallback,
@@ -16,8 +16,10 @@ import { useInView } from "react-intersection-observer";
 import { z } from "zod";
 
 import { chunkList } from "@/shared/lib";
+import { Button } from "@/shared/ui/button";
 import { HeaderSearch } from "@/widgets/header-search";
-import { PlayerBar } from "@/widgets/player-bar";
+import { PlayerBar, type PlayerBarTrack } from "@/widgets/player-bar";
+import { PlaylistsPanel, usePlaylistsQuery } from "@/widgets/playlists";
 import { TracksFiltersPanel } from "@/widgets/tracks-filters";
 
 import {
@@ -27,11 +29,12 @@ import {
 } from "./api/tracks.api";
 import type {
   CmsSellerSkuItem,
-  TrackListItem,
+  Track,
   TracksPageResponse,
   TracksUiParams,
 } from "./api/tracks.types";
 import { filterTracksForUi } from "./lib/filter-tracks-for-ui";
+import { mapSellerSkuToTrack } from "./lib/map-seller-sku-to-track";
 
 /** Данные в кэше запроса — результат `queryFn`, не `select`; массив SKU или страница. */
 function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
@@ -53,6 +56,7 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
       id: z.string(),
       name: z.string().nullish(),
       searchTerms: z.string().optional(),
+      embeddedSku: z.looseObject({ id: z.string() }).nullish(),
       attributeValues: z
         .array(
           z.object({
@@ -61,6 +65,8 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
           }),
         )
         .optional(),
+      imageURLs: z.array(z.string()).optional(),
+      documentURLs: z.array(z.looseObject({ url: z.string() })).optional(),
     }),
   );
 }
@@ -68,11 +74,51 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
 function App() {
   const queryClient = useQueryClient();
   const [skipCatalog, setSkipCatalog] = useState(false);
-  const { search: urlSearch, artists, genres, year } = useSearch({ from: "/" });
+  const [currentTrack, setCurrentTrack] = useState<PlayerBarTrack | null>(null);
+  const { playlistId } = useParams({ strict: false }) as {
+    playlistId?: string;
+  };
+  const {
+    search: urlSearch,
+    artists,
+    genres: selectedGenres,
+    year,
+  } = useSearch({ strict: false }) as {
+    search: string;
+    artists: string[];
+    genres: string[];
+    year?: string;
+  };
+  const { data: playlists = [] } = usePlaylistsQuery();
+  const activePlaylist = playlistId
+    ? playlists.find((p) => p.id === playlistId)
+    : undefined;
+
   const params = useMemo((): TracksUiParams => {
     const search = urlSearch.trim();
-    return { artists, genres, search, year };
-  }, [artists, genres, urlSearch, year]);
+    if (playlistId) {
+      return {
+        artists: [],
+        genres: [],
+        search,
+        playlistSkuIds: activePlaylist?.skuIds ?? [],
+      };
+    }
+    return {
+      artists,
+      genres: selectedGenres,
+      search,
+      year,
+      playlistSkuIds: [],
+    };
+  }, [
+    activePlaylist?.skuIds,
+    artists,
+    playlistId,
+    selectedGenres,
+    urlSearch,
+    year,
+  ]);
 
   const catalogQuery = useQuery({
     queryKey: ["tracks", "catalog-full"],
@@ -106,7 +152,7 @@ function App() {
   } = useInfiniteQuery<
     TracksPageResponse,
     Error,
-    TrackListItem[],
+    Track[],
     (string | TracksUiParams)[],
     number
   >({
@@ -115,44 +161,7 @@ function App() {
     gcTime: tracksCatalogCacheTtlMs,
     initialPageParam: 0,
     select: (infinite) =>
-      z
-        .array(
-          z
-            .looseObject({
-              id: z.string(),
-              name: z.string().nullish(),
-              searchTerms: z.string().optional(),
-              attributeValues: z
-                .array(
-                  z.object({
-                    attributeId: z.string(),
-                    value: z.string().nullish(),
-                  }),
-                )
-                .optional(),
-            })
-            .transform((item) => {
-              const searchTerms = item.searchTerms?.trim() ?? "";
-              const dashIdx = searchTerms.indexOf(" - ");
-              const title =
-                (dashIdx >= 0
-                  ? searchTerms.slice(dashIdx + 3).trim()
-                  : searchTerms) ||
-                item.name?.trim() ||
-                item.id;
-              const attributeValue = (attributeId: string) =>
-                item.attributeValues
-                  ?.find((av) => av.attributeId === attributeId)
-                  ?.value?.trim() ?? "";
-              return {
-                id: item.id,
-                title,
-                artist: attributeValue("artist"),
-                album: attributeValue("album"),
-              };
-            }),
-        )
-        .parse(infinite.pages.flatMap((p) => p.items)),
+      infinite.pages.flatMap((p) => p.items).map(mapSellerSkuToTrack),
     queryFn: async ({ pageParam }) => {
       const catalogState = queryClient.getQueryState([
         "tracks",
@@ -238,63 +247,150 @@ function App() {
     }
   }, [tracks, fetchNextPage, hasNextPage, isFetchingNextPage]);
 
+  const pageTitle = activePlaylist?.title ?? "Треки";
+  const showPlaylists = !playlistId;
+
   return (
-    <main className="min-h-screen bg-[#181818] pb-[77px] text-white">
-      <div className="mx-auto w-full max-w-[1240px] px-6 py-10">
-        <header className="mb-[37px]">
-          <div className="w-full">
-            <HeaderSearch />
-          </div>
+    <div className="flex min-h-screen bg-app-bg text-fg">
+      <main
+        className={
+          currentTrack
+            ? "min-w-0 flex-1 px-4 pb-[85px] pt-[23px] md:px-9"
+            : "min-w-0 flex-1 px-4 pb-4 pt-[23px] md:px-9"
+        }
+      >
+        <header className="mb-[50px] flex items-center gap-4">
+          <HeaderSearch />
         </header>
 
-        <section>
-          <h1 className="mb-[49px] text-[3rem] font-semibold leading-[64px]">
-            Треки
-          </h1>
-
-          <div>
-            <TracksFiltersPanel />
-          </div>
-
-          {isPending && !isError ? (
-            <p className="mt-6 text-white/70">Загрузка...</p>
-          ) : null}
-          {isError ? (
-            <p className="mt-6 text-red-500">
-              Не удалось загрузить треки
-              {error instanceof Error ? `: ${error.message}` : ""}
-            </p>
-          ) : null}
-          {!isError && isFetching && !isFetchingNextPage && !isPending ? (
-            <p className="mt-2 text-sm text-white/50">Обновление…</p>
-          ) : null}
-
-          {!isPending && !isError ? (
-            <div className="mt-6">
-              <ul className="space-y-2 pb-4">
-                {tracks.map((track) => (
-                  <li
-                    key={track.id}
-                    className="rounded-xl border border-white/10 bg-white/5 p-4"
+        <div className="flex min-w-0">
+          <section className="min-w-0 flex-1">
+            {playlistId ? (
+              <nav className="mb-[51px]" aria-label="Навигация">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-auto cursor-pointer gap-[3px] rounded-[60px] border-border-strong pt-[5.5px] pb-[9.5px] pl-[10px] pr-[15px] text-base font-normal leading-[1.15] tracking-[0.001em] text-fg shadow-none hover:border-accent-hover hover:bg-transparent hover:text-accent-hover active:border-accent-active active:bg-control-active-bg active:text-accent-active focus-visible:ring-0"
+                >
+                  <Link
+                    to="/"
+                    search={{
+                      search: urlSearch,
+                      artists: [],
+                      genres: [],
+                      year: undefined,
+                    }}
+                    aria-label="Вернуться назад"
                   >
-                    <p className="font-semibold">{track.title}</p>
-                    <p className="mt-1 text-sm text-white/60">
-                      {track.artist} · {track.album}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-              <div ref={sentinelRef} className="h-4 shrink-0" aria-hidden />
-              {isFetchingNextPage ? (
-                <p className="py-2 text-sm text-white/50">Подгрузка…</p>
-              ) : null}
-            </div>
-          ) : null}
-        </section>
-      </div>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        d="M10 4 6 8l4 4"
+                      />
+                    </svg>
+                    Назад
+                  </Link>
+                </Button>
+              </nav>
+            ) : null}
 
-      <PlayerBar />
-    </main>
+            <h1 className="mb-[49px] text-[3rem] font-semibold leading-[64px]">
+              {pageTitle}
+            </h1>
+
+            {showPlaylists ? (
+              <TracksFiltersPanel className="mb-0 min-[1300px]:mb-[51px]" />
+            ) : null}
+
+            {showPlaylists ? <PlaylistsPanel layout="mobile" /> : null}
+
+            {isPending && !isError ? (
+              <p
+                className={
+                  showPlaylists ? "text-fg-subtle" : "mt-6 text-fg-subtle"
+                }
+              >
+                Загрузка...
+              </p>
+            ) : null}
+            {isError ? (
+              <p
+                className={showPlaylists ? "text-red-500" : "mt-6 text-red-500"}
+              >
+                Не удалось загрузить треки
+                {error instanceof Error ? `: ${error.message}` : ""}
+              </p>
+            ) : null}
+            {!isError && isFetching && !isFetchingNextPage && !isPending ? (
+              <p className="mt-2 text-sm text-fg-subtle">Обновление…</p>
+            ) : null}
+
+            {!isPending && !isError ? (
+              <div className={showPlaylists ? undefined : "mt-6"}>
+                <ul className="space-y-2 pb-4">
+                  {tracks.map((track) => {
+                    const active = currentTrack?.id === track.id;
+                    return (
+                      <li key={track.id}>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setCurrentTrack({
+                              id: track.id,
+                              title: track.title,
+                              artist: track.artist,
+                              coverUrl: track.coverUrl,
+                            })
+                          }
+                          aria-pressed={active}
+                          aria-label={`Играть ${track.title} — ${track.artist}`}
+                          className={
+                            active
+                              ? "w-full cursor-pointer rounded-xl border border-accent-active bg-row-bg p-4 text-left"
+                              : "w-full cursor-pointer rounded-xl border border-row-border bg-row-bg p-4 text-left hover:border-border-strong"
+                          }
+                        >
+                          <p className="font-semibold">{track.title}</p>
+                          <p className="mt-1 text-sm text-fg-subtle">
+                            {track.artist} · {track.album}
+                          </p>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <div ref={sentinelRef} className="h-4 shrink-0" aria-hidden />
+                {isFetchingNextPage ? (
+                  <p className="py-2 text-sm text-fg-subtle">Подгрузка…</p>
+                ) : null}
+              </div>
+            ) : null}
+          </section>
+
+          {showPlaylists ? <PlaylistsPanel layout="desktop" /> : null}
+        </div>
+      </main>
+      {currentTrack ? (
+        <PlayerBar
+          track={currentTrack}
+          queue={tracks.map((track) => ({
+            id: track.id,
+            title: track.title,
+            artist: track.artist,
+            coverUrl: track.coverUrl,
+          }))}
+          onTrackChange={setCurrentTrack}
+          onDismiss={() => setCurrentTrack(null)}
+        />
+      ) : null}
+    </div>
   );
 }
 

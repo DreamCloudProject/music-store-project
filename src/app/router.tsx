@@ -11,64 +11,81 @@ import { z } from "zod";
 
 import { normalizeString } from "@/shared/lib";
 
+function validateTracksSearch(raw: unknown) {
+  return z
+    .object({
+      ...((queryString) => ({
+        ...{
+          search: queryString.optional().default(""),
+          year: queryString
+            .optional()
+            .default("")
+            .transform((s) => s.trim() || undefined),
+        },
+        ...((multiSelect) => ({
+          artists: multiSelect.optional().default([]),
+          genres: multiSelect.optional().default([]),
+        }))(
+          queryString.transform((s) =>
+            [
+              ...new Set(
+                s
+                  .split(",")
+                  .map((p) => p.trim())
+                  .filter(Boolean),
+              ),
+            ].sort(),
+          ),
+        ),
+      }))(
+        z.union([
+          z.undefined().transform(() => ""),
+          z.null().transform(() => ""),
+          z.string(),
+          z.array(z.unknown()).transform((arr) =>
+            arr
+              .map((item) => z.string().safeParse(item))
+              .filter((r) => r.success)
+              .map((r) => r.data)
+              .join(","),
+          ),
+          z.unknown().transform(() => ""),
+        ]),
+      ),
+    })
+    .strip()
+    .parse(raw);
+}
+
+const rootRoute = createRootRoute({
+  component: () => <Outlet />,
+});
+
+/** Pathless layout: общий search для `/` и `/playlist/$playlistId`. */
+const tracksLayoutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  id: "/_tracks",
+  validateSearch: validateTracksSearch,
+  component: () => <Outlet />,
+});
+
+const homeRoute = createRoute({
+  getParentRoute: () => tracksLayoutRoute,
+  path: "/",
+  component: lazyRouteComponent(() => import("./App")),
+});
+
+const playlistRoute = createRoute({
+  getParentRoute: () => tracksLayoutRoute,
+  path: "/playlist/$playlistId",
+  component: lazyRouteComponent(() => import("./App")),
+});
+
 export const router = createRouter({
   basepath: normalizeString("/", "/", import.meta.env.BASE_URL, "/", ""),
-  routeTree: ((rootRoute) =>
-    rootRoute.addChildren([
-      createRoute({
-        getParentRoute: () => rootRoute,
-        path: "/",
-        validateSearch: (raw) =>
-          z
-            .object({
-              ...((queryString) => ({
-                ...{
-                  search: queryString.optional().default(""),
-                  year: queryString
-                    .optional()
-                    .default("")
-                    .transform((s) => s.trim() || undefined),
-                },
-                ...((multiSelect) => ({
-                  artists: multiSelect.optional().default([]),
-                  genres: multiSelect.optional().default([]),
-                }))(
-                  queryString.transform((s) =>
-                    [
-                      ...new Set(
-                        s
-                          .split(",")
-                          .map((p) => p.trim())
-                          .filter(Boolean),
-                      ),
-                    ].sort(),
-                  ),
-                ),
-              }))(
-                z.union([
-                  z.undefined().transform(() => ""),
-                  z.null().transform(() => ""),
-                  z.string(),
-                  z.array(z.unknown()).transform((arr) =>
-                    arr
-                      .map((item) => z.string().safeParse(item))
-                      .filter((r) => r.success)
-                      .map((r) => r.data)
-                      .join(","),
-                  ),
-                  z.unknown().transform(() => ""),
-                ]),
-              ),
-            })
-            .strip()
-            .parse(raw),
-        component: lazyRouteComponent(() => import("./App")),
-      }),
-    ]))(
-    createRootRoute({
-      component: () => <Outlet />,
-    }),
-  ),
+  routeTree: rootRoute.addChildren([
+    tracksLayoutRoute.addChildren([homeRoute, playlistRoute]),
+  ]),
   parseSearch: parseSearchWith(JSON.parse),
   stringifySearch: (search) =>
     stringifySearchWith(

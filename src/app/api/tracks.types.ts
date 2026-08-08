@@ -26,6 +26,7 @@ export interface CmsAttributeValue {
   value?: string | null;
 }
 
+/** Транспорт CMS SellerSKU (+ поля SKU при склейке). */
 export interface CmsSellerSkuItem {
   id: string;
   name?: string | null;
@@ -35,6 +36,8 @@ export interface CmsSellerSkuItem {
   productsRef?: { id: string; name: string }[];
   attributeValues?: CmsAttributeValue[];
   documentURLs?: { url: string; name?: string; type?: string }[];
+  imageURLs?: string[];
+  embeddedSku?: { id: string; name?: string | null } | null;
   publishedForSale?: boolean;
 }
 
@@ -56,11 +59,13 @@ export interface GetTracksParams {
   genres?: string[];
   search?: string;
   year?: string;
+  /** SKU.id из плейлиста (Product.skuIds); пустой = без фильтра плейлиста. */
+  playlistSkuIds?: string[];
 }
 
-/** Параметры списка в UI: artists/genres/search заданы, `year` может отсутствовать. */
+/** Параметры списка в UI. */
 export type TracksUiParams = Required<
-  Pick<GetTracksParams, "artists" | "genres">
+  Pick<GetTracksParams, "artists" | "genres" | "playlistSkuIds">
 > & {
   search: string;
 } & Pick<GetTracksParams, "year">;
@@ -70,9 +75,18 @@ export interface TracksPageResponse {
   nextOffset: number | null;
 }
 
-export interface TrackListItem {
+/**
+ * UI-трек: склейка SKU (карточка) + SellerSKU (офер/файл).
+ * id = SellerSKU.id (ключ списка/плеера); skuId = стабильный id трека в CMS.
+ */
+export interface Track {
   id: string;
+  skuId: string;
   title: string;
   artist: string;
   album: string;
+  genre: string;
+  coverUrl?: string;
+  audioUrl?: string;
+  durationSec?: number;
 }

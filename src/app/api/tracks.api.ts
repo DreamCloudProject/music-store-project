@@ -37,6 +37,9 @@ const cmsSellerSkuItemSchema = z.looseObject({
   searchTerms: z.string().optional(),
   createdDate: z.number().optional(),
   lastModifiedDate: z.number().optional(),
+  embeddedSku: z.looseObject({ id: z.string() }).nullish(),
+  imageURLs: z.array(z.string()).optional(),
+  documentURLs: z.array(z.looseObject({ url: z.string() })).optional(),
   attributeValues: z
     .array(
       z.object({
