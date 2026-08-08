@@ -17,7 +17,6 @@ export const vitestSharedConfig = defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: ["./src/shared/tests/setup.ts"],
     css: true,
   },
 });
