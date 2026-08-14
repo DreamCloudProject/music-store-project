@@ -15,8 +15,7 @@ import {
 import { useInView } from "react-intersection-observer";
 import { z } from "zod";
 
-import { logout } from "@/features/auth/api/auth-api";
-import { useAuthStore } from "@/features/auth/model/auth-store";
+import { logout, useAuthStore } from "@/features/auth";
 import { chunkList } from "@/shared/lib";
 import { HeaderSearch } from "@/widgets/header-search";
 import { PlayerBar } from "@/widgets/player-bar";

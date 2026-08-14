@@ -5,25 +5,19 @@ import type {
   VerifyCodePayload,
 } from "../model/types";
 
-const BEAN_ENDPOINT =
-  import.meta.env.VITE_MASTERMINDCMS_BEAN_ENDPOINT ??
-  "https://music.mastermindcms.com/api/v1/bean/request";
-
-const TOKEN_ENDPOINT =
-  import.meta.env.VITE_MASTERMINDCMS_TOKEN_ENDPOINT ??
-  "https://music.mastermindcms.com/api/v1/auth/token";
-
-const LOGOUT_ENDPOINT =
-  import.meta.env.VITE_MASTERMINDCMS_LOGOUT_ENDPOINT ??
-  "https://music.mastermindcms.com/api/v1/logout";
-
-const VALIDATE_TOKEN_ENDPOINT =
-  import.meta.env.VITE_MASTERMINDCMS_VALIDATE_TOKEN_ENDPOINT ??
-  "https://music.mastermindcms.com/api/v1/auth/validate-token";
-
-const VERIFY_EMAIL_ENDPOINT =
-  import.meta.env.VITE_MASTERMINDCMS_VERIFY_EMAIL_ENDPOINT ??
-  "https://music.mastermindcms.com/api/v1/auth/verify";
+const {
+  beanRequest: BEAN_ENDPOINT,
+  token: TOKEN_ENDPOINT,
+  logout: LOGOUT_ENDPOINT,
+  validateToken: VALIDATE_TOKEN_ENDPOINT,
+  verifyEmail: VERIFY_EMAIL_ENDPOINT,
+} = ((apiRoot) => ({
+  beanRequest: `${apiRoot}/bean/request`,
+  token: `${apiRoot}/auth/token`,
+  logout: `${apiRoot}/logout`,
+  validateToken: `${apiRoot}/auth/validate-token`,
+  verifyEmail: `${apiRoot}/auth/verify`,
+}))(String(import.meta.env.VITE_API_BASE_URL).replace(/\/$/, ""));
 
 const HEADERS = {
   "Content-Type": "application/json",

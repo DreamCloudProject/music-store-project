@@ -10,7 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { z } from "zod";
 
-import { useAuthStore } from "@/features/auth/model/auth-store";
+import { useAuthStore } from "@/features/auth";
 import { SignInPage } from "@/pages/sign-in";
 import { SignUpPage } from "@/pages/sign-up";
 import { VerifyCodePage } from "@/pages/verify-code";
@@ -25,7 +25,11 @@ const signInRoute = createRoute({
   path: "/sign-in",
   beforeLoad: () => {
     const session = useAuthStore.getState().session;
-    if (session) throw redirect({ to: "/" });
+    if (session)
+      throw redirect({
+        to: "/",
+        search: { search: "", year: undefined, artists: [], genres: [] },
+      });
   },
   component: SignInPage,
 });
@@ -35,7 +39,11 @@ const signUpRoute = createRoute({
   path: "/sign-up",
   beforeLoad: () => {
     const session = useAuthStore.getState().session;
-    if (session) throw redirect({ to: "/" });
+    if (session)
+      throw redirect({
+        to: "/",
+        search: { search: "", year: undefined, artists: [], genres: [] },
+      });
   },
   component: SignUpPage,
 });

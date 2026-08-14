@@ -133,7 +133,7 @@ export function SignUpForm() {
           {isPending ? "Регистрируем..." : "Зарегистрироваться"}
         </Button>
         <Button
-          variant="outline"
+          variant="auth-outline"
           onClick={() => router.navigate({ to: "/sign-in" })}
         >
           Войти

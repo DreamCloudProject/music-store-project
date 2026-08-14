@@ -17,7 +17,7 @@ export default defineConfig({
     env: {
       ...process.env,
       VITE_ENABLE_MSW: "true",
-      VITE_API_BASE_URL: "/api/v1/bean",
+      VITE_API_BASE_URL: "/api/v1",
       VITE_APP_BASE_URL: "/",
     },
   },
