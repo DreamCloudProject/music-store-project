@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { Link, useParams, useSearch } from "@tanstack/react-router";
+import { Link, useParams, useRouter, useSearch } from "@tanstack/react-router";
 import {
   startTransition,
   useCallback,
@@ -15,6 +15,7 @@ import {
 import { useInView } from "react-intersection-observer";
 import { z } from "zod";
 
+import { logout, useAuthStore } from "@/features/auth";
 import { chunkList } from "@/shared/lib";
 import { Button } from "@/shared/ui/button";
 import { HeaderSearch } from "@/widgets/header-search";
@@ -72,6 +73,7 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
 }
 
 function App() {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const [skipCatalog, setSkipCatalog] = useState(false);
   const [currentTrack, setCurrentTrack] = useState<PlayerBarTrack | null>(null);
@@ -119,6 +121,12 @@ function App() {
     urlSearch,
     year,
   ]);
+
+  const handleLogout = async () => {
+    await logout();
+    useAuthStore.getState().clearSession();
+    router.invalidate();
+  };
 
   const catalogQuery = useQuery({
     queryKey: ["tracks", "catalog-full"],
@@ -261,6 +269,14 @@ function App() {
       >
         <header className="mb-[50px] flex items-center gap-4">
           <HeaderSearch />
+          <img
+            className="h-10 w-10 shrink-0 scale-100 cursor-pointer transition duration-200 active:scale-95"
+            src="/assets/log-out.png"
+            alt="log-out"
+            onClick={() => {
+              void handleLogout();
+            }}
+          />
         </header>
 
         <div className="flex min-w-0">

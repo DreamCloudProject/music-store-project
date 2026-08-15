@@ -5,10 +5,15 @@ import {
   lazyRouteComponent,
   Outlet,
   parseSearchWith,
+  redirect,
   stringifySearchWith,
 } from "@tanstack/react-router";
 import { z } from "zod";
 
+import { useAuthStore } from "@/features/auth";
+import { SignInPage } from "@/pages/sign-in";
+import { SignUpPage } from "@/pages/sign-up";
+import { VerifyCodePage } from "@/pages/verify-code";
 import { normalizeString } from "@/shared/lib";
 
 function validateTracksSearch(raw: unknown) {
@@ -61,11 +66,53 @@ const rootRoute = createRootRoute({
   component: () => <Outlet />,
 });
 
-/** Pathless layout: общий search для `/` и `/playlist/$playlistId`. */
+const signInRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/sign-in",
+  beforeLoad: () => {
+    const session = useAuthStore.getState().session;
+    if (session)
+      throw redirect({
+        to: "/",
+        search: { search: "", year: undefined, artists: [], genres: [] },
+      });
+  },
+  component: SignInPage,
+});
+
+const signUpRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/sign-up",
+  beforeLoad: () => {
+    const session = useAuthStore.getState().session;
+    if (session)
+      throw redirect({
+        to: "/",
+        search: { search: "", year: undefined, artists: [], genres: [] },
+      });
+  },
+  component: SignUpPage,
+});
+
+const verifyCodeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/verify-code",
+  validateSearch: (search: Record<string, unknown>) => ({
+    username: (search.username as string) ?? "",
+  }),
+  beforeLoad: ({ search }) => {
+    if (!search.username) throw redirect({ to: "/sign-in" });
+  },
+  component: VerifyCodePage,
+});
+
 const tracksLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: "/_tracks",
   validateSearch: validateTracksSearch,
+  beforeLoad: () => {
+    if (!useAuthStore.getState().session) throw redirect({ to: "/sign-in" });
+  },
   component: () => <Outlet />,
 });
 
@@ -84,6 +131,9 @@ const playlistRoute = createRoute({
 export const router = createRouter({
   basepath: normalizeString("/", "/", import.meta.env.BASE_URL, "/", ""),
   routeTree: rootRoute.addChildren([
+    signInRoute,
+    signUpRoute,
+    verifyCodeRoute,
     tracksLayoutRoute.addChildren([homeRoute, playlistRoute]),
   ]),
   parseSearch: parseSearchWith(JSON.parse),

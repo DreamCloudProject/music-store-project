@@ -7,3 +7,4 @@ coverage/
 package-lock.json
 
 scripts/msw/worker-fetch-patch.js
+public/musiclab.html
