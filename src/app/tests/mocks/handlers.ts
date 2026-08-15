@@ -1,12 +1,12 @@
 import { http, HttpResponse } from "msw";
 import { z } from "zod";
 
-import { parseTracksRequestBody } from "../api/tracks.api";
+import { parseTracksRequestBody } from "../../api/tracks.api";
 import type {
   CmsSearchResultPayload,
   CmsSellerSkuItem,
-} from "../api/tracks.types";
-import { filterTracksForUi } from "../lib/filter-tracks-for-ui";
+} from "../../api/tracks.types";
+import { filterTracksForUi } from "../../lib/filter-tracks-for-ui";
 
 const favoriteIds = new Set<string>();
 

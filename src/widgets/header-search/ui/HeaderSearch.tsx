@@ -53,9 +53,10 @@ export function HeaderSearch() {
     e.preventDefault();
     debounceRef.current?.cancel();
     lastSearchRef.current = search.trim();
+    setSearch(lastSearchRef.current);
     void navigate({
       search: (prev) => ({ ...prev, search: lastSearchRef.current }),
-      replace: true,
+      replace: false,
     });
   };
 

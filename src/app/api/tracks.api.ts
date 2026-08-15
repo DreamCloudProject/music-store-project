@@ -165,7 +165,7 @@ function parseTracksSearchResponse(
 
 function beanRequestUrl() {
   return new URL(
-    `${String(import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "")}/request`,
+    `${String(import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "")}/bean/request`,
     location.origin,
   );
 }

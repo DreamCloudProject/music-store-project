@@ -37,6 +37,15 @@
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
 
+  --color-auth: hsl(var(--auth-button));
+  --color-auth-hover: hsl(var(--auth-button-hover));
+  --color-auth-foreground: hsl(var(--auth-button-text));
+  --color-auth-active: hsl(var(--auth-button-active));
+  --color-outline: hsl(var(--outline));
+  --color-outline-hover: hsl(var(--outline-hover));
+  --color-outline-active: hsl(var(--outline-active));
+  --color-placeholder: hsl(var(--placeholder-text));
+
   --color-chart-1: hsl(var(--chart-1));
   --color-chart-2: hsl(var(--chart-2));
   --color-chart-3: hsl(var(--chart-3));
@@ -102,6 +111,15 @@
 
 @layer base {
   :root {
+    --auth-button: 270 84% 35%;
+    --auth-button-hover: 270 100% 25%;
+    --auth-button-text: 0 0% 100%;
+    --auth-button-active: 253 54% 22%;
+    --outline: 0 0% 100%;
+    --outline-hover: 210 10% 96%;
+    --outline-active: 0 0% 85%;
+    --placeholder-text: 0 0% 55%;
+
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -157,6 +175,79 @@
 }
 
 @layer components {
+  .player-bar-control--primary {
+    color: #d9d9d9;
+  }
+
+  .player-bar-control--primary:hover {
+    color: #acacac;
+  }
+
+  .player-bar-control--primary:active {
+    color: #ffffff;
+  }
+
+  .player-bar-control--primary:focus-visible {
+    color: #acacac;
+  }
+
+  .player-bar-control--alt {
+    color: #696969;
+  }
+
+  .player-bar-control--alt:hover {
+    color: #acacac;
+  }
+
+  .player-bar-control--alt:active {
+    color: #d9d9d9;
+  }
+
+  .player-bar-control--alt[data-pressed="true"] {
+    color: #ffffff;
+  }
+
+  .player-bar-control--alt[data-pressed="true"]:hover {
+    color: #acacac;
+  }
+
+  .player-bar-control--alt[data-pressed="true"]:active {
+    color: #696969;
+  }
+
+  .player-bar-control--alt:focus-visible {
+    color: #acacac;
+  }
+
+  .player-bar-play-icon {
+    display: none;
+  }
+
+  .player-bar-control--play[data-playing="false"] .player-bar-pause-icon {
+    display: none;
+  }
+
+  .player-bar-control--play[data-playing="false"] .player-bar-play-icon {
+    display: block;
+  }
+
+  .player-bar-control--play[data-playing="false"]:active .player-bar-play-icon {
+    display: none;
+  }
+
+  .player-bar-control--play[data-playing="false"]:active
+    .player-bar-pause-icon {
+    display: block;
+  }
+
+  .player-bar-control--play[data-playing="true"]:active .player-bar-pause-icon {
+    display: none;
+  }
+
+  .player-bar-control--play[data-playing="true"]:active .player-bar-play-icon {
+    display: block;
+  }
+
   .track-fav-toggle {
     --fav-fill: transparent;
     --fav-stroke: #696969;
