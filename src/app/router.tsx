@@ -167,6 +167,11 @@ export const router = createRouter({
     ),
 });
 
+useAuthStore.subscribe((state, prev) => {
+  if (state.session === prev.session) return;
+  void router.invalidate();
+});
+
 declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
