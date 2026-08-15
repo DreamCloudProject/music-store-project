@@ -11,6 +11,7 @@ import {
 import { z } from "zod";
 
 import { useAuthStore } from "@/features/auth";
+import { NotFoundPage } from "@/pages/not-found";
 import { SignInPage } from "@/pages/sign-in";
 import { SignUpPage } from "@/pages/sign-up";
 import { VerifyCodePage } from "@/pages/verify-code";
@@ -115,6 +116,7 @@ const indexRoute = createRoute({
 });
 
 export const router = createRouter({
+  defaultNotFoundComponent: NotFoundPage,
   basepath: normalizeString("/", "/", import.meta.env.BASE_URL, "/", ""),
   routeTree: rootRoute.addChildren([
     signInRoute,
