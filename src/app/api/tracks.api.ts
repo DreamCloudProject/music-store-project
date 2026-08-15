@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { apiFetch } from "@/features/auth";
+
 import type {
   CmsSellerSkuItem,
   CmsSellerSkuSearchArgs,
@@ -167,7 +169,7 @@ async function postTracksSearch(
   searchArgs: CmsSellerSkuSearchArgs,
   pagination?: { offset: number; limit: number },
 ): Promise<TracksPageResponse> {
-  const response = await fetch(
+  const response = await apiFetch(
     new URL(
       `${String(import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "")}/bean/request`,
       location.origin,

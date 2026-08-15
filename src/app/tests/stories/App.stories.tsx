@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import { useAuthStore } from "@/features/auth";
+
 import { handlers } from "../../tests";
 import App from "../../App";
 
@@ -10,6 +12,15 @@ const meta = {
     msw: {
       handlers,
     },
+  },
+  beforeEach: () => {
+    useAuthStore.getState().setSession({
+      token: "msw-token:demo@music.store",
+      username: "demo@music.store",
+    });
+    return () => {
+      useAuthStore.getState().clearSession();
+    };
   },
 } satisfies Meta<typeof App>;
 
