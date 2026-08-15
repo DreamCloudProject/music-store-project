@@ -19,6 +19,9 @@ export const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        auth: "w-full bg-auth text-auth-foreground hover:bg-auth-hover active:bg-auth-active text-md h-[52px]",
+        "auth-outline":
+          "w-full bg-outline text-foreground hover:bg-outline-hover active:bg-outline-active border border-border text-md h-[52px]",
       },
       size: {
         default: "h-9 px-4 py-2",
