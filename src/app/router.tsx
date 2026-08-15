@@ -5,70 +5,123 @@ import {
   lazyRouteComponent,
   Outlet,
   parseSearchWith,
+  redirect,
   stringifySearchWith,
 } from "@tanstack/react-router";
 import { z } from "zod";
 
+import { useAuthStore } from "@/features/auth";
+import { SignInPage } from "@/pages/sign-in";
+import { SignUpPage } from "@/pages/sign-up";
+import { VerifyCodePage } from "@/pages/verify-code";
 import { normalizeString } from "@/shared/lib";
+
+const rootRoute = createRootRoute({
+  component: () => <Outlet />,
+});
+
+const signInRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/sign-in",
+  beforeLoad: () => {
+    const session = useAuthStore.getState().session;
+    if (session)
+      throw redirect({
+        to: "/",
+        search: { search: "", year: undefined, artists: [], genres: [] },
+      });
+  },
+  component: SignInPage,
+});
+
+const signUpRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/sign-up",
+  beforeLoad: () => {
+    const session = useAuthStore.getState().session;
+    if (session)
+      throw redirect({
+        to: "/",
+        search: { search: "", year: undefined, artists: [], genres: [] },
+      });
+  },
+  component: SignUpPage,
+});
+
+const verifyCodeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/verify-code",
+  validateSearch: (search: Record<string, unknown>) => ({
+    username: (search.username as string) ?? "",
+  }),
+  beforeLoad: ({ search }) => {
+    if (!search.username) throw redirect({ to: "/sign-in" });
+  },
+  component: VerifyCodePage,
+});
+
+const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/",
+  beforeLoad: () => {
+    const session = useAuthStore.getState().session;
+    if (!session) throw redirect({ to: "/sign-in" });
+  },
+  validateSearch: (raw) =>
+    z
+      .object({
+        ...((queryString) => ({
+          ...{
+            search: queryString.optional().default(""),
+            year: queryString
+              .optional()
+              .default("")
+              .transform((s) => s.trim() || undefined),
+          },
+          ...((multiSelect) => ({
+            artists: multiSelect.optional().default([]),
+            genres: multiSelect.optional().default([]),
+          }))(
+            queryString.transform((s) =>
+              [
+                ...new Set(
+                  s
+                    .split(",")
+                    .map((p) => p.trim())
+                    .filter(Boolean),
+                ),
+              ].sort(),
+            ),
+          ),
+        }))(
+          z.union([
+            z.undefined().transform(() => ""),
+            z.null().transform(() => ""),
+            z.string(),
+            z.array(z.unknown()).transform((arr) =>
+              arr
+                .map((item) => z.string().safeParse(item))
+                .filter((r) => r.success)
+                .map((r) => r.data)
+                .join(","),
+            ),
+            z.unknown().transform(() => ""),
+          ]),
+        ),
+      })
+      .strip()
+      .parse(raw),
+  component: lazyRouteComponent(() => import("./App")),
+});
 
 export const router = createRouter({
   basepath: normalizeString("/", "/", import.meta.env.BASE_URL, "/", ""),
-  routeTree: ((rootRoute) =>
-    rootRoute.addChildren([
-      createRoute({
-        getParentRoute: () => rootRoute,
-        path: "/",
-        validateSearch: (raw) =>
-          z
-            .object({
-              ...((queryString) => ({
-                ...{
-                  search: queryString.optional().default(""),
-                  year: queryString
-                    .optional()
-                    .default("")
-                    .transform((s) => s.trim() || undefined),
-                },
-                ...((multiSelect) => ({
-                  artists: multiSelect.optional().default([]),
-                  genres: multiSelect.optional().default([]),
-                }))(
-                  queryString.transform((s) =>
-                    [
-                      ...new Set(
-                        s
-                          .split(",")
-                          .map((p) => p.trim())
-                          .filter(Boolean),
-                      ),
-                    ].sort(),
-                  ),
-                ),
-              }))(
-                z.union([
-                  z.undefined().transform(() => ""),
-                  z.null().transform(() => ""),
-                  z.string(),
-                  z.array(z.unknown()).transform((arr) =>
-                    arr
-                      .map((item) => z.string().safeParse(item))
-                      .filter((r) => r.success)
-                      .map((r) => r.data)
-                      .join(","),
-                  ),
-                  z.unknown().transform(() => ""),
-                ]),
-              ),
-            })
-            .strip()
-            .parse(raw),
-        component: lazyRouteComponent(() => import("./App")),
-      }),
-    ]))(
-    createRootRoute({
-      component: () => <Outlet />,
-    }),
-  ),
+  routeTree: rootRoute.addChildren([
+    signInRoute,
+    signUpRoute,
+    verifyCodeRoute,
+    indexRoute,
+  ]),
   parseSearch: parseSearchWith(JSON.parse),
   stringifySearch: (search) =>
     stringifySearchWith(

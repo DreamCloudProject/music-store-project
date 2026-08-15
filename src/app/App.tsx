@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useSearch } from "@tanstack/react-router";
+import { useRouter, useSearch } from "@tanstack/react-router";
 import {
   startTransition,
   useCallback,
@@ -15,6 +15,7 @@ import {
 import { useInView } from "react-intersection-observer";
 import { z } from "zod";
 
+import { logout, useAuthStore } from "@/features/auth";
 import { chunkList } from "@/shared/lib";
 import { HeaderSearch } from "@/widgets/header-search";
 import { PlayerBar } from "@/widgets/player-bar";
@@ -66,6 +67,7 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
 }
 
 function App() {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const [skipCatalog, setSkipCatalog] = useState(false);
   const { search: urlSearch, artists, genres, year } = useSearch({ from: "/" });
@@ -73,6 +75,12 @@ function App() {
     const search = urlSearch.trim();
     return { artists, genres, search, year };
   }, [artists, genres, urlSearch, year]);
+
+  const handleLogout = async () => {
+    await logout();
+    useAuthStore.getState().clearSession();
+    router.invalidate();
+  };
 
   const catalogQuery = useQuery({
     queryKey: ["tracks", "catalog-full"],
@@ -241,10 +249,18 @@ function App() {
   return (
     <main className="min-h-screen bg-[#181818] pb-[77px] text-white">
       <div className="mx-auto w-full max-w-[1240px] px-6 py-10">
-        <header className="mb-[37px]">
+        <header className="mb-[37px] flex items-center justify-between gap-4">
           <div className="w-full">
             <HeaderSearch />
           </div>
+          <img
+            className="h-10 w-10 shrink-0 cursor-pointer scale-100 transition duration-200 active:scale-95"
+            src="/assets/log-out.png"
+            alt="log-out"
+            onClick={() => {
+              void handleLogout();
+            }}
+          />
         </header>
 
         <section>
