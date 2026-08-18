@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useRouter, useSearch } from "@tanstack/react-router";
+import { useSearch } from "@tanstack/react-router";
 import {
   startTransition,
   useCallback,
@@ -15,7 +15,7 @@ import {
 import { useInView } from "react-intersection-observer";
 import { z } from "zod";
 
-import { logout, useAuthStore } from "@/features/auth";
+import { LogoutButton } from "@/features/auth";
 import { chunkList } from "@/shared/lib";
 import { HeaderSearch } from "@/widgets/header-search";
 import { AppMobileNav, AppSidebar } from "@/widgets/sidebar";
@@ -68,7 +68,6 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
 }
 
 function App() {
-  const router = useRouter();
   const queryClient = useQueryClient();
   const [skipCatalog, setSkipCatalog] = useState(false);
   const { search: urlSearch, artists, genres, year } = useSearch({ from: "/" });
@@ -76,12 +75,6 @@ function App() {
     const search = urlSearch.trim();
     return { artists, genres, search, year };
   }, [artists, genres, urlSearch, year]);
-
-  const handleLogout = async () => {
-    await logout();
-    useAuthStore.getState().clearSession();
-    router.invalidate();
-  };
 
   const catalogQuery = useQuery({
     queryKey: ["tracks", "catalog-full"],
@@ -257,14 +250,7 @@ function App() {
               <AppMobileNav />
               <HeaderSearch />
             </div>
-            <img
-              className="h-10 w-10 shrink-0 scale-100 cursor-pointer transition duration-200 active:scale-95"
-              src="/assets/log-out.png"
-              alt="log-out"
-              onClick={() => {
-                void handleLogout();
-              }}
-            />
+            <LogoutButton />
           </header>
 
           <section>

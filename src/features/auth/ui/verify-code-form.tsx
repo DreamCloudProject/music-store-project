@@ -46,8 +46,8 @@ export function VerifyCodeForm() {
   });
 
   return (
-    <div className="flex w-full flex-col items-center gap-5">
-      <p className="text-sm text-center text-neutral-500">
+    <div className="flex w-full flex-col items-stretch">
+      <p className="mb-5 text-center text-sm text-neutral-500">
         Введите код из письма, отправленного на {username}
       </p>
       <InputOTP
@@ -58,29 +58,31 @@ export function VerifyCodeForm() {
           setCodeError(null);
           setResendMessage(null);
         }}
+        containerClassName="mb-[30px]"
       >
-        <InputOTPGroup className="w-full justify-between">
+        <InputOTPGroup>
           {Array.from({ length: CODE_LENGTH }).map((_, index) => (
-            <InputOTPSlot key={index} index={index} className="h-11 flex-1" />
+            <InputOTPSlot key={index} index={index} />
           ))}
         </InputOTPGroup>
       </InputOTP>
-      <div className="h-5">
+      <div className="mb-5 min-h-5">
         {codeError && <p className="text-sm text-red-500">{codeError}</p>}
         {resendMessage && !codeError && (
           <p className="text-sm text-green-600">{resendMessage}</p>
         )}
       </div>
       <Button
+        className="mb-5"
         variant="auth"
         onClick={() => submitCode()}
         disabled={isSubmitting || code.length < CODE_LENGTH}
-        className="w-full"
       >
         {isSubmitting ? "Проверяем..." : "Подтвердить"}
       </Button>
-      <button
-        className="text-sm text-neutral-500 disabled:opacity-50 cursor-pointer"
+      <Button
+        variant="link"
+        className="h-auto p-0 text-sm font-normal text-neutral-500"
         onClick={() => {
           setCodeError(null);
           setResendMessage(null);
@@ -89,7 +91,7 @@ export function VerifyCodeForm() {
         disabled={isResending}
       >
         {isResending ? "Отправляем..." : "Отправить новый код"}
-      </button>
+      </Button>
     </div>
   );
 }

@@ -43,6 +43,7 @@ const InputGroupInput = React.forwardRef<
     <Input
       ref={ref}
       data-slot="input-group-control"
+      variant="default"
       className={cn("min-w-0", className)}
       {...props}
     />
