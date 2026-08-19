@@ -11,6 +11,7 @@
 
   --animate-collapsible-down: collapsible-down 0.3s ease-in;
   --animate-collapsible-up: collapsible-up 0.3s ease-out;
+  --animate-skeleton-shimmer: skeleton-shimmer 1.2s infinite;
 
   @keyframes collapsible-down {
     from {
@@ -27,6 +28,15 @@
     }
     to {
       height: 0;
+    }
+  }
+
+  @keyframes skeleton-shimmer {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
     }
   }
 

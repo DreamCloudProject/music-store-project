@@ -62,6 +62,16 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
           }),
         )
         .optional(),
+      documentURLs: z
+        .array(
+          z.looseObject({
+            url: z.string(),
+            name: z.string().optional(),
+            type: z.string().optional(),
+          }),
+        )
+        .optional(),
+      imageURLs: z.array(z.string()).optional(),
     }),
   );
 }
@@ -123,8 +133,9 @@ function App() {
     staleTime: tracksCatalogCacheTtlMs,
     gcTime: tracksCatalogCacheTtlMs,
     initialPageParam: 0,
-    select: (infinite) =>
-      z
+    select: (infinite) => {
+      const items = infinite.pages.flatMap((p) => p.items);
+      return z
         .array(
           z
             .looseObject({
@@ -139,6 +150,16 @@ function App() {
                   }),
                 )
                 .optional(),
+              documentURLs: z
+                .array(
+                  z.looseObject({
+                    url: z.string(),
+                    name: z.string().optional(),
+                    type: z.string().optional(),
+                  }),
+                )
+                .optional(),
+              imageURLs: z.array(z.string()).optional(),
             })
             .transform((item) => {
               const searchTerms = item.searchTerms?.trim() ?? "";
@@ -153,15 +174,35 @@ function App() {
                 item.attributeValues
                   ?.find((av) => av.attributeId === attributeId)
                   ?.value?.trim() ?? "";
+              const toAbs = (raw?: string) => {
+                const url = raw?.trim();
+                if (!url) return undefined;
+                if (/^https?:\/\//i.test(url)) return url;
+                return new URL(
+                  url.startsWith("/") ? url : `/${url}`,
+                  `${new URL(String(import.meta.env.VITE_API_BASE_URL), location.origin).origin}/`,
+                ).href;
+              };
+              const audioUrl = toAbs(
+                (
+                  item.documentURLs?.find((doc) =>
+                    /\.mp3(?:[?#]|$)/i.test(`${doc.url} ${doc.name ?? ""}`),
+                  ) ?? item.documentURLs?.[0]
+                )?.url,
+              );
+              const coverUrl = toAbs(item.imageURLs?.[0]);
               return {
                 id: item.id,
                 title,
                 artist: attributeValue("artist"),
                 album: attributeValue("album"),
+                ...(audioUrl ? { audioUrl } : {}),
+                ...(coverUrl ? { coverUrl } : {}),
               };
             }),
         )
-        .parse(infinite.pages.flatMap((p) => p.items)),
+        .parse(items);
+    },
     queryFn: async ({ pageParam }) => {
       const catalogState = queryClient.getQueryState([
         "tracks",
@@ -300,6 +341,12 @@ function App() {
                             id: track.id,
                             title: track.title,
                             artist: track.artist,
+                            ...(track.audioUrl
+                              ? { audioUrl: track.audioUrl }
+                              : {}),
+                            ...(track.coverUrl
+                              ? { coverUrl: track.coverUrl }
+                              : {}),
                           })
                         }
                         aria-pressed={active}
@@ -334,6 +381,8 @@ function App() {
           id: track.id,
           title: track.title,
           artist: track.artist,
+          ...(track.audioUrl ? { audioUrl: track.audioUrl } : {}),
+          ...(track.coverUrl ? { coverUrl: track.coverUrl } : {}),
         }))}
         onTrackChange={setCurrentTrack}
       />

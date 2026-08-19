@@ -17,6 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/shared/ui/dropdown-menu";
+import { Skeleton } from "@/shared/ui/skeleton";
 import { Slider } from "@/shared/ui/slider";
 
 import { pickSiblingTrack } from "../lib/player-queue";
@@ -102,6 +103,7 @@ function VolumeSlider({
       value={[volume]}
       onValueChange={([next]) => onVolumeChange(next ?? 0)}
       aria-label="Громкость"
+      title="Громкость"
       className={cn("player-bar-volume-slider", className)}
       style={style}
       trackClassName="rounded-[6px] bg-volume-track"
@@ -113,6 +115,10 @@ function VolumeSlider({
 
 function NoteCover({ coverUrl }: { coverUrl?: string }) {
   const [broken, setBroken] = useState(false);
+
+  useEffect(() => {
+    setBroken(false);
+  }, [coverUrl]);
 
   return (
     <div className="flex size-[51px] shrink-0 items-center justify-center bg-cover-bg">
@@ -154,6 +160,117 @@ function NoteCover({ coverUrl }: { coverUrl?: string }) {
             ry="2"
           />
         </svg>
+      )}
+    </div>
+  );
+}
+
+function TrackMeta({
+  track,
+  favorite,
+  onFavoriteToggle,
+}: {
+  track: PlayerBarTrack;
+  favorite: boolean;
+  onFavoriteToggle: () => void;
+}) {
+  const [coverReady, setCoverReady] = useState(!track.coverUrl);
+  const [broken, setBroken] = useState(false);
+
+  useEffect(() => {
+    setBroken(false);
+    setCoverReady(!track.coverUrl);
+  }, [track.id, track.coverUrl]);
+
+  const pending = Boolean(track.coverUrl) && !coverReady && !broken;
+
+  return (
+    <div
+      className="flex min-w-0 items-center"
+      style={{ gap: META_GAP_PX }}
+      aria-busy={pending}
+      aria-label={pending ? "Загрузка трека" : undefined}
+    >
+      {pending ? (
+        <>
+          <span className="sr-only">{track.title}</span>
+          <span className="sr-only">{track.artist}</span>
+          <img
+            src={track.coverUrl}
+            alt=""
+            className="hidden"
+            onLoad={() => setCoverReady(true)}
+            onError={() => setBroken(true)}
+          />
+          <Skeleton
+            className="size-[51px] shrink-0 rounded-[2px]"
+            aria-hidden
+          />
+          <div
+            className="flex min-w-0 items-center"
+            style={{ gap: META_GAP_PX }}
+            aria-hidden
+          >
+            <div className="min-w-0">
+              <Skeleton className="mb-1 h-[18px] w-[60px] rounded-[2px]" />
+              <Skeleton className="h-[18px] w-[60px] rounded-[2px]" />
+            </div>
+            <Skeleton className="size-[22px] shrink-0 rounded-full" />
+          </div>
+        </>
+      ) : (
+        <>
+          <NoteCover coverUrl={broken ? undefined : track.coverUrl} />
+          <div
+            className="flex min-w-0 items-center"
+            style={{ gap: META_GAP_PX }}
+          >
+            <div className="min-w-0 max-w-full overflow-hidden">
+              <p className="mb-1 truncate text-[16px] leading-[1.1] tracking-[0.001em] text-fg">
+                {track.title}
+              </p>
+              <p className="truncate text-[16px] leading-[1.1] tracking-[0.001em] text-fg">
+                {track.artist}
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label={
+                favorite ? "Убрать из избранного" : "Добавить в избранное"
+              }
+              title={
+                favorite ? "Убрать из избранного" : "Добавить в избранное"
+              }
+              aria-pressed={favorite}
+              data-favorite={favorite ? "true" : "false"}
+              onClick={onFavoriteToggle}
+              className={cn(
+                "track-fav-toggle size-[22px] shrink-0 rounded-full border-0 bg-transparent p-0 shadow-none",
+                "hover:bg-transparent active:bg-transparent",
+                "focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none",
+                "[&_svg]:pointer-events-none [&_svg]:!h-[13px] [&_svg]:!w-[15px] [&_svg]:shrink-0",
+              )}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="15"
+                height="13"
+                fill="none"
+                aria-hidden="true"
+                className="fav-icon"
+                viewBox="0 0 15 13"
+              >
+                <path
+                  d="M7.5 1.8c1-.9 3.4-2.1 5.6-.5 3.4 2.4.3 7.7-5.6 11.2m0-10.7C6.5.9 4-.3 1.9 1.3-1.5 3.7 1.6 9 7.5 12.5"
+                  className="fav-icon__heart"
+                />
+                <path d="M.3.4 14 12.5" className="fav-icon__cross" />
+              </svg>
+            </Button>
+          </div>
+        </>
       )}
     </div>
   );
@@ -410,6 +527,7 @@ export function PlayerBar({
         <ControlButton
           tone="primary"
           aria-label="Предыдущий трек"
+          title="Предыдущий трек"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -434,6 +552,7 @@ export function PlayerBar({
           className="player-bar-control--play"
           data-playing={playing ? "true" : "false"}
           aria-label={playing ? "Пауза" : "Воспроизвести"}
+          title={playing ? "Пауза" : "Воспроизвести"}
           aria-pressed={playing}
           onClick={toggle(setPlaying)}
         >
@@ -464,6 +583,7 @@ export function PlayerBar({
         <ControlButton
           tone="primary"
           aria-label="Следующий трек"
+          title="Следующий трек"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -485,10 +605,11 @@ export function PlayerBar({
 
         <ControlButton
           tone="alt"
-          pressed={shuffle}
-          aria-label="Перемешать"
-          aria-pressed={shuffle}
-          onClick={toggle(setShuffle)}
+          pressed={repeat}
+          aria-label="Повторить"
+          title="Повторить"
+          aria-pressed={repeat}
+          onClick={toggle(setRepeat)}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -510,10 +631,11 @@ export function PlayerBar({
 
         <ControlButton
           tone="alt"
-          pressed={repeat}
-          aria-label="Повторить"
-          aria-pressed={repeat}
-          onClick={toggle(setRepeat)}
+          pressed={shuffle}
+          aria-label="Перемешать"
+          title="Перемешать"
+          aria-pressed={shuffle}
+          onClick={toggle(setShuffle)}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -545,50 +667,11 @@ export function PlayerBar({
         className="flex min-w-0 flex-1 items-center"
         style={{ gap: META_GAP_PX }}
       >
-        <NoteCover coverUrl={track.coverUrl} />
-        <div className="flex min-w-0 items-center" style={{ gap: META_GAP_PX }}>
-          <div className="min-w-0 max-w-full overflow-hidden">
-            <p className="mb-1 truncate text-[16px] leading-[1.1] tracking-[0.001em] text-fg">
-              {track.title}
-            </p>
-            <p className="truncate text-[16px] leading-[1.1] tracking-[0.001em] text-fg">
-              {track.artist}
-            </p>
-          </div>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            aria-label={
-              favorite ? "Убрать из избранного" : "Добавить в избранное"
-            }
-            aria-pressed={favorite}
-            data-favorite={favorite ? "true" : "false"}
-            onClick={toggle(setFavorite)}
-            className={cn(
-              "track-fav-toggle size-[22px] shrink-0 rounded-full border-0 bg-transparent p-0 shadow-none",
-              "hover:bg-transparent active:bg-transparent",
-              "focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none",
-              "[&_svg]:pointer-events-none [&_svg]:!h-[13px] [&_svg]:!w-[15px] [&_svg]:shrink-0",
-            )}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="15"
-              height="13"
-              fill="none"
-              aria-hidden="true"
-              className="fav-icon"
-              viewBox="0 0 15 13"
-            >
-              <path
-                d="M7.5 1.8c1-.9 3.4-2.1 5.6-.5 3.4 2.4.3 7.7-5.6 11.2m0-10.7C6.5.9 4-.3 1.9 1.3-1.5 3.7 1.6 9 7.5 12.5"
-                className="fav-icon__heart"
-              />
-              <path d="M.3.4 14 12.5" className="fav-icon__cross" />
-            </svg>
-          </Button>
-        </div>
+        <TrackMeta
+          track={track}
+          favorite={favorite}
+          onFavoriteToggle={toggle(setFavorite)}
+        />
 
         <div className="player-bar-volume ml-auto flex shrink-0 items-center text-volume-icon md:min-w-[140px] md:w-[180px] md:max-w-[220px] md:gap-[8px]">
           <div className="hidden w-full items-center gap-[8px] md:flex">
@@ -606,6 +689,7 @@ export function PlayerBar({
                 type="button"
                 className="flex size-[22px] cursor-pointer items-center justify-center rounded-full border-0 bg-transparent p-0 text-volume-icon md:hidden"
                 aria-label="Громкость"
+                title="Громкость"
                 aria-expanded={volumeMenuOpen}
               >
                 <VolumeGlyph />
