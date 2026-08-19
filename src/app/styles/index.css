@@ -9,6 +9,27 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
+  --animate-collapsible-down: collapsible-down 0.3s ease-in;
+  --animate-collapsible-up: collapsible-up 0.3s ease-out;
+
+  @keyframes collapsible-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-collapsible-content-height);
+    }
+  }
+
+  @keyframes collapsible-up {
+    from {
+      height: var(--radix-collapsible-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
 
@@ -51,6 +72,35 @@
   --color-chart-3: hsl(var(--chart-3));
   --color-chart-4: hsl(var(--chart-4));
   --color-chart-5: hsl(var(--chart-5));
+
+  --color-app-bg: var(--app-bg);
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-border-muted: var(--border-muted);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-muted: var(--surface-muted);
+  --color-control-active-bg: var(--control-active-bg);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-active: var(--accent-active);
+  --color-accent-selected: var(--accent-selected);
+  --color-badge: var(--badge);
+  --color-skeleton: var(--skeleton);
+  --color-icon-muted: var(--icon-muted);
+  --color-icon-hover: var(--icon-hover);
+  --color-row-border: var(--row-border);
+  --color-row-bg: var(--row-bg);
+  --color-scrollbar-track: var(--scrollbar-track);
+  --color-scrollbar-thumb: var(--scrollbar-thumb);
+  --color-player-bg: var(--player-bg);
+  --color-cover-bg: var(--cover-bg);
+  --color-volume-track: var(--volume-track);
+  --color-volume-range: var(--volume-range);
+  --color-volume-thumb-bg: var(--volume-thumb-bg);
+  --color-volume-icon: var(--volume-icon);
+  --color-icon-alt: var(--icon-alt);
 }
 
 @layer base {
@@ -65,12 +115,12 @@
 
 @layer base {
   ::selection {
-    background: #d9b6ff;
+    background: var(--accent-hover);
     color: #181818;
   }
 
   ::-moz-selection {
-    background: #d9b6ff;
+    background: var(--accent-hover);
     color: #181818;
   }
 
@@ -78,13 +128,14 @@
     html,
     body {
       scrollbar-width: thin;
-      scrollbar-color: #ffffff #4b4949;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
     }
   }
 
   html::-webkit-scrollbar,
   body::-webkit-scrollbar {
     width: 4px;
+    height: 4px;
     margin: 2px;
   }
 
@@ -98,19 +149,65 @@
   html::-webkit-scrollbar-track,
   body::-webkit-scrollbar-track {
     margin: 2px;
-    background: #4b4949;
+    background: var(--scrollbar-track);
     border-radius: 10px;
   }
 
   html::-webkit-scrollbar-thumb,
   body::-webkit-scrollbar-thumb {
-    background: #ffffff;
+    background: var(--scrollbar-thumb);
     border-radius: 10px;
   }
 }
 
 @layer base {
   :root {
+    --app-bg: #ffffff;
+    --sidebar-bg: #f6f5f3;
+    --fg: #181818;
+    --fg-muted: #4e4e4e;
+    --fg-subtle: rgb(24 24 24 / 0.55);
+    --border-strong: #181818;
+    --border-muted: #4e4e4e;
+    --surface-elevated: #ffffff;
+    --surface-muted: #f4f5f6;
+    --control-active-bg: color-mix(in srgb, #ad61ff 16%, transparent);
+    --accent-hover: #d9b6ff;
+    --accent-active: #ad61ff;
+    --accent-selected: #b672ff;
+    --badge: #ad61ff;
+    --skeleton: #e8e7e5;
+    --icon-muted: #acacac;
+    --icon-hover: #4e4e4e;
+    --row-border: rgb(24 24 24 / 0.1);
+    --row-bg: rgb(24 24 24 / 0.04);
+    --scrollbar-track: #d9d9d9;
+    --scrollbar-thumb: #4e4e4e;
+    --player-bg: #ffffff;
+    --player-shadow: rgb(24 24 24 / 0.12);
+    --player-border: #d9d9d9;
+    --cover-bg: #f4f5f6;
+    --cover-icon: #4e4e4e;
+    --volume-track: #cfcfcf;
+    --volume-range: #ad61ff;
+    --volume-thumb-bg: #e8e8e8;
+    --volume-icon: #cfcfcf;
+    --icon-alt: #696969;
+    --player-control: #acacac;
+    --player-control-hover: #4e4e4e;
+    --player-control-active: #ad61ff;
+    --player-alt: #696969;
+    --player-alt-hover: #4e4e4e;
+    --player-alt-active: #ad61ff;
+    --player-alt-on: #ad61ff;
+    --player-alt-on-hover: #d9b6ff;
+    --player-alt-on-active: #ad61ff;
+    --fav-idle-stroke: #696969;
+    --fav-active-stroke: #ad61ff;
+    --fav-active-fill: color-mix(in srgb, #ad61ff 25%, transparent);
+    --fav-on-fill: #ad61ff;
+    --fav-on-stroke: #ad61ff;
+    --fav-on-hover: #d9b6ff;
     --auth-button: 270 84% 35%;
     --auth-button-hover: 270 100% 25%;
     --auth-button-text: 0 0% 100%;
@@ -121,24 +218,24 @@
     --placeholder-text: 0 0% 55%;
 
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --foreground: 0 0% 9%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
+    --card-foreground: 0 0% 9%;
+    --popover: 0 0% 96%;
+    --popover-foreground: 0 0% 9%;
     --primary: 0 0% 9%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
+    --secondary: 40 11% 96%;
     --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
+    --muted: 40 11% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 40 11% 96%;
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --ring: 271 100% 66%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -146,12 +243,60 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
-    --background: 0 0% 3.9%;
+    --app-bg: #181818;
+    --sidebar-bg: #181818;
+    --fg: #ffffff;
+    --fg-muted: #4e4e4e;
+    --fg-subtle: rgb(255 255 255 / 0.55);
+    --border-strong: #ffffff;
+    --border-muted: #4e4e4e;
+    --surface-elevated: #313131;
+    --surface-muted: #313131;
+    --control-active-bg: transparent;
+    --accent-hover: #d9b6ff;
+    --accent-active: #ad61ff;
+    --accent-selected: #b672ff;
+    --badge: #ad61ff;
+    --skeleton: #313131;
+    --icon-muted: #d9d9d9;
+    --icon-hover: #acacac;
+    --row-border: rgb(255 255 255 / 0.1);
+    --row-bg: rgb(255 255 255 / 0.05);
+    --scrollbar-track: #4b4949;
+    --scrollbar-thumb: #ffffff;
+    --player-bg: #181818;
+    --player-shadow: #181818d9;
+    --player-border: #6b7280;
+    --cover-bg: #313131;
+    --cover-icon: #4e4e4e;
+    --volume-track: #797979;
+    --volume-range: #ffffff;
+    --volume-thumb-bg: #1a1a1a;
+    --volume-icon: #ffffff;
+    --icon-alt: #696969;
+    --player-control: #d9d9d9;
+    --player-control-hover: #acacac;
+    --player-control-active: #ffffff;
+    --player-alt: #696969;
+    --player-alt-hover: #acacac;
+    --player-alt-active: #d9d9d9;
+    --player-alt-on: #ffffff;
+    --player-alt-on-hover: #acacac;
+    --player-alt-on-active: #696969;
+    --fav-idle-stroke: #696969;
+    --fav-active-stroke: #ffffff;
+    --fav-active-fill: #696969;
+    --fav-on-fill: #696969;
+    --fav-on-stroke: #ffffff;
+    --fav-on-hover: #acacac;
+
+    --background: 0 0% 9%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
+    --card: 0 0% 9%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
+    --popover: 0 0% 19%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 9%;
@@ -165,58 +310,64 @@
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --ring: 271 100% 66%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+
+  html,
+  body {
+    background-color: var(--app-bg);
+    color: var(--fg);
+  }
 }
 
 @layer components {
   .player-bar-control--primary {
-    color: #d9d9d9;
+    color: var(--player-control);
   }
 
   .player-bar-control--primary:hover {
-    color: #acacac;
+    color: var(--player-control-hover);
   }
 
   .player-bar-control--primary:active {
-    color: #ffffff;
+    color: var(--player-control-active);
   }
 
   .player-bar-control--primary:focus-visible {
-    color: #acacac;
+    color: var(--player-control-hover);
   }
 
   .player-bar-control--alt {
-    color: #696969;
+    color: var(--player-alt);
   }
 
   .player-bar-control--alt:hover {
-    color: #acacac;
+    color: var(--player-alt-hover);
   }
 
   .player-bar-control--alt:active {
-    color: #d9d9d9;
+    color: var(--player-alt-active);
   }
 
   .player-bar-control--alt[data-pressed="true"] {
-    color: #ffffff;
+    color: var(--player-alt-on);
   }
 
   .player-bar-control--alt[data-pressed="true"]:hover {
-    color: #acacac;
+    color: var(--player-alt-on-hover);
   }
 
   .player-bar-control--alt[data-pressed="true"]:active {
-    color: #696969;
+    color: var(--player-alt-on-active);
   }
 
   .player-bar-control--alt:focus-visible {
-    color: #acacac;
+    color: var(--player-alt-hover);
   }
 
   .player-bar-play-icon {
@@ -250,35 +401,36 @@
 
   .track-fav-toggle {
     --fav-fill: transparent;
-    --fav-stroke: #696969;
+    --fav-stroke: var(--fav-idle-stroke);
     color: var(--fav-stroke);
   }
 
   .track-fav-toggle:hover {
-    --fav-stroke: #acacac;
+    --fav-stroke: var(--player-control-hover);
   }
 
   .track-fav-toggle:active {
-    --fav-stroke: #ffffff;
-    --fav-fill: #696969;
+    --fav-stroke: var(--fav-active-stroke);
+    --fav-fill: var(--fav-active-fill);
   }
 
   .track-fav-toggle:focus-visible {
-    --fav-stroke: #acacac;
+    --fav-stroke: var(--player-control-hover);
   }
 
   .track-fav-toggle[data-favorite="true"] {
-    --fav-fill: #696969;
-    --fav-stroke: #ffffff;
+    --fav-fill: var(--fav-on-fill);
+    --fav-stroke: var(--fav-on-stroke);
   }
 
   .track-fav-toggle[data-favorite="true"]:hover {
-    --fav-stroke: #acacac;
+    --fav-stroke: var(--fav-on-hover);
+    --fav-fill: var(--fav-on-hover);
   }
 
   .track-fav-toggle[data-favorite="true"]:active {
     --fav-fill: transparent;
-    --fav-stroke: #696969;
+    --fav-stroke: var(--fav-active-stroke);
   }
 
   .fav-icon__heart {
