@@ -8,9 +8,13 @@ initialize({ onUnhandledRequest: "bypass" });
 
 const preview: Preview = {
   decorators: [
-    (Story) =>
+    (Story, context) =>
       createTestProviders({
         children: <Story />,
+        initialEntry:
+          typeof context.parameters.initialEntry === "string"
+            ? context.parameters.initialEntry
+            : "/",
       }),
   ],
   loaders: [mswLoader],

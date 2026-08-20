@@ -8,6 +8,30 @@ import { afterAll, afterEach, beforeAll } from "vitest";
 
 import { handlers } from "@/app/tests";
 
+(() => {
+  const memory = new Map<string, string>();
+  const storage = {
+    getItem: (key: string) => memory.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      memory.set(key, String(value));
+    },
+    removeItem: (key: string) => {
+      memory.delete(key);
+    },
+    clear: () => {
+      memory.clear();
+    },
+    key: (index: number) => [...memory.keys()][index] ?? null,
+    get length() {
+      return memory.size;
+    },
+  };
+  Object.defineProperty(globalThis, "localStorage", {
+    configurable: true,
+    value: storage,
+  });
+})();
+
 const tracksPath = (() => {
   const full = resolve(process.cwd(), "public/tracks.json");
   if (existsSync(full)) return full;
@@ -31,6 +55,10 @@ if (typeof globalThis.ResizeObserver === "undefined") {
     unobserve() {}
     disconnect() {}
   };
+}
+
+if (typeof document.elementFromPoint !== "function") {
+  document.elementFromPoint = () => null;
 }
 
 beforeAll(() => {

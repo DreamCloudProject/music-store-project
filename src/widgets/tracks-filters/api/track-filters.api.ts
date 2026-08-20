@@ -1,3 +1,4 @@
+import { apiFetch } from "@/features/auth";
 import { z } from "zod";
 
 import type {
@@ -9,7 +10,7 @@ async function fetchFilterValues(
   functionName: "simpleFilterValues" | "listFilterValues",
   attributeId: string,
 ): Promise<FilterOption[]> {
-  const response = await fetch(
+  const response = await apiFetch(
     new URL(
       `${String(import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "")}/bean/request`,
       location.origin,

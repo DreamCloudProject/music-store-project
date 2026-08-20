@@ -23,7 +23,6 @@ export function SignInForm() {
     mutationFn: () => login({ username: email, password }),
     onSuccess: (data) => {
       setSession({ token: data.token, username: email });
-      router.invalidate();
     },
     onError: async () => {
       try {
@@ -46,9 +45,10 @@ export function SignInForm() {
   });
 
   return (
-    <div className="flex w-full flex-col gap-5">
+    <div className="flex w-full flex-col items-stretch">
       <Input
-        placeholder="Email"
+        className="mb-[30px]"
+        placeholder="Логин"
         type="email"
         name="email"
         autoComplete="email"
@@ -60,6 +60,7 @@ export function SignInForm() {
         }}
       />
       <Input
+        className="mb-[30px]"
         placeholder="Пароль"
         type="password"
         name="password"
@@ -71,24 +72,23 @@ export function SignInForm() {
           setFormError(null);
         }}
       />
-      <div className="h-5">
+      <div className="mb-5 min-h-5">
         {formError && <p className="text-sm text-red-500">{formError}</p>}
       </div>
-      <div className="flex flex-col gap-5">
-        <Button
-          variant="auth"
-          onClick={() => submitLogin()}
-          disabled={isPending || !email.trim() || !password.trim()}
-        >
-          {isPending ? "Входим..." : "Войти"}
-        </Button>
-        <Button
-          variant="auth-outline"
-          onClick={() => router.navigate({ to: "/sign-up" })}
-        >
-          Зарегистрироваться
-        </Button>
-      </div>
+      <Button
+        className="mb-5"
+        variant="auth"
+        onClick={() => submitLogin()}
+        disabled={isPending || !email.trim() || !password.trim()}
+      >
+        {isPending ? "Входим..." : "Войти"}
+      </Button>
+      <Button
+        variant="auth-outline"
+        onClick={() => router.navigate({ to: "/sign-up" })}
+      >
+        Зарегистрироваться
+      </Button>
     </div>
   );
 }

@@ -4,6 +4,11 @@ import { z } from "zod";
 import { parseTracksRequestBody } from "../../api/tracks.api";
 import type { CmsSearchResultPayload } from "../../api/tracks.types";
 import { filterTracksForUi } from "../../lib/filter-tracks-for-ui";
+import {
+  authHttpHandlers,
+  handleAuthBean,
+  unauthorizedIfInvalidBearer,
+} from "../../tests/mocks/auth.handlers";
 
 async function loadCmsCatalogFromPublic(): Promise<
   CmsSearchResultPayload & {
@@ -66,8 +71,16 @@ function filterAndPaginate(
 }
 
 export const handlers = [
+  ...authHttpHandlers,
   http.post("*/api/v1/bean/request", async ({ request }) => {
     const body: unknown = await request.json();
+
+    const authResponse = handleAuthBean(body);
+    if (authResponse) return authResponse;
+
+    const unauthorized = unauthorizedIfInvalidBearer(request);
+    if (unauthorized) return unauthorized;
+
     const bean = z
       .looseObject({
         beanId: z.string().optional(),

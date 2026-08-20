@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { Link, useParams, useRouter, useSearch } from "@tanstack/react-router";
+import { Link, useParams, useSearch } from "@tanstack/react-router";
 import {
   startTransition,
   useCallback,
@@ -15,12 +15,13 @@ import {
 import { useInView } from "react-intersection-observer";
 import { z } from "zod";
 
-import { logout, useAuthStore } from "@/features/auth";
+import { LogoutButton } from "@/features/auth";
 import { chunkList } from "@/shared/lib";
 import { Button } from "@/shared/ui/button";
 import { HeaderSearch } from "@/widgets/header-search";
 import { PlayerBar, type PlayerBarTrack } from "@/widgets/player-bar";
 import { PlaylistsPanel, usePlaylistsQuery } from "@/widgets/playlists";
+import { AppMobileNav, AppSidebar } from "@/widgets/sidebar";
 import { TracksFiltersPanel } from "@/widgets/tracks-filters";
 
 import {
@@ -73,10 +74,11 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
 }
 
 function App() {
-  const router = useRouter();
   const queryClient = useQueryClient();
   const [skipCatalog, setSkipCatalog] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState<PlayerBarTrack | null>(null);
+  const [currentTrack, setCurrentTrack] = useState<
+    (PlayerBarTrack & { id: string }) | null
+  >(null);
   const { playlistId } = useParams({ strict: false }) as {
     playlistId?: string;
   };
@@ -121,12 +123,6 @@ function App() {
     urlSearch,
     year,
   ]);
-
-  const handleLogout = async () => {
-    await logout();
-    useAuthStore.getState().clearSession();
-    router.invalidate();
-  };
 
   const catalogQuery = useQuery({
     queryKey: ["tracks", "catalog-full"],
@@ -260,6 +256,7 @@ function App() {
 
   return (
     <div className="flex min-h-screen bg-app-bg text-fg">
+      <AppSidebar />
       <main
         className={
           currentTrack
@@ -268,15 +265,11 @@ function App() {
         }
       >
         <header className="mb-[50px] flex items-center gap-4">
-          <HeaderSearch />
-          <img
-            className="h-10 w-10 shrink-0 scale-100 cursor-pointer transition duration-200 active:scale-95"
-            src="/assets/log-out.png"
-            alt="log-out"
-            onClick={() => {
-              void handleLogout();
-            }}
-          />
+          <div className="min-w-0 flex-1">
+            <AppMobileNav />
+            <HeaderSearch />
+          </div>
+          <LogoutButton />
         </header>
 
         <div className="flex min-w-0">
@@ -393,19 +386,7 @@ function App() {
           {showPlaylists ? <PlaylistsPanel layout="desktop" /> : null}
         </div>
       </main>
-      {currentTrack ? (
-        <PlayerBar
-          track={currentTrack}
-          queue={tracks.map((track) => ({
-            id: track.id,
-            title: track.title,
-            artist: track.artist,
-            coverUrl: track.coverUrl,
-          }))}
-          onTrackChange={setCurrentTrack}
-          onDismiss={() => setCurrentTrack(null)}
-        />
-      ) : null}
+      {currentTrack ? <PlayerBar track={currentTrack} /> : null}
     </div>
   );
 }

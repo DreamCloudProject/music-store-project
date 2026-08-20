@@ -69,8 +69,9 @@ export function SignUpForm() {
     !confirmPassword.trim();
 
   return (
-    <div className="flex w-full flex-col gap-5">
+    <div className="flex w-full flex-col items-stretch">
       <Input
+        className="mb-[30px]"
         placeholder="Имя"
         type="text"
         name="firstName"
@@ -82,6 +83,7 @@ export function SignUpForm() {
         }}
       />
       <Input
+        className="mb-[30px]"
         placeholder="Фамилия"
         type="text"
         name="lastName"
@@ -93,7 +95,8 @@ export function SignUpForm() {
         }}
       />
       <Input
-        placeholder="Email"
+        className="mb-[30px]"
+        placeholder="Логин"
         type="email"
         name="email"
         autoComplete="email"
@@ -104,6 +107,7 @@ export function SignUpForm() {
         }}
       />
       <Input
+        className="mb-[30px]"
         placeholder="Пароль"
         type="password"
         name="password"
@@ -115,6 +119,7 @@ export function SignUpForm() {
         }}
       />
       <Input
+        className="mb-[60px]"
         placeholder="Повторите пароль"
         type="password"
         name="confirmPassword"
@@ -125,20 +130,23 @@ export function SignUpForm() {
           reset();
         }}
       />
-      <div className="h-5">
+      <div className="mb-5 min-h-5">
         {formError && <p className="text-sm text-red-500">{formError}</p>}
       </div>
-      <div className="flex flex-col gap-5">
-        <Button variant="auth" onClick={handleSubmit} disabled={isDisabled}>
-          {isPending ? "Регистрируем..." : "Зарегистрироваться"}
-        </Button>
-        <Button
-          variant="auth-outline"
-          onClick={() => router.navigate({ to: "/sign-in" })}
-        >
-          Войти
-        </Button>
-      </div>
+      <Button
+        className="mb-5"
+        variant="auth"
+        onClick={handleSubmit}
+        disabled={isDisabled}
+      >
+        {isPending ? "Регистрируем..." : "Зарегистрироваться"}
+      </Button>
+      <Button
+        variant="auth-outline"
+        onClick={() => router.navigate({ to: "/sign-in" })}
+      >
+        Войти
+      </Button>
     </div>
   );
 }

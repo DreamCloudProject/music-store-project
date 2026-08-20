@@ -26,14 +26,15 @@ type EndpointOp = {
   buildBody?: (values: Record<string, string>) => unknown;
 };
 
-const beanBase = String(
-  import.meta.env.VITE_API_BASE_URL ?? "/api/v1/bean",
-).replace(/\/$/, "");
+const apiRoot = String(import.meta.env.VITE_API_BASE_URL ?? "/api/v1").replace(
+  /\/$/,
+  "",
+);
 
 /** Абсолютный base → живой CMS; относительный → обычно MSW на origin Storybook/Vite. */
-const isLiveApiBase = /^https?:\/\//i.test(beanBase);
+const isLiveApiBase = /^https?:\/\//i.test(apiRoot);
 
-const beanRequestPath = `${beanBase}/request`;
+const beanRequestPath = `${apiRoot}/bean/request`;
 
 const resolveRequestUrl = (path: string) =>
   /^https?:\/\//i.test(path) ? path : new URL(path, location.origin).href;
@@ -153,7 +154,241 @@ const searchParams: ParamField[] = [
   },
 ];
 
+const CMS_HEADERS = {
+  "Content-Type": "application/json",
+  "Site-Context": "site",
+  "Lang-Context": "ru",
+} as const;
+
+const emailParam: ParamField = {
+  name: "email",
+  label: "email / username",
+  defaultValue: "demo@music.store",
+  description: "MSW demo: demo@music.store / password; код 123456",
+};
+
 const ENDPOINTS: EndpointOp[] = [
+  {
+    id: "auth-token",
+    tag: "Логин",
+    method: "POST",
+    path: `${apiRoot}/auth/token`,
+    summary: "1. login — проверка логина и пароля",
+    description:
+      "Начало сессии. auth-api.login. MSW: demo@music.store / password.",
+    headers: CMS_HEADERS,
+    params: [
+      emailParam,
+      {
+        name: "password",
+        label: "password",
+        defaultValue: "password",
+      },
+    ],
+    buildBody: (values) => ({
+      username: values.email,
+      password: values.password,
+    }),
+  },
+  {
+    id: "auth-validate-token",
+    tag: "Логин",
+    method: "POST",
+    path: `${apiRoot}/auth/validate-token`,
+    summary: "2. validateToken — проверить сессию",
+    description:
+      "Пока пользователь в ЛК. auth-api.validateToken, из apiFetch при 401.",
+    headers: CMS_HEADERS,
+    params: [
+      emailParam,
+      {
+        name: "token",
+        label: "token",
+        defaultValue: "msw-token:demo@music.store",
+      },
+    ],
+    buildBody: (values) => ({
+      token: values.token,
+      username: values.email,
+    }),
+  },
+  {
+    id: "auth-logout",
+    tag: "Логин",
+    method: "POST",
+    path: `${apiRoot}/logout`,
+    summary: "3. logout — конец сессии",
+    description: "auth-api.logout. Body как в приложении: { role: user }.",
+    headers: CMS_HEADERS,
+    params: [
+      {
+        name: "role",
+        label: "role",
+        defaultValue: "user",
+      },
+    ],
+    buildBody: (values) => ({ role: values.role }),
+  },
+  {
+    id: "auth-bean-is-email-taken",
+    tag: "Регистрация",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "1. checkEmail — свободен ли логин",
+    description: "auth-api.checkEmail. beanId sellerRegistrationServiceImpl.",
+    headers: CMS_HEADERS,
+    params: [emailParam],
+    buildBody: (values) => ({
+      beanId: "sellerRegistrationServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "isEmailTaken",
+      args: [{ "0": values.email }],
+    }),
+  },
+  {
+    id: "auth-bean-is-user-active",
+    tag: "Регистрация",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "2. isUserActive — уже активирован?",
+    description:
+      "auth-api.isUserActive. Если логин занят: активен → ошибка, нет → письмо.",
+    headers: CMS_HEADERS,
+    params: [emailParam],
+    buildBody: (values) => ({
+      beanId: "sellerRegistrationServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "isUserActive",
+      args: [{ "0": values.email }],
+    }),
+  },
+  {
+    id: "auth-bean-register",
+    tag: "Регистрация",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "3. register — создать пользователя",
+    description:
+      "auth-api.register. BUYER по умолчанию. В MSW новый пользователь inactive.",
+    headers: CMS_HEADERS,
+    params: [
+      {
+        name: "firstName",
+        label: "firstName",
+        defaultValue: "Demo",
+      },
+      {
+        name: "lastName",
+        label: "lastName",
+        defaultValue: "User",
+      },
+      {
+        name: "email",
+        label: "email",
+        defaultValue: "new@music.store",
+      },
+      {
+        name: "password",
+        label: "password",
+        defaultValue: "password",
+      },
+      {
+        name: "sellerType",
+        label: "sellerType",
+        defaultValue: "BUYER",
+        options: [
+          { value: "BUYER", label: "BUYER" },
+          { value: "VENDOR", label: "VENDOR" },
+          { value: "ADMIN", label: "ADMIN" },
+        ],
+      },
+    ],
+    buildBody: (values) => ({
+      beanId: "customerServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "registerCustomerFull",
+      args: [
+        {
+          "0": {
+            sellerType: values.sellerType,
+            companyName: `${values.firstName} ${values.lastName} (${values.email})`,
+            profiles: [
+              {
+                firstName: values.firstName,
+                lastName: values.lastName,
+                emailAddress: values.email,
+                user: {
+                  username: values.email,
+                  password: values.password,
+                },
+              },
+            ],
+          },
+        },
+      ],
+    }),
+  },
+  {
+    id: "auth-bean-send-verification",
+    tag: "Код из письма",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "1. sendVerificationEmail — выслать код",
+    description: "auth-api.sendVerificationEmail. Старт подтверждения email.",
+    headers: CMS_HEADERS,
+    params: [emailParam],
+    buildBody: (values) => ({
+      beanId: "customerServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "sendVerificationEmail",
+      args: [{ "0": { id: "", username: values.email } }],
+    }),
+  },
+  {
+    id: "auth-bean-validate-verification-token",
+    tag: "Код из письма",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "2. validateVerificationToken — проверить код",
+    description:
+      "auth-api.validateVerificationToken. Есть в api, из UI сейчас не вызывается.",
+    headers: CMS_HEADERS,
+    params: [
+      {
+        name: "token",
+        label: "token",
+        defaultValue: "123456",
+      },
+    ],
+    buildBody: (values) => ({
+      beanId: "customerServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "validateVerificationToken",
+      args: [{ "0": values.token }],
+    }),
+  },
+  {
+    id: "auth-verify",
+    tag: "Код из письма",
+    method: "POST",
+    path: `${apiRoot}/auth/verify`,
+    summary: "3. verifyEmail — подтвердить и активировать",
+    description:
+      "auth-api.verifyEmail. Конец флоу кода: аккаунт становится active.",
+    headers: CMS_HEADERS,
+    params: [
+      emailParam,
+      {
+        name: "token",
+        label: "token (код)",
+        defaultValue: "123456",
+      },
+    ],
+    buildBody: (values) => ({
+      token: values.token,
+      username: values.email,
+    }),
+  },
   {
     id: "cms-playlists-products",
     tag: "CMS Playlists",
@@ -573,7 +808,7 @@ function ApiSwaggerExplorer() {
           </h1>
           <p className="truncate text-[12px] text-white/70">
             Все HTTP-запросы приложения · base{" "}
-            <code className="rounded bg-white/10 px-1">{beanBase}</code>
+            <code className="rounded bg-white/10 px-1">{apiRoot}</code>
           </p>
         </div>
       </header>
@@ -587,8 +822,8 @@ function ApiSwaggerExplorer() {
             Music Store API
           </h2>
           <p className="mb-3 max-w-[720px] text-[14px] leading-relaxed">
-            Интерактивный каталог запросов. Parameters собираются в JSON body
-            как в приложении. Режим:{" "}
+            Auth, плейлисты CMS и каталог треков. Логин / регистрация / код из
+            письма; затем CMS Playlists 1→2→3 и Tracks / Filters. Режим:{" "}
             <strong>{isLiveApiBase ? "живой CMS" : "MSW / localhost"}</strong>
             {isLiveApiBase
               ? " — MSW для этой story отключён, fetch идёт на VITE_API_BASE_URL."
@@ -624,7 +859,7 @@ function ApiSwaggerExplorer() {
                 className="rounded px-1.5 py-0.5"
                 style={{ background: "#f0f0f0" }}
               >
-                {beanBase}
+                {apiRoot}
               </code>
             </div>
           </div>
@@ -734,7 +969,7 @@ function ApiSwaggerExplorer() {
                                   className="border-b text-left"
                                   style={{ borderColor: "#d8dde7" }}
                                 >
-                                  <th className="w-[140px] py-1 pr-3 font-semibold">
+                                  <th className="py-1 pr-3 font-semibold">
                                     Name
                                   </th>
                                   <th className="py-1 pr-3 font-semibold">
@@ -931,7 +1166,6 @@ const meta = {
   component: ApiSwaggerExplorer,
   parameters: {
     layout: "fullscreen",
-    // При абсолютном VITE_API_BASE_URL не перехватываем bean/request моками.
     msw: {
       handlers: isLiveApiBase ? [] : handlers,
     },
