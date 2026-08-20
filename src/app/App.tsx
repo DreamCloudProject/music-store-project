@@ -1,4 +1,4 @@
-import type { InfiniteData } from "@tanstack/react-query";
+﻿import type { InfiniteData } from "@tanstack/react-query";
 import {
   useInfiniteQuery,
   useQuery,
@@ -18,8 +18,8 @@ import { z } from "zod";
 import { LogoutButton } from "@/features/auth";
 import { chunkList } from "@/shared/lib";
 import { HeaderSearch } from "@/widgets/header-search";
+import { PlayerBar, type PlayerBarTrack } from "@/widgets/player-bar";
 import { AppMobileNav, AppSidebar } from "@/widgets/sidebar";
-import { PlayerBar } from "@/widgets/player-bar";
 import { TracksFiltersPanel } from "@/widgets/tracks-filters";
 
 import {
@@ -63,6 +63,16 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
           }),
         )
         .optional(),
+      documentURLs: z
+        .array(
+          z.looseObject({
+            url: z.string(),
+            name: z.string().optional(),
+            type: z.string().optional(),
+          }),
+        )
+        .optional(),
+      imageURLs: z.array(z.string()).optional(),
     }),
   );
 }
@@ -70,6 +80,7 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
 function App() {
   const queryClient = useQueryClient();
   const [skipCatalog, setSkipCatalog] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState<PlayerBarTrack | null>(null);
   const { search: urlSearch, artists, genres, year } = useSearch({ from: "/" });
   const params = useMemo((): TracksUiParams => {
     const search = urlSearch.trim();
@@ -116,8 +127,9 @@ function App() {
     staleTime: tracksCatalogCacheTtlMs,
     gcTime: tracksCatalogCacheTtlMs,
     initialPageParam: 0,
-    select: (infinite) =>
-      z
+    select: (infinite) => {
+      const items = infinite.pages.flatMap((p) => p.items);
+      return z
         .array(
           z
             .looseObject({
@@ -132,6 +144,16 @@ function App() {
                   }),
                 )
                 .optional(),
+              documentURLs: z
+                .array(
+                  z.looseObject({
+                    url: z.string(),
+                    name: z.string().optional(),
+                    type: z.string().optional(),
+                  }),
+                )
+                .optional(),
+              imageURLs: z.array(z.string()).optional(),
             })
             .transform((item) => {
               const searchTerms = item.searchTerms?.trim() ?? "";
@@ -146,15 +168,35 @@ function App() {
                 item.attributeValues
                   ?.find((av) => av.attributeId === attributeId)
                   ?.value?.trim() ?? "";
+              const toAbs = (raw?: string) => {
+                const url = raw?.trim();
+                if (!url) return undefined;
+                if (/^https?:\/\//i.test(url)) return url;
+                return new URL(
+                  url.startsWith("/") ? url : `/${url}`,
+                  `${new URL(String(import.meta.env.VITE_API_BASE_URL), location.origin).origin}/`,
+                ).href;
+              };
+              const audioUrl = toAbs(
+                (
+                  item.documentURLs?.find((doc) =>
+                    /\.mp3(?:[?#]|$)/i.test(`${doc.url} ${doc.name ?? ""}`),
+                  ) ?? item.documentURLs?.[0]
+                )?.url,
+              );
+              const coverUrl = toAbs(item.imageURLs?.[0]);
               return {
                 id: item.id,
                 title,
                 artist: attributeValue("artist"),
                 album: attributeValue("album"),
+                ...(audioUrl ? { audioUrl } : {}),
+                ...(coverUrl ? { coverUrl } : {}),
               };
             }),
         )
-        .parse(infinite.pages.flatMap((p) => p.items)),
+        .parse(items);
+    },
     queryFn: async ({ pageParam }) => {
       const catalogState = queryClient.getQueryState([
         "tracks",
@@ -278,17 +320,41 @@ function App() {
             {!isPending && !isError ? (
               <div className="mt-6">
                 <ul className="space-y-2 pb-4">
-                  {tracks.map((track) => (
-                    <li
-                      key={track.id}
-                      className="rounded-xl border border-white/10 bg-white/5 p-4"
-                    >
-                      <p className="font-semibold">{track.title}</p>
-                      <p className="mt-1 text-sm text-white/60">
-                        {track.artist} · {track.album}
-                      </p>
-                    </li>
-                  ))}
+                  {tracks.map((track) => {
+                    const active = currentTrack?.id === track.id;
+                    return (
+                      <li key={track.id}>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setCurrentTrack({
+                              id: track.id,
+                              title: track.title,
+                              artist: track.artist,
+                              ...(track.audioUrl
+                                ? { audioUrl: track.audioUrl }
+                                : {}),
+                              ...(track.coverUrl
+                                ? { coverUrl: track.coverUrl }
+                                : {}),
+                            })
+                          }
+                          aria-pressed={active}
+                          aria-label={`Играть ${track.title} — ${track.artist}`}
+                          className={
+                            active
+                              ? "w-full cursor-pointer rounded-xl border border-white/40 bg-white/10 p-4 text-left"
+                              : "w-full cursor-pointer rounded-xl border border-white/10 bg-white/5 p-4 text-left hover:border-white/25"
+                          }
+                        >
+                          <p className="font-semibold">{track.title}</p>
+                          <p className="mt-1 text-sm text-white/60">
+                            {track.artist} · {track.album}
+                          </p>
+                        </button>
+                      </li>
+                    );
+                  })}
                 </ul>
                 <div ref={sentinelRef} className="h-4 shrink-0" aria-hidden />
                 {isFetchingNextPage ? (
@@ -299,7 +365,17 @@ function App() {
           </section>
         </div>
 
-        <PlayerBar />
+        <PlayerBar
+          track={currentTrack ?? undefined}
+          queue={tracks.map((track) => ({
+            id: track.id,
+            title: track.title,
+            artist: track.artist,
+            ...(track.audioUrl ? { audioUrl: track.audioUrl } : {}),
+            ...(track.coverUrl ? { coverUrl: track.coverUrl } : {}),
+          }))}
+          onTrackChange={setCurrentTrack}
+        />
       </main>
     </div>
   );

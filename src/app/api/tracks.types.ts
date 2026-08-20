@@ -35,6 +35,7 @@ export interface CmsSellerSkuItem {
   productsRef?: { id: string; name: string }[];
   attributeValues?: CmsAttributeValue[];
   documentURLs?: { url: string; name?: string; type?: string }[];
+  imageURLs?: string[];
   publishedForSale?: boolean;
 }
 
@@ -75,4 +76,6 @@ export interface TrackListItem {
   title: string;
   artist: string;
   album: string;
+  audioUrl?: string;
+  coverUrl?: string;
 }
