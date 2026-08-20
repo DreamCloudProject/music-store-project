@@ -1,5 +1,17 @@
 import { expect, test } from "@playwright/test";
 
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      "mastermindcms-auth-session",
+      JSON.stringify({
+        token: "msw-token:demo@music.store",
+        username: "demo@music.store",
+      }),
+    );
+  });
+});
+
 test("updates the URL when submitting search", async ({ page }) => {
   await page.goto("/");
 
