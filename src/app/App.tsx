@@ -27,6 +27,7 @@ import { TracksFiltersPanel } from "@/widgets/tracks-filters";
 import {
   fetchTracksCatalogAll,
   fetchTracksPage,
+  readCachedTracksCatalog,
   tracksCatalogCacheTtlMs,
 } from "./api/tracks.api";
 import type {
@@ -67,8 +68,16 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
           }),
         )
         .optional(),
+      documentURLs: z
+        .array(
+          z.looseObject({
+            url: z.string(),
+            name: z.string().optional(),
+            type: z.string().optional(),
+          }),
+        )
+        .optional(),
       imageURLs: z.array(z.string()).optional(),
-      documentURLs: z.array(z.looseObject({ url: z.string() })).optional(),
     }),
   );
 }
@@ -76,9 +85,7 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
 function App() {
   const queryClient = useQueryClient();
   const [skipCatalog, setSkipCatalog] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState<
-    (PlayerBarTrack & { id: string }) | null
-  >(null);
+  const [currentTrack, setCurrentTrack] = useState<PlayerBarTrack | null>(null);
   const { playlistId } = useParams({ strict: false }) as {
     playlistId?: string;
   };
@@ -128,8 +135,11 @@ function App() {
     queryKey: ["tracks", "catalog-full"],
     enabled: !skipCatalog,
     retry: false,
-    queryFn: async () => fetchTracksCatalogAll(),
-    staleTime: tracksCatalogCacheTtlMs,
+    queryFn: fetchTracksCatalogAll,
+    placeholderData: () => readCachedTracksCatalog() ?? undefined,
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
     gcTime: tracksCatalogCacheTtlMs,
   });
 
@@ -161,7 +171,9 @@ function App() {
     number
   >({
     queryKey: ["tracks", "paged", params],
-    staleTime: tracksCatalogCacheTtlMs,
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
     gcTime: tracksCatalogCacheTtlMs,
     initialPageParam: 0,
     select: (infinite) =>
@@ -257,13 +269,7 @@ function App() {
   return (
     <div className="flex min-h-screen bg-app-bg text-fg">
       <AppSidebar />
-      <main
-        className={
-          currentTrack
-            ? "min-w-0 flex-1 px-4 pb-[85px] pt-[23px] md:px-9"
-            : "min-w-0 flex-1 px-4 pb-4 pt-[23px] md:px-9"
-        }
-      >
+      <main className="min-w-0 flex-1 px-4 pb-[85px] pt-[23px] md:px-9">
         <header className="mb-[50px] flex items-center gap-4">
           <div className="min-w-0 flex-1">
             <AppMobileNav />
@@ -355,7 +361,12 @@ function App() {
                               id: track.id,
                               title: track.title,
                               artist: track.artist,
-                              coverUrl: track.coverUrl,
+                              ...(track.audioUrl
+                                ? { audioUrl: track.audioUrl }
+                                : {}),
+                              ...(track.coverUrl
+                                ? { coverUrl: track.coverUrl }
+                                : {}),
                             })
                           }
                           aria-pressed={active}
@@ -385,8 +396,20 @@ function App() {
 
           {showPlaylists ? <PlaylistsPanel layout="desktop" /> : null}
         </div>
+
+        <PlayerBar
+          track={currentTrack ?? undefined}
+          queue={tracks.map((track) => ({
+            id: track.id,
+            title: track.title,
+            artist: track.artist,
+            ...(track.audioUrl ? { audioUrl: track.audioUrl } : {}),
+            ...(track.coverUrl ? { coverUrl: track.coverUrl } : {}),
+          }))}
+          onTrackChange={setCurrentTrack}
+          onDismiss={() => setCurrentTrack(null)}
+        />
       </main>
-      {currentTrack ? <PlayerBar track={currentTrack} /> : null}
     </div>
   );
 }

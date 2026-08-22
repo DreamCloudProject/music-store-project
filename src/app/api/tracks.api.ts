@@ -40,8 +40,6 @@ const cmsSellerSkuItemSchema = z.looseObject({
   createdDate: z.number().optional(),
   lastModifiedDate: z.number().optional(),
   embeddedSku: z.looseObject({ id: z.string() }).nullish(),
-  imageURLs: z.array(z.string()).optional(),
-  documentURLs: z.array(z.looseObject({ url: z.string() })).optional(),
   attributeValues: z
     .array(
       z.object({
@@ -51,6 +49,16 @@ const cmsSellerSkuItemSchema = z.looseObject({
       }),
     )
     .optional(),
+  documentURLs: z
+    .array(
+      z.looseObject({
+        url: z.string(),
+        name: z.string().optional(),
+        type: z.string().optional(),
+      }),
+    )
+    .optional(),
+  imageURLs: z.array(z.string()).optional(),
 });
 
 const catalogStorageSchema = z.object({
@@ -59,10 +67,10 @@ const catalogStorageSchema = z.object({
 });
 
 function catalogStorageKey(): string {
-  return `music-store:catalog:${import.meta.env.VITE_API_BASE_URL}`;
+  return `music-store:catalog:docs:${import.meta.env.VITE_API_BASE_URL}`;
 }
 
-function readCachedTracksCatalog(): CmsSellerSkuItem[] | null {
+export function readCachedTracksCatalog(): CmsSellerSkuItem[] | null {
   try {
     const raw = localStorage.getItem(catalogStorageKey());
     if (!raw) return null;
@@ -221,9 +229,6 @@ export async function fetchTracksPage(
 }
 
 export async function fetchTracksCatalogAll(): Promise<CmsSellerSkuItem[]> {
-  const cached = readCachedTracksCatalog();
-  if (cached) return cached;
-
   const filters = tracksSearchFiltersSchema.parse({});
   const page = await postTracksSearch(buildCmsSearchArgs(filters));
   writeCachedTracksCatalog(page.items);
