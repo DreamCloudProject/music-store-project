@@ -8,6 +8,15 @@ const cmsTrackSchema = z
     name: z.string().nullish(),
     searchTerms: z.string().optional(),
     imageURLs: z.array(z.string()).optional(),
+    documentURLs: z
+      .array(
+        z.looseObject({
+          url: z.string(),
+          name: z.string().optional(),
+          type: z.string().optional(),
+        }),
+      )
+      .optional(),
     favorite: z.boolean().optional(),
     attributeValues: z
       .array(
@@ -29,7 +38,23 @@ const cmsTrackSchema = z
       item.attributeValues
         ?.find((av) => av.attributeId === attributeId)
         ?.value?.trim() ?? "";
-    const coverUrl = item.imageURLs?.find((url) => url.trim())?.trim();
+    const toAbs = (raw?: string) => {
+      const url = raw?.trim();
+      if (!url) return undefined;
+      if (/^https?:\/\//i.test(url)) return url;
+      return new URL(
+        url.startsWith("/") ? url : `/${url}`,
+        `${new URL(String(import.meta.env.VITE_API_BASE_URL), location.origin).origin}/`,
+      ).href;
+    };
+    const coverUrl = toAbs(item.imageURLs?.find((url) => url.trim()));
+    const audioUrl = toAbs(
+      (
+        item.documentURLs?.find((doc) =>
+          /\.mp3(?:[?#]|$)/i.test(`${doc.url} ${doc.name ?? ""}`),
+        ) ?? item.documentURLs?.[0]
+      )?.url,
+    );
     const durationRaw = attributeValue("duration");
     const favoriteAttr = attributeValue("favorite");
     return {
@@ -42,6 +67,7 @@ const cmsTrackSchema = z
         favoriteAttr === "true" ||
         favoriteAttr === "1",
       ...(coverUrl ? { coverUrl } : {}),
+      ...(audioUrl ? { audioUrl } : {}),
       ...(durationRaw ? { duration: durationRaw } : {}),
     } satisfies Track;
   });

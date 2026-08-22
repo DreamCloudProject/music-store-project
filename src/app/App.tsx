@@ -1,10 +1,10 @@
-import type { InfiniteData } from "@tanstack/react-query";
+﻿import type { InfiniteData } from "@tanstack/react-query";
 import {
   useInfiniteQuery,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useRouter, useSearch } from "@tanstack/react-router";
+import { useSearch } from "@tanstack/react-router";
 import {
   startTransition,
   useCallback,
@@ -16,16 +16,18 @@ import { useInView } from "react-intersection-observer";
 import { z } from "zod";
 
 import { mapCmsTracks, type Track } from "@/entities/track";
-import { logout, useAuthStore } from "@/features/auth";
+import { LogoutButton } from "@/features/auth";
 import { chunkList } from "@/shared/lib";
 import { HeaderSearch } from "@/widgets/header-search";
-import { PlayerBar } from "@/widgets/player-bar";
+import { PlayerBar, type PlayerBarTrack } from "@/widgets/player-bar";
+import { AppMobileNav, AppSidebar } from "@/widgets/sidebar";
 import { TracksFiltersPanel } from "@/widgets/tracks-filters";
 import { TracksTable } from "@/widgets/tracks-table";
 
 import {
   fetchTracksCatalogAll,
   fetchTracksPage,
+  readCachedTracksCatalog,
   tracksCatalogCacheTtlMs,
 } from "./api/tracks.api";
 import type {
@@ -63,32 +65,40 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
           }),
         )
         .optional(),
+      favorite: z.boolean().optional(),
+      documentURLs: z
+        .array(
+          z.looseObject({
+            url: z.string(),
+            name: z.string().optional(),
+            type: z.string().optional(),
+          }),
+        )
+        .optional(),
+      imageURLs: z.array(z.string()).optional(),
     }),
   );
 }
 
 function App() {
-  const router = useRouter();
   const queryClient = useQueryClient();
   const [skipCatalog, setSkipCatalog] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState<PlayerBarTrack | null>(null);
   const { search: urlSearch, artists, genres, year } = useSearch({ from: "/" });
   const params = useMemo((): TracksUiParams => {
     const search = urlSearch.trim();
     return { artists, genres, search, year };
   }, [artists, genres, urlSearch, year]);
 
-  const handleLogout = async () => {
-    await logout();
-    useAuthStore.getState().clearSession();
-    router.invalidate();
-  };
-
   const catalogQuery = useQuery({
     queryKey: ["tracks", "catalog-full"],
     enabled: !skipCatalog,
     retry: false,
-    queryFn: async () => fetchTracksCatalogAll(),
-    staleTime: tracksCatalogCacheTtlMs,
+    queryFn: fetchTracksCatalogAll,
+    placeholderData: () => readCachedTracksCatalog() ?? undefined,
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
     gcTime: tracksCatalogCacheTtlMs,
   });
 
@@ -120,7 +130,9 @@ function App() {
     number
   >({
     queryKey: ["tracks", "paged", params],
-    staleTime: tracksCatalogCacheTtlMs,
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
     gcTime: tracksCatalogCacheTtlMs,
     initialPageParam: 0,
     select: (infinite) => mapCmsTracks(infinite.pages.flatMap((p) => p.items)),
@@ -210,56 +222,64 @@ function App() {
   }, [tracks, fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <main className="min-h-screen bg-[#181818] pb-[77px] text-white">
-      <div className="mx-auto w-full max-w-[1240px] px-6 py-10">
-        <header className="mb-[37px] flex items-center justify-between gap-4">
-          <div className="w-full">
-            <HeaderSearch />
-          </div>
-          <img
-            className="h-10 w-10 shrink-0 cursor-pointer scale-100 transition duration-200 active:scale-95"
-            src="/assets/log-out.png"
-            alt="log-out"
-            onClick={() => {
-              void handleLogout();
-            }}
-          />
-        </header>
-
-        <section>
-          <h1 className="mb-[49px] text-[3rem] font-semibold leading-[64px]">
-            Треки
-          </h1>
-
-          <div>
-            <TracksFiltersPanel />
-          </div>
-
-          {isError ? (
-            <p className="mt-6 text-red-500">
-              Не удалось загрузить треки
-              {error instanceof Error ? `: ${error.message}` : ""}
-            </p>
-          ) : null}
-          {!isError && isFetching && !isFetchingNextPage && !isPending ? (
-            <p className="mt-2 text-sm text-white/50">Обновление…</p>
-          ) : null}
-
-          {!isError ? (
-            <div className="mt-6">
-              <TracksTable
-                tracks={tracks}
-                isPending={isPending}
-                isFetchingNextPage={isFetchingNextPage}
-                sentinelRef={sentinelRef}
-              />
+    <div className="flex min-h-screen bg-app-bg text-fg">
+      <AppSidebar />
+      <main className="min-h-screen min-w-0 flex-1 bg-[#181818] pb-[77px] text-white">
+        <div className="mx-auto w-full max-w-[1240px] px-6 py-10">
+          <header className="mb-[37px] flex items-center justify-between gap-4">
+            <div className="w-full">
+              <AppMobileNav />
+              <HeaderSearch />
             </div>
-          ) : null}
-        </section>
-      </div>
+            <LogoutButton />
+          </header>
 
-      <PlayerBar />
-    </main>
+          <section>
+            <h1 className="mb-[49px] text-[3rem] font-semibold leading-[64px]">
+              Треки
+            </h1>
+
+            <div>
+              <TracksFiltersPanel />
+            </div>
+
+            {isError ? (
+              <p className="mt-6 text-red-500">
+                Не удалось загрузить треки
+                {error instanceof Error ? `: ${error.message}` : ""}
+              </p>
+            ) : null}
+            {!isError && isFetching && !isFetchingNextPage && !isPending ? (
+              <p className="mt-2 text-sm text-white/50">Обновление…</p>
+            ) : null}
+
+            {!isError ? (
+              <div className="mt-6">
+                <TracksTable
+                  tracks={tracks}
+                  isPending={isPending}
+                  isFetchingNextPage={isFetchingNextPage}
+                  sentinelRef={sentinelRef}
+                />
+              </div>
+            ) : null}
+          </section>
+        </div>
+
+        <PlayerBar
+          track={currentTrack ?? undefined}
+          queue={tracks.map((track) => ({
+            id: track.id,
+            title: track.title,
+            artist: track.artist,
+            favorite: track.favorite,
+            ...(track.audioUrl ? { audioUrl: track.audioUrl } : {}),
+            ...(track.coverUrl ? { coverUrl: track.coverUrl } : {}),
+          }))}
+          onTrackChange={setCurrentTrack}
+        />
+      </main>
+    </div>
   );
 }
 

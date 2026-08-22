@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { apiFetch } from "@/features/auth";
+
 import type {
   CmsSellerSkuItem,
   CmsSellerSkuSearchArgs,
@@ -46,6 +48,17 @@ const cmsSellerSkuItemSchema = z.looseObject({
       }),
     )
     .optional(),
+  favorite: z.boolean().optional(),
+  documentURLs: z
+    .array(
+      z.looseObject({
+        url: z.string(),
+        name: z.string().optional(),
+        type: z.string().optional(),
+      }),
+    )
+    .optional(),
+  imageURLs: z.array(z.string()).optional(),
 });
 
 const catalogStorageSchema = z.object({
@@ -54,10 +67,10 @@ const catalogStorageSchema = z.object({
 });
 
 function catalogStorageKey(): string {
-  return `music-store:catalog:${import.meta.env.VITE_API_BASE_URL}`;
+  return `music-store:catalog:docs:${import.meta.env.VITE_API_BASE_URL}`;
 }
 
-function readCachedTracksCatalog(): CmsSellerSkuItem[] | null {
+export function readCachedTracksCatalog(): CmsSellerSkuItem[] | null {
   try {
     const raw = localStorage.getItem(catalogStorageKey());
     if (!raw) return null;
@@ -163,31 +176,30 @@ function parseTracksSearchResponse(
   );
 }
 
-function beanRequestUrl() {
-  return new URL(
-    `${String(import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "")}/bean/request`,
-    location.origin,
-  );
-}
-
 async function postTracksSearch(
   searchArgs: CmsSellerSkuSearchArgs,
   pagination?: { offset: number; limit: number },
 ): Promise<TracksPageResponse> {
-  const response = await fetch(beanRequestUrl(), {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Site-Context": "site",
-      "Lang-Context": "ru",
+  const response = await apiFetch(
+    new URL(
+      `${String(import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "")}/bean/request`,
+      location.origin,
+    ),
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Site-Context": "site",
+        "Lang-Context": "ru",
+      },
+      body: JSON.stringify({
+        beanId: "searchManagerServiceImpl",
+        scope: "PROTOTYPE",
+        functionName: "search",
+        args: [{ "0": searchArgs }],
+      }),
     },
-    body: JSON.stringify({
-      beanId: "searchManagerServiceImpl",
-      scope: "PROTOTYPE",
-      functionName: "search",
-      args: [{ "0": searchArgs }],
-    }),
-  });
+  );
   if (!response.ok) {
     const text = await response.text();
     throw new Error(text || `HTTP ${response.status}`);
@@ -217,9 +229,6 @@ export async function fetchTracksPage(
 }
 
 export async function fetchTracksCatalogAll(): Promise<CmsSellerSkuItem[]> {
-  const cached = readCachedTracksCatalog();
-  if (cached) return cached;
-
   const filters = tracksSearchFiltersSchema.parse({});
   const page = await postTracksSearch(buildCmsSearchArgs(filters));
   writeCachedTracksCatalog(page.items);

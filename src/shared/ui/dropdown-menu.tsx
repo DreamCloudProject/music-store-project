@@ -120,7 +120,7 @@ const DropdownMenuRadioItem = React.forwardRef<
     )}
     {...props}
   >
-    <span className="absolute left-2 flex h-[19px] w-[19px] shrink-0 items-center justify-center rounded-full border border-white">
+    <span className="absolute left-2 flex h-[19px] w-[19px] shrink-0 items-center justify-center rounded-full border border-border-strong">
       <DropdownMenuPrimitive.ItemIndicator className="block h-[11px] w-[11px] shrink-0 rounded-full bg-current" />
     </span>
     {children}

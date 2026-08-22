@@ -4,9 +4,13 @@ interface AuthLayoutProps {
 
 export function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black">
-      <div className="flex w-full max-w-91.5 flex-col items-center gap-7.5 rounded-xl bg-white p-11 pt-7.5">
-        <img className="h-12 w-12" src="/assets/logo.png" alt="logo" />
+    <div className="flex min-h-screen items-center justify-center bg-[#000000d9]">
+      <div className="flex w-full min-w-[366px] max-w-[366px] flex-col items-center rounded-[12px] bg-white px-[41px] pb-[47px] pt-[47px]">
+        <img
+          className="mb-5 h-12 w-12 rounded-[12px]"
+          src="/assets/logo.png"
+          alt="MusicLab"
+        />
         {children}
       </div>
     </div>

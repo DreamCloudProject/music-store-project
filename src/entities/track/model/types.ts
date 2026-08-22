@@ -4,6 +4,7 @@ export interface Track {
   artist: string;
   album: string;
   coverUrl?: string;
+  audioUrl?: string;
   duration?: string;
   favorite: boolean;
 }
