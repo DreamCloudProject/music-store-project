@@ -35,9 +35,32 @@ export function createTestProviders({
     validateSearch: (raw) => searchSchema.parse(raw),
     component: () => <>{children}</>,
   });
+  const signInRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/sign-in",
+    component: () => <>{children}</>,
+  });
+  const signUpRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/sign-up",
+    component: () => <>{children}</>,
+  });
+  const verifyCodeRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/verify-code",
+    validateSearch: (search: Record<string, unknown>) => ({
+      username: String(search.username ?? ""),
+    }),
+    component: () => <>{children}</>,
+  });
   const router = createRouter({
     history: createMemoryHistory({ initialEntries: [initialEntry] }),
-    routeTree: rootRoute.addChildren([indexRoute]),
+    routeTree: rootRoute.addChildren([
+      indexRoute,
+      signInRoute,
+      signUpRoute,
+      verifyCodeRoute,
+    ]),
   });
   const queryClient = new QueryClient({
     defaultOptions: {

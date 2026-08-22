@@ -12,7 +12,7 @@ export function useTrackFiltersQuery() {
   >({
     queryKey: ["track-filters"],
     queryFn: fetchTrackFilters,
-    initialData: {
+    placeholderData: {
       artists: [
         { value: "Ed Sheeran", label: "Ed Sheeran" },
         { value: "Maroon 5", label: "Maroon 5" },
@@ -24,6 +24,8 @@ export function useTrackFiltersQuery() {
       ],
     },
     staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
     gcTime: 1000 * 60 * 5,
   });
 }
