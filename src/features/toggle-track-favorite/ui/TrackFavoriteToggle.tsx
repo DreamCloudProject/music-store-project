@@ -2,7 +2,11 @@ import type { MouseEvent } from "react";
 
 import { cn } from "@/shared/lib";
 
-import { useToggleTrackFavoriteMutation } from "../api/toggle-track-favorite";
+import {
+  useFavoritePulse,
+  useFavoriteSellerSkuIdsQuery,
+  useToggleTrackFavoriteMutation,
+} from "../api/favorite-tracks.query";
 
 export interface TrackFavoriteToggleProps {
   trackId: string;
@@ -16,28 +20,34 @@ export function TrackFavoriteToggle({
   className,
 }: TrackFavoriteToggleProps) {
   const toggleFavorite = useToggleTrackFavoriteMutation();
-  const pending =
-    toggleFavorite.isPending && toggleFavorite.variables?.id === trackId;
+  const { data: favoriteIds } = useFavoriteSellerSkuIdsQuery();
+  const isFavorite = favoriteIds ? favoriteIds.includes(trackId) : favorite;
+  const pulse = useFavoritePulse(trackId);
+  const locked = pulse != null;
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (pending) return;
-    toggleFavorite.mutate({ id: trackId, favorite: !favorite });
+    if (locked) return;
+    toggleFavorite.mutate({ id: trackId, favorite: !isFavorite });
   };
 
   return (
     <button
       type="button"
-      aria-label={favorite ? "Убрать из избранного" : "Добавить в избранное"}
-      aria-pressed={favorite}
-      disabled={pending}
+      aria-label={
+        isFavorite ? "Убрать из избранного" : "Добавить в избранное"
+      }
+      aria-pressed={isFavorite}
+      aria-busy={locked}
+      disabled={locked}
       onClick={handleClick}
-      data-favorite={favorite ? "true" : "false"}
+      data-favorite={isFavorite ? "true" : "false"}
+      {...(pulse ? { "data-pulse": pulse } : {})}
       className={cn(
         "track-fav-toggle flex size-[22px] shrink-0 cursor-pointer items-center justify-center rounded-full bg-transparent p-0",
         "focus-visible:outline-none",
-        "disabled:pointer-events-none disabled:opacity-60",
+        "disabled:pointer-events-none disabled:cursor-wait",
         className,
       )}
     >

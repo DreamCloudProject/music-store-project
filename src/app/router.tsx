@@ -2,7 +2,6 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
-  lazyRouteComponent,
   Outlet,
   parseSearchWith,
   redirect,
@@ -11,11 +10,15 @@ import {
 import { z } from "zod";
 
 import { useAuthStore } from "@/features/auth";
+import { MyTracksPage } from "@/pages/my-tracks";
 import { NotFoundPage } from "@/pages/not-found";
 import { SignInPage } from "@/pages/sign-in";
 import { SignUpPage } from "@/pages/sign-up";
+import { TracksPage } from "@/pages/tracks";
 import { VerifyCodePage } from "@/pages/verify-code";
 import { normalizeString } from "@/shared/lib";
+
+import { StudioLayout } from "./layouts/studio-layout";
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -61,13 +64,19 @@ const verifyCodeRoute = createRoute({
   component: VerifyCodePage,
 });
 
-const indexRoute = createRoute({
+const studioRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/",
+  id: "_studio",
   beforeLoad: () => {
     const session = useAuthStore.getState().session;
     if (!session) throw redirect({ to: "/sign-in" });
   },
+  component: StudioLayout,
+});
+
+const indexRoute = createRoute({
+  getParentRoute: () => studioRoute,
+  path: "/",
   validateSearch: (raw) =>
     z
       .object({
@@ -112,7 +121,27 @@ const indexRoute = createRoute({
       })
       .strip()
       .parse(raw),
-  component: lazyRouteComponent(() => import("./App")),
+  component: TracksPage,
+});
+
+const myTracksRoute = createRoute({
+  getParentRoute: () => studioRoute,
+  path: "/my-tracks",
+  validateSearch: (raw) =>
+    z
+      .object({
+        search: z
+          .union([
+            z.undefined().transform(() => ""),
+            z.null().transform(() => ""),
+            z.string(),
+          ])
+          .optional()
+          .default(""),
+      })
+      .strip()
+      .parse(raw),
+  component: MyTracksPage,
 });
 
 export const router = createRouter({
@@ -122,7 +151,7 @@ export const router = createRouter({
     signInRoute,
     signUpRoute,
     verifyCodeRoute,
-    indexRoute,
+    studioRoute.addChildren([indexRoute, myTracksRoute]),
   ]),
   parseSearch: parseSearchWith(JSON.parse),
   stringifySearch: (search) =>
@@ -169,6 +198,7 @@ export const router = createRouter({
     ),
 });
 
+/** Сброс сессии (logout / apiFetch) → beforeLoad защищённых маршрутов уводит на /sign-in. */
 useAuthStore.subscribe((state, prev) => {
   if (state.session === prev.session) return;
   void router.invalidate();

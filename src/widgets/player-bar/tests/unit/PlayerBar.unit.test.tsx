@@ -1,5 +1,7 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { ReactElement } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PlayerBar, type PlayerBarTrack } from "../../";
@@ -22,13 +24,25 @@ type MockAudio = {
 };
 
 const queue: PlayerBarTrack[] = [
-  { id: "1", title: "Трек один", artist: "Артист А" },
-  { id: "2", title: "Трек два", artist: "Артист Б" },
-  { id: "3", title: "Трек три", artist: "Артист В" },
+  {
+    id: "1",
+    title: "Трек один",
+    artist: "Артист А",
+    audioUrl: "https://cdn.example/1.mp3",
+  },
+  {
+    id: "2",
+    title: "Трек два",
+    artist: "Артист Б",
+    audioUrl: "https://cdn.example/2.mp3",
+  },
+  {
+    id: "3",
+    title: "Трек три",
+    artist: "Артист В",
+    audioUrl: "https://cdn.example/3.mp3",
+  },
 ];
-
-const DEMO_AUDIO_SRC =
-  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
 
 let latestAudio: MockAudio | null = null;
 let endedHandler: ((event: Event) => void) | null = null;
@@ -66,6 +80,25 @@ function createMockAudio(src = ""): MockAudio {
   return audio;
 }
 
+function renderPlayerBar(ui: ReactElement) {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+      mutations: { retry: false },
+    },
+  });
+  const view = render(
+    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>,
+  );
+  return {
+    ...view,
+    rerender: (next: ReactElement) =>
+      view.rerender(
+        <QueryClientProvider client={queryClient}>{next}</QueryClientProvider>,
+      ),
+  };
+}
+
 describe("PlayerBar", () => {
   beforeEach(() => {
     latestAudio = null;
@@ -83,9 +116,21 @@ describe("PlayerBar", () => {
     vi.restoreAllMocks();
   });
 
+  it("renders skeletons instead of a placeholder track", () => {
+    renderPlayerBar(<PlayerBar />);
+
+    expect(screen.getByLabelText("Загрузка трека")).toBeInTheDocument();
+    expect(screen.queryByText("Баста")).not.toBeInTheDocument();
+    expect(screen.queryByText("Ты та...")).not.toBeInTheDocument();
+    expect(latestAudio?.play).not.toHaveBeenCalled();
+    expect(
+      screen.getByRole("button", { name: "Воспроизвести" }),
+    ).toBeDisabled();
+  });
+
   it("starts playback for the current track and toggles pause", async () => {
     const user = userEvent.setup();
-    render(<PlayerBar track={queue[0]!} queue={queue} />);
+    renderPlayerBar(<PlayerBar track={queue[0]!} queue={queue} />);
 
     expect(latestAudio?.play).toHaveBeenCalled();
 
@@ -97,13 +142,13 @@ describe("PlayerBar", () => {
   });
 
   it("applies initial volume to the audio element", () => {
-    render(<PlayerBar track={queue[0]!} queue={queue} />);
+    renderPlayerBar(<PlayerBar track={queue[0]!} queue={queue} />);
     expect(latestAudio?.volume).toBe(0.5);
   });
 
   it("updates audio volume from the desktop slider keyboard", async () => {
     const user = userEvent.setup();
-    render(<PlayerBar track={queue[0]!} queue={queue} />);
+    renderPlayerBar(<PlayerBar track={queue[0]!} queue={queue} />);
 
     const slider = screen.getByRole("slider", { name: "Громкость" });
     expect(slider).toHaveAttribute("aria-valuenow", "50");
@@ -125,7 +170,7 @@ describe("PlayerBar", () => {
 
   it("opens a vertical volume slider from the mobile control", async () => {
     const user = userEvent.setup();
-    render(<PlayerBar track={queue[0]!} queue={queue} />);
+    renderPlayerBar(<PlayerBar track={queue[0]!} queue={queue} />);
 
     expect(screen.getAllByRole("slider", { name: "Громкость" })).toHaveLength(
       1,
@@ -158,7 +203,7 @@ describe("PlayerBar", () => {
   it("goes to the next and previous track in the queue", async () => {
     const user = userEvent.setup();
     const onTrackChange = vi.fn();
-    const { rerender } = render(
+    const { rerender } = renderPlayerBar(
       <PlayerBar
         track={queue[0]!}
         queue={queue}
@@ -183,22 +228,30 @@ describe("PlayerBar", () => {
     expect(onTrackChange).toHaveBeenCalledWith(queue[0]);
   });
 
-  it("uses track audioUrl and falls back to demo src", () => {
+  it("uses track audioUrl and does not play without it", () => {
     const cmsUrl = "https://music.example/cdn/track.mp3";
-    const { rerender } = render(
+    const { rerender } = renderPlayerBar(
       <PlayerBar track={{ ...queue[0]!, audioUrl: cmsUrl }} queue={queue} />,
     );
     expect(latestAudio?.src).toBe(cmsUrl);
 
-    rerender(<PlayerBar track={queue[1]!} queue={queue} />);
-    expect(latestAudio?.src).toBe(DEMO_AUDIO_SRC);
-    expect(latestAudio?.load).toHaveBeenCalled();
-    expect(latestAudio?.currentTime).toBe(0);
-    expect(latestAudio?.play).toHaveBeenCalled();
+    rerender(
+      <PlayerBar
+        track={{ id: "2", title: "Трек два", artist: "Артист Б" }}
+        queue={queue}
+      />,
+    );
+    expect(latestAudio?.src).toBe("");
+    expect(latestAudio?.pause).toHaveBeenCalled();
+    expect(
+      screen.getByRole("button", { name: "Воспроизвести" }),
+    ).toBeDisabled();
   });
 
   it("restarts audio when the track changes", () => {
-    const { rerender } = render(<PlayerBar track={queue[0]!} queue={queue} />);
+    const { rerender } = renderPlayerBar(
+      <PlayerBar track={queue[0]!} queue={queue} />,
+    );
     if (latestAudio) latestAudio.currentTime = 42;
 
     rerender(<PlayerBar track={queue[1]!} queue={queue} />);
@@ -209,7 +262,7 @@ describe("PlayerBar", () => {
   it("advances on audio ended when repeat is enabled at the end of the list", async () => {
     const user = userEvent.setup();
     const onTrackChange = vi.fn();
-    render(
+    renderPlayerBar(
       <PlayerBar
         track={queue[2]!}
         queue={queue}
@@ -227,7 +280,7 @@ describe("PlayerBar", () => {
 
   it("stops at the end of the list when repeat is off", () => {
     const onTrackChange = vi.fn();
-    render(
+    renderPlayerBar(
       <PlayerBar
         track={queue[2]!}
         queue={queue}
@@ -247,7 +300,9 @@ describe("PlayerBar", () => {
 
   it("dismisses via drag handle and stops audio", () => {
     const onDismiss = vi.fn();
-    render(<PlayerBar track={queue[0]!} queue={queue} onDismiss={onDismiss} />);
+    renderPlayerBar(
+      <PlayerBar track={queue[0]!} queue={queue} onDismiss={onDismiss} />,
+    );
 
     const handle = screen.getByRole("separator", {
       name: "Скрыть плеер — потяните границу вниз",

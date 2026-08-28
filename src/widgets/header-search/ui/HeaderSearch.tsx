@@ -1,12 +1,30 @@
 import { Debouncer } from "@tanstack/pacer";
-import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useMatch, useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState, type SubmitEvent } from "react";
 
 import { SearchField } from "@/shared/ui/search-field";
 
+const emptyCatalogSearch = {
+  search: "",
+  artists: [] as string[],
+  genres: [] as string[],
+  year: undefined as string | undefined,
+};
+
 export function HeaderSearch() {
-  const navigate = useNavigate({ from: "/" });
-  const { search: urlSearch } = useSearch({ from: "/" });
+  const navigate = useNavigate();
+  const catalogMatch = useMatch({ from: "/_studio/", shouldThrow: false });
+  const myTracksMatch = useMatch({
+    from: "/_studio/my-tracks",
+    shouldThrow: false,
+  });
+  const catalogSearch = useSearch({ from: "/_studio/", shouldThrow: false });
+  const myTracksSearch = useSearch({
+    from: "/_studio/my-tracks",
+    shouldThrow: false,
+  });
+  const urlSearch =
+    (myTracksMatch ? myTracksSearch?.search : catalogSearch?.search) ?? "";
   const [search, setSearch] = useState(urlSearch);
   const trimmed = useMemo(() => search.trim(), [search]);
   const lastSearchRef = useRef(urlSearch);
@@ -17,8 +35,21 @@ export function HeaderSearch() {
     debounceRef.current = new Debouncer(
       (value: string) => {
         lastSearchRef.current = value;
+        if (myTracksMatch) {
+          void navigate({
+            to: "/my-tracks",
+            search: { search: value },
+            replace: true,
+          });
+          return;
+        }
         void navigate({
-          search: (prev) => ({ ...prev, search: value }),
+          to: "/",
+          search: {
+            ...emptyCatalogSearch,
+            ...catalogSearch,
+            search: value,
+          },
           replace: true,
         });
       },
@@ -28,7 +59,7 @@ export function HeaderSearch() {
       debounceRef.current?.cancel();
       debounceRef.current = null;
     };
-  }, [navigate]);
+  }, [catalogSearch, myTracksMatch, navigate]);
 
   useEffect(() => {
     if (urlSearch === lastSearchRef.current) return;
@@ -40,22 +71,57 @@ export function HeaderSearch() {
     if (trimmed.length === 0) {
       debounceRef.current?.cancel();
       lastSearchRef.current = "";
+      if (myTracksMatch) {
+        if (!(myTracksSearch?.search ?? "")) return;
+        void navigate({
+          to: "/my-tracks",
+          search: { search: "" },
+          replace: true,
+        });
+        return;
+      }
+      if (!catalogMatch || !(catalogSearch?.search ?? "")) return;
       void navigate({
-        search: (prev) => ({ ...prev, search: "" }),
+        to: "/",
+        search: {
+          ...emptyCatalogSearch,
+          ...catalogSearch,
+          search: "",
+        },
         replace: true,
       });
       return;
     }
     debounceRef.current?.maybeExecute(trimmed);
-  }, [trimmed, navigate]);
+  }, [
+    catalogMatch,
+    catalogSearch,
+    myTracksMatch,
+    myTracksSearch?.search,
+    trimmed,
+    navigate,
+  ]);
 
   const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     debounceRef.current?.cancel();
     lastSearchRef.current = search.trim();
     setSearch(lastSearchRef.current);
+    if (myTracksMatch) {
+      void navigate({
+        to: "/my-tracks",
+        search: { search: lastSearchRef.current },
+        replace: false,
+      });
+      return;
+    }
     void navigate({
-      search: (prev) => ({ ...prev, search: lastSearchRef.current }),
+      to: "/",
+      search: {
+        ...emptyCatalogSearch,
+        ...catalogSearch,
+        search: lastSearchRef.current,
+      },
       replace: false,
     });
   };

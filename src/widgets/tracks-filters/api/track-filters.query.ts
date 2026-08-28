@@ -23,9 +23,8 @@ export function useTrackFiltersQuery() {
         { value: "older", label: "Более старые" },
       ],
     },
-    staleTime: 0,
-    refetchOnMount: "always",
-    refetchOnWindowFocus: true,
-    gcTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    gcTime: 1000 * 60 * 30,
   });
 }

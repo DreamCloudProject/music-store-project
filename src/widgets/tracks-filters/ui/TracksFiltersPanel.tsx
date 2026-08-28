@@ -14,13 +14,14 @@ export function TracksFiltersPanel({
   label = "Искать по:",
   className,
 }: TracksFiltersPanelProps) {
-  const navigate = useNavigate({ from: "/" });
+  const navigate = useNavigate();
   const {
+    search: urlSearch,
     artists: selectedArtists,
     genres: selectedGenres,
     year: selectedYear,
   } = useSearch({
-    from: "/",
+    from: "/_studio/",
   });
 
   const { data: { artists = [], genres = [], years = [] } = {} } =
@@ -42,10 +43,13 @@ export function TracksFiltersPanel({
           selected={selectedArtists}
           onSelectedChange={(next) =>
             void navigate({
-              search: (prev) => ({
-                ...prev,
+              to: "/",
+              search: {
+                search: urlSearch,
                 artists: next,
-              }),
+                genres: selectedGenres,
+                year: selectedYear,
+              },
               replace: true,
             })
           }
@@ -63,10 +67,13 @@ export function TracksFiltersPanel({
           value={selectedYear}
           onValueChange={(next) =>
             void navigate({
-              search: (prev) => ({
-                ...prev,
+              to: "/",
+              search: {
+                search: urlSearch,
+                artists: selectedArtists,
+                genres: selectedGenres,
                 year: next,
-              }),
+              },
               replace: true,
             })
           }
@@ -80,10 +87,13 @@ export function TracksFiltersPanel({
           selected={selectedGenres}
           onSelectedChange={(next) =>
             void navigate({
-              search: (prev) => ({
-                ...prev,
+              to: "/",
+              search: {
+                search: urlSearch,
+                artists: selectedArtists,
                 genres: next,
-              }),
+                year: selectedYear,
+              },
               replace: true,
             })
           }

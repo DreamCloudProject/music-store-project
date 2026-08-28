@@ -1,19 +1,52 @@
 import { http, HttpResponse } from "msw";
 import { z } from "zod";
 
-import { parseTracksRequestBody } from "../../api/tracks.api";
-import type {
-  CmsSearchResultPayload,
-  CmsSellerSkuItem,
-} from "../../api/tracks.types";
-import { filterTracksForUi } from "../../lib/filter-tracks-for-ui";
+import {
+  filterTracksForUi,
+  parseTracksRequestBody,
+  type CmsSearchResultPayload,
+  type CmsSellerSkuItem,
+} from "@/widgets/tracks-catalog";
 import {
   authHttpHandlers,
   handleAuthBean,
+  requestUserEmail,
   unauthorizedIfInvalidBearer,
 } from "../../tests/mocks/auth.handlers";
 
-const favoriteIds = new Set<string>();
+const favoritesByUser = new Map<string, Set<string>>();
+
+function persistFavorites() {
+  if (import.meta.env.MODE === "test") return;
+  if (typeof sessionStorage === "undefined") return;
+  sessionStorage.setItem(
+    "msw-favorites",
+    JSON.stringify(
+      [...favoritesByUser.entries()].map(([email, ids]) => [email, [...ids]]),
+    ),
+  );
+}
+
+(() => {
+  if (import.meta.env.MODE === "test") return;
+  if (typeof sessionStorage === "undefined") return;
+  const stored = z
+    .array(z.tuple([z.string(), z.array(z.string())]))
+    .safeParse(JSON.parse(sessionStorage.getItem("msw-favorites") ?? "[]"))
+    .data;
+  for (const [email, ids] of stored ?? []) {
+    favoritesByUser.set(email, new Set(ids));
+  }
+})();
+
+function favoriteIdsFor(request: Request) {
+  const email = requestUserEmail(request) ?? "";
+  const existing = favoritesByUser.get(email);
+  if (existing) return existing;
+  const created = new Set<string>();
+  favoritesByUser.set(email, created);
+  return created;
+}
 
 async function loadCmsCatalogFromPublic(): Promise<CmsSearchResultPayload> {
   const response = await fetch(
@@ -22,10 +55,28 @@ async function loadCmsCatalogFromPublic(): Promise<CmsSearchResultPayload> {
   return (await response.json()) as CmsSearchResultPayload;
 }
 
-function withFavorite(item: CmsSellerSkuItem): CmsSellerSkuItem {
-  const favorite = favoriteIds.has(item.id);
+function withDemoAudio(item: CmsSellerSkuItem): CmsSellerSkuItem {
+  if (item.documentURLs?.some((doc) => doc.url?.trim())) return item;
+  return {
+    ...item,
+    documentURLs: [
+      {
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        name: "demo.mp3",
+        type: "audio/mpeg",
+      },
+    ],
+  };
+}
+
+function withFavorite(
+  item: CmsSellerSkuItem,
+  favoriteIds: Set<string>,
+): CmsSellerSkuItem {
+  const withAudio = withDemoAudio(item);
+  const favorite = favoriteIds.has(withAudio.id);
   const attributeValues = [
-    ...(item.attributeValues ?? []).filter(
+    ...(withAudio.attributeValues ?? []).filter(
       (av) => av.attributeId !== "favorite",
     ),
     {
@@ -33,14 +84,24 @@ function withFavorite(item: CmsSellerSkuItem): CmsSellerSkuItem {
       value: favorite ? "true" : "false",
     },
   ];
-  return { ...item, favorite, attributeValues };
+  return { ...withAudio, favorite, attributeValues };
 }
 
 function filterAndPaginate(
   cmsPayload: CmsSearchResultPayload,
   parsed: ReturnType<typeof parseTracksRequestBody>,
+  favoriteIds: Set<string>,
 ) {
-  const cmsItems = (cmsPayload.result?.data?.content ?? []).map(withFavorite);
+  let cmsItems = (cmsPayload.result?.data?.content ?? []).map((item) =>
+    withFavorite(item, favoriteIds),
+  );
+  if (parsed.ids?.length) {
+    const byId = new Map(cmsItems.map((item) => [item.id, item]));
+    cmsItems = parsed.ids.flatMap((id) => {
+      const item = byId.get(id);
+      return item ? [item] : [];
+    });
+  }
   const filtered = filterTracksForUi(cmsItems, {
     artists: parsed.artists ?? [],
     genres: parsed.genres ?? [],
@@ -75,6 +136,8 @@ export const handlers = [
     const unauthorized = unauthorizedIfInvalidBearer(request);
     if (unauthorized) return unauthorized;
 
+    const favoriteIds = favoriteIdsFor(request);
+
     const bean = z
       .looseObject({
         functionName: z.string().optional(),
@@ -89,22 +152,35 @@ export const handlers = [
       })
       .safeParse(body).data;
 
-    if (bean?.functionName === "setFavorite") {
-      const id = z.string().safeParse(bean.args?.[0]?.["0"]).data;
-      const favorite = z.boolean().safeParse(bean.args?.[0]?.["1"]).data;
-      if (!id || favorite == null) {
-        return HttpResponse.json({ result: null }, { status: 400 });
-      }
-      if (favorite) favoriteIds.add(id);
-      else favoriteIds.delete(id);
-
+    if (bean?.functionName === "getFavoriteSellerSKUs") {
       const cmsItems =
         (await loadCmsCatalogFromPublic()).result?.data?.content ?? [];
-      const found = cmsItems.find((item) => item.id === id);
-      if (!found) {
-        return HttpResponse.json({ result: null }, { status: 404 });
+      const byId = new Map(cmsItems.map((item) => [item.id, item]));
+      return HttpResponse.json({
+        result: [...favoriteIds].map((id) =>
+          withFavorite(byId.get(id) ?? { id }, favoriteIds),
+        ),
+      });
+    }
+
+    if (bean?.functionName === "addFavoriteSellerSKU") {
+      const id = z.string().safeParse(bean.args?.[0]?.["0"]).data;
+      if (!id) {
+        return HttpResponse.json({ result: null }, { status: 400 });
       }
-      return HttpResponse.json({ result: withFavorite(found) });
+      favoriteIds.add(id);
+      persistFavorites();
+      return HttpResponse.json({ result: [...favoriteIds] });
+    }
+
+    if (bean?.functionName === "removeFavoriteSellerSKU") {
+      const id = z.string().safeParse(bean.args?.[0]?.["0"]).data;
+      if (!id) {
+        return HttpResponse.json({ result: null }, { status: 400 });
+      }
+      favoriteIds.delete(id);
+      persistFavorites();
+      return HttpResponse.json({ result: null });
     }
 
     if (
@@ -208,6 +284,7 @@ export const handlers = [
     const { content, totalElements, nextOffset } = filterAndPaginate(
       cmsPayload,
       parsed,
+      favoriteIds,
     );
 
     return HttpResponse.json({

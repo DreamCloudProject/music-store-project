@@ -14,10 +14,10 @@ export default defineConfig([
       "**/*.test.tsx",
       "**/*.stories.ts",
       "**/*.stories.tsx",
-      "**/tests/setup.ts",
-      "**/tests/e2e/**",
-      "**/tests/mocks/**",
+      "**/tests/**",
     ],
+  },
+  {
     rules: {
       "fsd/insignificant-slice": "off",
     },

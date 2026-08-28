@@ -6,7 +6,7 @@ import type {
   CmsSellerSkuItem,
   CmsSellerSkuSearchArgs,
   TracksPageResponse,
-} from "../api/tracks.types";
+} from "./tracks.types";
 
 interface FetchTracksFilters {
   search?: string;
@@ -22,6 +22,7 @@ export interface FetchTracksPageInput extends FetchTracksFilters {
 
 export interface ParsedTracksRequest extends FetchTracksPageInput {
   catalogAll: boolean;
+  ids?: string[];
 }
 
 const tracksSearchFiltersSchema = z.object({
@@ -235,6 +236,27 @@ export async function fetchTracksCatalogAll(): Promise<CmsSellerSkuItem[]> {
   return page.items;
 }
 
+export async function fetchTracksByIds(
+  ids: string[],
+): Promise<TracksPageResponse> {
+  const unique = [...new Set(ids.filter(Boolean))];
+  if (!unique.length) return { items: [], nextOffset: null };
+  return postTracksSearch({
+    type: "SellerSKU",
+    query: {
+      isPublishedForSale: true,
+      id: unique.join("|"),
+    },
+    ignoreRegexWrap: [
+      "name",
+      "embeddedSku",
+      "productsRef",
+      "isPublishedForSale",
+    ],
+    filteringStrategy: "INCLUDE",
+  });
+}
+
 /** Разбор тела POST bean `searchManagerServiceImpl` — для MSW и тестов. */
 export function parseTracksRequestBody(body: unknown): ParsedTracksRequest {
   const defaults: ParsedTracksRequest = {
@@ -261,6 +283,7 @@ export function parseTracksRequestBody(body: unknown): ParsedTracksRequest {
                     .looseObject({
                       artist: z.string().optional(),
                       genre: z.string().optional(),
+                      id: z.string().optional(),
                     })
                     .optional(),
                 })
@@ -287,6 +310,7 @@ export function parseTracksRequestBody(body: unknown): ParsedTracksRequest {
           search: inner.searchTerm,
           artists: splitPipe(inner.query?.artist),
           genres: splitPipe(inner.query?.genre),
+          ids: splitPipe(inner.query?.id),
           year:
             inner.sortDirection === "ASC"
               ? "older"

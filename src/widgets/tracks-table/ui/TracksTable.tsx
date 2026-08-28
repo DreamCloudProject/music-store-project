@@ -1,9 +1,10 @@
 import { Clock } from "lucide-react";
-import { useState, type Ref } from "react";
+import { useState, type KeyboardEvent, type Ref } from "react";
 
 import type { Track } from "@/entities/track";
 import { TrackFavoriteToggle } from "@/features/toggle-track-favorite";
 import { cn } from "@/shared/lib";
+import { Skeleton } from "@/shared/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -17,6 +18,8 @@ export interface TracksTableProps {
   tracks: Track[];
   isPending?: boolean;
   isFetchingNextPage?: boolean;
+  activeTrackId?: string;
+  onTrackSelect?: (track: Track) => void;
   sentinelRef?: Ref<HTMLDivElement>;
   className?: string;
 }
@@ -71,32 +74,38 @@ function TrackCover({ coverUrl }: { coverUrl?: string }) {
 
 function SkeletonRow() {
   return (
-    <TableRow className="cursor-default border-0 hover:bg-transparent">
+    <TableRow className="contents cursor-default border-0 hover:bg-transparent">
       <TableCell className="flex items-center gap-[17px] border-0 p-0">
-        <div className="size-[51px] shrink-0 bg-[#313131]" aria-hidden />
-        <span
-          className="h-3 max-w-[50%] flex-1 rounded-sm bg-[#313131]"
+        <Skeleton
+          className="size-[51px] shrink-0 rounded-[2px] bg-[#313131]"
+          aria-hidden
+        />
+        <Skeleton
+          className="h-[18px] max-w-[50%] flex-1 rounded-[2px] bg-[#313131]"
           aria-hidden
         />
       </TableCell>
       <TableCell className="flex items-center border-0 p-0">
-        <span
-          className="h-3 max-w-[50%] w-full rounded-sm bg-[#313131]"
+        <Skeleton
+          className="h-[18px] max-w-[50%] w-full rounded-[2px] bg-[#313131]"
           aria-hidden
         />
       </TableCell>
       <TableCell className="flex items-center border-0 p-0">
-        <span
-          className="h-3 max-w-[50%] w-full rounded-sm bg-[#313131]"
+        <Skeleton
+          className="h-[18px] max-w-[50%] w-full rounded-[2px] bg-[#313131]"
           aria-hidden
         />
       </TableCell>
       <TableCell className="flex items-center justify-end gap-[12.5px] border-0 p-0">
-        <span
-          className="h-[22px] w-[22px] rounded-sm bg-[#313131]"
+        <Skeleton
+          className="size-[22px] shrink-0 rounded-full bg-[#313131]"
           aria-hidden
         />
-        <span className="h-3 w-10 rounded-sm bg-[#313131]" aria-hidden />
+        <Skeleton
+          className="h-[18px] min-w-0 flex-[2] rounded-[2px] bg-[#313131]"
+          aria-hidden
+        />
       </TableCell>
     </TableRow>
   );
@@ -112,13 +121,15 @@ export function TracksTable({
   tracks,
   isPending = false,
   isFetchingNextPage = false,
+  activeTrackId,
+  onTrackSelect,
   sentinelRef,
   className,
 }: TracksTableProps) {
   return (
     <div className={cn("w-full", className)}>
       <Table
-        className="grid [grid-template-columns:1fr_1fr_1fr_100px] auto-rows-[minmax(60px,auto)] gap-x-4 gap-y-3 border-collapse"
+        className="tracks-table w-full border-collapse"
         aria-label="Список треков"
         aria-busy={isPending}
       >
@@ -145,53 +156,81 @@ export function TracksTable({
             ? Array.from({ length: 5 }, (_, i) => (
                 <SkeletonRow key={`skeleton-${i}`} />
               ))
-            : tracks.map((track) => (
-                <TableRow
-                  key={track.id}
-                  className="contents cursor-pointer border-0 hover:bg-transparent"
-                >
-                  <TableCell
-                    className={cn(cellBase, "gap-[17px]")}
-                    tabIndex={0}
-                    role="button"
+            : tracks.map((track) => {
+                const active = activeTrackId === track.id;
+                const selectTrack = () => onTrackSelect?.(track);
+                const onPlayKeyDown = (
+                  e: KeyboardEvent<HTMLTableCellElement>,
+                ) => {
+                  if (e.key !== "Enter" && e.key !== " ") return;
+                  e.preventDefault();
+                  selectTrack();
+                };
+                const playName = `Играть ${track.title} — ${track.artist}`;
+                return (
+                  <TableRow
+                    key={track.id}
+                    className="contents cursor-pointer border-0 hover:bg-transparent"
                   >
-                    <div className="flex min-w-0 flex-1 items-center gap-[17px]">
-                      <TrackCover coverUrl={track.coverUrl} />
-                      <p className="truncate text-[16px] leading-[1.1] tracking-[0.001em] text-white select-text">
-                        {track.title}
+                    <TableCell
+                      className={cn(cellBase, "gap-[17px]")}
+                      tabIndex={0}
+                      role="button"
+                      aria-pressed={active}
+                      aria-label={playName}
+                      onClick={selectTrack}
+                      onKeyDown={onPlayKeyDown}
+                    >
+                      <div className="flex min-w-0 flex-1 items-center gap-[17px]">
+                        <TrackCover coverUrl={track.coverUrl} />
+                        <p className="truncate text-[16px] leading-[1.1] tracking-[0.001em] text-white select-text">
+                          {track.title}
+                        </p>
+                      </div>
+                    </TableCell>
+                    <TableCell
+                      className={cn(
+                        cellBase,
+                        "text-[16px] leading-[1.1] tracking-[0.001em] text-white",
+                      )}
+                      tabIndex={0}
+                      role="button"
+                      aria-pressed={active}
+                      aria-label={`${playName}, исполнитель`}
+                      onClick={selectTrack}
+                      onKeyDown={onPlayKeyDown}
+                    >
+                      <span className="truncate">{track.artist}</span>
+                    </TableCell>
+                    <TableCell
+                      className={cn(
+                        cellBase,
+                        "text-[16px] leading-[1.1] tracking-[0.001em] text-[#b0b0b0] select-text",
+                      )}
+                      tabIndex={0}
+                      role="button"
+                      aria-pressed={active}
+                      aria-label={`${playName}, альбом`}
+                      onClick={selectTrack}
+                      onKeyDown={onPlayKeyDown}
+                    >
+                      <span className="truncate">{track.album}</span>
+                    </TableCell>
+                    <TableCell
+                      className={cn(cellBase, "justify-end gap-[12.5px]")}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <TrackFavoriteToggle
+                        trackId={track.id}
+                        favorite={track.favorite}
+                      />
+                      <p className="min-w-[2.5rem] text-right text-[16px] leading-[1.1] tracking-[0.001em] text-[#b0b0b0] tabular-nums">
+                        {track.duration ?? ""}
                       </p>
-                    </div>
-                  </TableCell>
-                  <TableCell
-                    className={cn(
-                      cellBase,
-                      "text-[16px] leading-[1.1] tracking-[0.001em] text-white",
-                    )}
-                  >
-                    <span className="truncate">{track.artist}</span>
-                  </TableCell>
-                  <TableCell
-                    className={cn(
-                      cellBase,
-                      "text-[16px] leading-[1.1] tracking-[0.001em] text-[#b0b0b0] select-text",
-                    )}
-                  >
-                    <span className="truncate">{track.album}</span>
-                  </TableCell>
-                  <TableCell
-                    className={cn(cellBase, "justify-end gap-[12.5px]")}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <TrackFavoriteToggle
-                      trackId={track.id}
-                      favorite={track.favorite}
-                    />
-                    <p className="min-w-[2.5rem] text-right text-[16px] leading-[1.1] tracking-[0.001em] text-[#b0b0b0] tabular-nums">
-                      {track.duration ?? ""}
-                    </p>
-                  </TableCell>
-                </TableRow>
-              ))}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
         </TableBody>
       </Table>
 

@@ -1,4 +1,4 @@
-﻿import type { InfiniteData } from "@tanstack/react-query";
+import type { InfiniteData } from "@tanstack/react-query";
 import {
   useInfiniteQuery,
   useQuery,
@@ -16,26 +16,20 @@ import { useInView } from "react-intersection-observer";
 import { z } from "zod";
 
 import { mapCmsTracks, type Track } from "@/entities/track";
-import { LogoutButton } from "@/features/auth";
+import { useFavoriteSellerSkuIdsQuery } from "@/features/toggle-track-favorite";
 import { chunkList } from "@/shared/lib";
-import { HeaderSearch } from "@/widgets/header-search";
-import { PlayerBar, type PlayerBarTrack } from "@/widgets/player-bar";
-import { AppMobileNav, AppSidebar } from "@/widgets/sidebar";
+import { toPlayerBarTrack, usePlaybackStore } from "@/widgets/player-bar";
 import { TracksFiltersPanel } from "@/widgets/tracks-filters";
 import { TracksTable } from "@/widgets/tracks-table";
-
 import {
   fetchTracksCatalogAll,
   fetchTracksPage,
-  readCachedTracksCatalog,
+  filterTracksForUi,
   tracksCatalogCacheTtlMs,
-} from "./api/tracks.api";
-import type {
-  CmsSellerSkuItem,
-  TracksPageResponse,
-  TracksUiParams,
-} from "./api/tracks.types";
-import { filterTracksForUi } from "./lib/filter-tracks-for-ui";
+  type CmsSellerSkuItem,
+  type TracksPageResponse,
+  type TracksUiParams,
+} from "@/widgets/tracks-catalog";
 
 /** Данные в кэше запроса — результат `queryFn`, не `select`; массив SKU или страница. */
 function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
@@ -80,11 +74,20 @@ function catalogCacheToItems(raw: unknown): CmsSellerSkuItem[] | null {
   );
 }
 
-function App() {
+export function TracksPage() {
   const queryClient = useQueryClient();
   const [skipCatalog, setSkipCatalog] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState<PlayerBarTrack | null>(null);
-  const { search: urlSearch, artists, genres, year } = useSearch({ from: "/" });
+  const currentTrackId = usePlaybackStore((state) => state.currentTrack?.id);
+  const selectTrack = usePlaybackStore((state) => state.selectTrack);
+  const setQueue = usePlaybackStore((state) => state.setQueue);
+  const {
+    search: urlSearch,
+    artists,
+    genres,
+    year,
+  } = useSearch({
+    from: "/_studio/",
+  });
   const params = useMemo((): TracksUiParams => {
     const search = urlSearch.trim();
     return { artists, genres, search, year };
@@ -95,10 +98,8 @@ function App() {
     enabled: !skipCatalog,
     retry: false,
     queryFn: fetchTracksCatalogAll,
-    placeholderData: () => readCachedTracksCatalog() ?? undefined,
-    staleTime: 0,
-    refetchOnMount: "always",
-    refetchOnWindowFocus: true,
+    staleTime: tracksCatalogCacheTtlMs,
+    refetchOnWindowFocus: false,
     gcTime: tracksCatalogCacheTtlMs,
   });
 
@@ -130,9 +131,8 @@ function App() {
     number
   >({
     queryKey: ["tracks", "paged", params],
-    staleTime: 0,
-    refetchOnMount: "always",
-    refetchOnWindowFocus: true,
+    staleTime: tracksCatalogCacheTtlMs,
+    refetchOnWindowFocus: false,
     gcTime: tracksCatalogCacheTtlMs,
     initialPageParam: 0,
     select: (infinite) => mapCmsTracks(infinite.pages.flatMap((p) => p.items)),
@@ -167,6 +167,21 @@ function App() {
     },
     getNextPageParam: (lastPage) => lastPage.nextOffset ?? undefined,
   });
+
+  const { data: favoriteIds } = useFavoriteSellerSkuIdsQuery();
+  const tracksWithFavorites = useMemo(() => {
+    if (!favoriteIds) return tracks;
+    const ids = new Set(favoriteIds);
+    return tracks.map((track) => ({
+      ...track,
+      favorite: ids.has(track.id),
+    }));
+  }, [favoriteIds, tracks]);
+
+  useEffect(() => {
+    if (isPending) return;
+    setQueue(tracksWithFavorites.map(toPlayerBarTrack));
+  }, [isPending, setQueue, tracksWithFavorites]);
 
   useEffect(() => {
     if (skipCatalog || !catalogQuery.isSuccess || !catalogQuery.data?.length) {
@@ -222,65 +237,37 @@ function App() {
   }, [tracks, fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <div className="flex min-h-screen bg-app-bg text-fg">
-      <AppSidebar />
-      <main className="min-h-screen min-w-0 flex-1 bg-[#181818] pb-[77px] text-white">
-        <div className="mx-auto w-full max-w-[1240px] px-6 py-10">
-          <header className="mb-[37px] flex items-center justify-between gap-4">
-            <div className="w-full">
-              <AppMobileNav />
-              <HeaderSearch />
-            </div>
-            <LogoutButton />
-          </header>
+    <section>
+      <h1 className="mb-[49px] text-[3rem] font-semibold leading-[64px]">
+        Треки
+      </h1>
 
-          <section>
-            <h1 className="mb-[49px] text-[3rem] font-semibold leading-[64px]">
-              Треки
-            </h1>
+      <div>
+        <TracksFiltersPanel />
+      </div>
 
-            <div>
-              <TracksFiltersPanel />
-            </div>
+      {isError ? (
+        <p className="mt-6 text-red-500">
+          Не удалось загрузить треки
+          {error instanceof Error ? `: ${error.message}` : ""}
+        </p>
+      ) : null}
+      {!isError && isFetching && !isFetchingNextPage && !isPending ? (
+        <p className="mt-2 text-sm text-white/50">Обновление…</p>
+      ) : null}
 
-            {isError ? (
-              <p className="mt-6 text-red-500">
-                Не удалось загрузить треки
-                {error instanceof Error ? `: ${error.message}` : ""}
-              </p>
-            ) : null}
-            {!isError && isFetching && !isFetchingNextPage && !isPending ? (
-              <p className="mt-2 text-sm text-white/50">Обновление…</p>
-            ) : null}
-
-            {!isError ? (
-              <div className="mt-6">
-                <TracksTable
-                  tracks={tracks}
-                  isPending={isPending}
-                  isFetchingNextPage={isFetchingNextPage}
-                  sentinelRef={sentinelRef}
-                />
-              </div>
-            ) : null}
-          </section>
+      {!isError ? (
+        <div className="mt-6">
+          <TracksTable
+            tracks={tracksWithFavorites}
+            isPending={isPending}
+            isFetchingNextPage={isFetchingNextPage}
+            sentinelRef={sentinelRef}
+            activeTrackId={currentTrackId}
+            onTrackSelect={(track) => selectTrack(toPlayerBarTrack(track))}
+          />
         </div>
-
-        <PlayerBar
-          track={currentTrack ?? undefined}
-          queue={tracks.map((track) => ({
-            id: track.id,
-            title: track.title,
-            artist: track.artist,
-            favorite: track.favorite,
-            ...(track.audioUrl ? { audioUrl: track.audioUrl } : {}),
-            ...(track.coverUrl ? { coverUrl: track.coverUrl } : {}),
-          }))}
-          onTrackChange={setCurrentTrack}
-        />
-      </main>
-    </div>
+      ) : null}
+    </section>
   );
 }
-
-export default App;
