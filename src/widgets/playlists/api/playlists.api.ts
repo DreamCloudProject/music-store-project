@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { apiFetch } from "@/features/auth";
+
 import type { PlaylistsResponse } from "../api/playlists.types";
 
 const cmsProductSchema = z.looseObject({
@@ -78,9 +80,9 @@ function parsePlaylistsPayload(raw: unknown): PlaylistsResponse {
 
 /** CMS: productServiceImpl.searchProducts в category `playlists`. */
 export async function fetchPlaylists(): Promise<PlaylistsResponse> {
-  const response = await fetch(
+  const response = await apiFetch(
     new URL(
-      `${String(import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "")}/request`,
+      `${String(import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "")}/bean/request`,
       location.origin,
     ),
     {
