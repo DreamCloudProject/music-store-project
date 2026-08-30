@@ -76,9 +76,8 @@ test("updates filter trigger labels after changing selections", async ({
 
   await artistTrigger.click();
 
-  const artistItem = page.getByRole("menuitemcheckbox", {
-    name: "FaderX",
-  });
+  const artistItem = page.getByRole("menuitemcheckbox").first();
+  await expect(artistItem).toBeVisible();
 
   await artistItem.click();
   await expect(artistItem).toHaveAttribute("aria-checked", "true");
@@ -100,9 +99,8 @@ test("updates filter trigger labels after changing selections", async ({
 
   await genreTrigger.click();
 
-  const genreItem = page.getByRole("menuitemcheckbox", {
-    name: "EDM",
-  });
+  const genreItem = page.getByRole("menuitemcheckbox").first();
+  await expect(genreItem).toBeVisible();
 
   await genreItem.click();
   await expect(genreItem).toHaveAttribute("aria-checked", "true");

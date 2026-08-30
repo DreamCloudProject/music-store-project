@@ -12,6 +12,9 @@ dist
 .env
 
 public/mockServiceWorker.js
+public/tracks.json
+scripts/tracks/.cache/
+scripts/tracks/.spotify_songs.csv.tmp
 dist-ssr
 storybook-static
 playwright-report

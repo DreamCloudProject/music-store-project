@@ -17,6 +17,52 @@ import { SignUpPage } from "@/pages/sign-up";
 import { VerifyCodePage } from "@/pages/verify-code";
 import { normalizeString } from "@/shared/lib";
 
+function validateTracksSearch(raw: unknown) {
+  return z
+    .object({
+      ...((queryString) => ({
+        ...{
+          search: queryString.optional().default(""),
+          year: queryString
+            .optional()
+            .default("")
+            .transform((s) => s.trim() || undefined),
+        },
+        ...((multiSelect) => ({
+          artists: multiSelect.optional().default([]),
+          genres: multiSelect.optional().default([]),
+        }))(
+          queryString.transform((s) =>
+            [
+              ...new Set(
+                s
+                  .split(",")
+                  .map((p) => p.trim())
+                  .filter(Boolean),
+              ),
+            ].sort(),
+          ),
+        ),
+      }))(
+        z.union([
+          z.undefined().transform(() => ""),
+          z.null().transform(() => ""),
+          z.string(),
+          z.array(z.unknown()).transform((arr) =>
+            arr
+              .map((item) => z.string().safeParse(item))
+              .filter((r) => r.success)
+              .map((r) => r.data)
+              .join(","),
+          ),
+          z.unknown().transform(() => ""),
+        ]),
+      ),
+    })
+    .strip()
+    .parse(raw);
+}
+
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
 });
@@ -61,57 +107,25 @@ const verifyCodeRoute = createRoute({
   component: VerifyCodePage,
 });
 
-const indexRoute = createRoute({
+const tracksLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/",
+  id: "/_tracks",
+  validateSearch: validateTracksSearch,
   beforeLoad: () => {
-    const session = useAuthStore.getState().session;
-    if (!session) throw redirect({ to: "/sign-in" });
+    if (!useAuthStore.getState().session) throw redirect({ to: "/sign-in" });
   },
-  validateSearch: (raw) =>
-    z
-      .object({
-        ...((queryString) => ({
-          ...{
-            search: queryString.optional().default(""),
-            year: queryString
-              .optional()
-              .default("")
-              .transform((s) => s.trim() || undefined),
-          },
-          ...((multiSelect) => ({
-            artists: multiSelect.optional().default([]),
-            genres: multiSelect.optional().default([]),
-          }))(
-            queryString.transform((s) =>
-              [
-                ...new Set(
-                  s
-                    .split(",")
-                    .map((p) => p.trim())
-                    .filter(Boolean),
-                ),
-              ].sort(),
-            ),
-          ),
-        }))(
-          z.union([
-            z.undefined().transform(() => ""),
-            z.null().transform(() => ""),
-            z.string(),
-            z.array(z.unknown()).transform((arr) =>
-              arr
-                .map((item) => z.string().safeParse(item))
-                .filter((r) => r.success)
-                .map((r) => r.data)
-                .join(","),
-            ),
-            z.unknown().transform(() => ""),
-          ]),
-        ),
-      })
-      .strip()
-      .parse(raw),
+  component: () => <Outlet />,
+});
+
+const homeRoute = createRoute({
+  getParentRoute: () => tracksLayoutRoute,
+  path: "/",
+  component: lazyRouteComponent(() => import("./App")),
+});
+
+const playlistRoute = createRoute({
+  getParentRoute: () => tracksLayoutRoute,
+  path: "/playlist/$playlistId",
   component: lazyRouteComponent(() => import("./App")),
 });
 
@@ -122,7 +136,7 @@ export const router = createRouter({
     signInRoute,
     signUpRoute,
     verifyCodeRoute,
-    indexRoute,
+    tracksLayoutRoute.addChildren([homeRoute, playlistRoute]),
   ]),
   parseSearch: parseSearchWith(JSON.parse),
   stringifySearch: (search) =>

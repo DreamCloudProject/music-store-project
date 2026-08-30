@@ -12,7 +12,7 @@ export function useTrackFiltersQuery() {
   >({
     queryKey: ["track-filters"],
     queryFn: fetchTrackFilters,
-    initialData: {
+    placeholderData: {
       artists: [
         { value: "FaderX", label: "FaderX" },
         { value: "Sick Individuals", label: "Sick Individuals" },
@@ -24,6 +24,8 @@ export function useTrackFiltersQuery() {
       ],
     },
     staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
     gcTime: 1000 * 60 * 5,
   });
 }

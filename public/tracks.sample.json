@@ -1,0 +1,3729 @@
+{
+  "result": {
+    "pages": [],
+    "data": {
+      "content": [
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku1",
+          "type": "DIGITAL",
+          "name": "MS000001",
+          "inventory": {
+            "id": "inventory1",
+            "embeddedSellerSKU": {
+              "id": "sellerSku1",
+              "name": "MS000001",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "tones-and-i",
+              "name": "Tones and I",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Post-teen Pop",
+          "searchTerms": "Tones and I - Dance Monkey",
+          "embeddedSku": {
+            "id": "tones-and-i-dance-monkey",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-tones-and-i",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Tones and I",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-1",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Dance Monkey (Stripped Back) / Dance Monkey",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-1",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "post-teen-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-post-teen-pop",
+          "simpleTypeFilters": "artist-Tones and I|album-Dance Monkey (Stripped Back) / Dance Monkey",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 100
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku2",
+          "type": "DIGITAL",
+          "name": "MS000002",
+          "inventory": {
+            "id": "inventory2",
+            "embeddedSellerSKU": {
+              "id": "sellerSku2",
+              "name": "MS000002",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "arizona-zervas",
+              "name": "Arizona Zervas",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Latin Hip Hop",
+          "searchTerms": "Arizona Zervas - ROXANNE",
+          "embeddedSku": {
+            "id": "arizona-zervas-roxanne",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-arizona-zervas",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Arizona Zervas",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-2",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "ROXANNE",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-2",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "latin-hip-hop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-latin-hip-hop",
+          "simpleTypeFilters": "artist-Arizona Zervas|album-ROXANNE",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 99
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku3",
+          "type": "DIGITAL",
+          "name": "MS000003",
+          "inventory": {
+            "id": "inventory3",
+            "embeddedSellerSKU": {
+              "id": "sellerSku3",
+              "name": "MS000003",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "karol-g",
+              "name": "KAROL G",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "KAROL G - Tusa",
+          "embeddedSku": {
+            "id": "karol-g-tusa",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-karol-g",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "KAROL G",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-3",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Tusa",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-3",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-KAROL G|album-Tusa",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 98
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku4",
+          "type": "DIGITAL",
+          "name": "MS000004",
+          "inventory": {
+            "id": "inventory4",
+            "embeddedSellerSKU": {
+              "id": "sellerSku4",
+              "name": "MS000004",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "maroon-5",
+              "name": "Maroon 5",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "Maroon 5 - Memories",
+          "embeddedSku": {
+            "id": "maroon-5-memories",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-maroon-5",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Maroon 5",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-4",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Memories",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-4",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-Maroon 5|album-Memories",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 98
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku5",
+          "type": "DIGITAL",
+          "name": "MS000005",
+          "inventory": {
+            "id": "inventory5",
+            "embeddedSellerSKU": {
+              "id": "sellerSku5",
+              "name": "MS000005",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "post-malone",
+              "name": "Post Malone",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Post-teen Pop",
+          "searchTerms": "Post Malone - Circles",
+          "embeddedSku": {
+            "id": "post-malone-circles",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-post-malone",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Post Malone",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-5",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Hollywood's Bleeding",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-5",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "post-teen-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-post-teen-pop",
+          "simpleTypeFilters": "artist-Post Malone|album-Hollywood's Bleeding",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 98
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku6",
+          "type": "DIGITAL",
+          "name": "MS000006",
+          "inventory": {
+            "id": "inventory6",
+            "embeddedSellerSKU": {
+              "id": "sellerSku6",
+              "name": "MS000006",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "roddy-ricch",
+              "name": "Roddy Ricch",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Hip Hop",
+          "searchTerms": "Roddy Ricch - The Box",
+          "embeddedSku": {
+            "id": "roddy-ricch-the-box",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-roddy-ricch",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Roddy Ricch",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-6",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Please Excuse Me For Being Antisocial",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-6",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "hip-hop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-hip-hop",
+          "simpleTypeFilters": "artist-Roddy Ricch|album-Please Excuse Me For Being Antisocial",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 98
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku7",
+          "type": "DIGITAL",
+          "name": "MS000007",
+          "inventory": {
+            "id": "inventory7",
+            "embeddedSellerSKU": {
+              "id": "sellerSku7",
+              "name": "MS000007",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "the-weeknd",
+              "name": "The Weeknd",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "The Weeknd - Blinding Lights",
+          "embeddedSku": {
+            "id": "the-weeknd-blinding-lights",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-the-weeknd",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "The Weeknd",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-7",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Blinding Lights",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-7",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-The Weeknd|album-Blinding Lights",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 98
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku8",
+          "type": "DIGITAL",
+          "name": "MS000008",
+          "inventory": {
+            "id": "inventory8",
+            "embeddedSellerSKU": {
+              "id": "sellerSku8",
+              "name": "MS000008",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "billie-eilish",
+              "name": "Billie Eilish",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "Billie Eilish - everything i wanted",
+          "embeddedSku": {
+            "id": "billie-eilish-everything-i-wanted",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-billie-eilish",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Billie Eilish",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-8",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "everything i wanted",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-8",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-Billie Eilish|album-everything i wanted",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 97
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku9",
+          "type": "DIGITAL",
+          "name": "MS000009",
+          "inventory": {
+            "id": "inventory9",
+            "embeddedSellerSKU": {
+              "id": "sellerSku9",
+              "name": "MS000009",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "dua-lipa",
+              "name": "Dua Lipa",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Post-teen Pop",
+          "searchTerms": "Dua Lipa - Don't Start Now",
+          "embeddedSku": {
+            "id": "dua-lipa-don-t-start-now",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-dua-lipa",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Dua Lipa",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-9",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Don't Start Now",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-9",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "post-teen-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-post-teen-pop",
+          "simpleTypeFilters": "artist-Dua Lipa|album-Don't Start Now",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 97
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1514764800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1514764800,
+          "id": "sellerSku10",
+          "type": "DIGITAL",
+          "name": "MS000010",
+          "inventory": {
+            "id": "inventory10",
+            "embeddedSellerSKU": {
+              "id": "sellerSku10",
+              "name": "MS000010",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "trevor-daniel",
+              "name": "Trevor Daniel",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Electropop",
+          "searchTerms": "Trevor Daniel - Falling",
+          "embeddedSku": {
+            "id": "trevor-daniel-falling",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-trevor-daniel",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Trevor Daniel",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-10",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Falling",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-10",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "electropop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-electropop",
+          "simpleTypeFilters": "artist-Trevor Daniel|album-Falling",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 97
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku11",
+          "type": "DIGITAL",
+          "name": "MS000011",
+          "inventory": {
+            "id": "inventory11",
+            "embeddedSellerSKU": {
+              "id": "sellerSku11",
+              "name": "MS000011",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "the-black-eyed-peas",
+              "name": "The Black Eyed Peas",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "The Black Eyed Peas - RITMO (Bad Boys For Life)",
+          "embeddedSku": {
+            "id": "the-black-eyed-peas-ritmo-bad-boys-for-life",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-the-black-eyed-peas",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "The Black Eyed Peas",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-11",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "RITMO (Bad Boys For Life)",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-11",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-The Black Eyed Peas|album-RITMO (Bad Boys For Life)",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 96
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku12",
+          "type": "DIGITAL",
+          "name": "MS000012",
+          "inventory": {
+            "id": "inventory12",
+            "embeddedSellerSKU": {
+              "id": "sellerSku12",
+              "name": "MS000012",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "billie-eilish",
+              "name": "Billie Eilish",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "Billie Eilish - bad guy",
+          "embeddedSku": {
+            "id": "billie-eilish-bad-guy",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-billie-eilish",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Billie Eilish",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-12",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-12",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-Billie Eilish|album-WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 95
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1577836800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1577836800,
+          "id": "sellerSku13",
+          "type": "DIGITAL",
+          "name": "MS000013",
+          "inventory": {
+            "id": "inventory13",
+            "embeddedSellerSKU": {
+              "id": "sellerSku13",
+              "name": "MS000013",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "justin-bieber",
+              "name": "Justin Bieber",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "Justin Bieber - Yummy",
+          "embeddedSku": {
+            "id": "justin-bieber-yummy",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-justin-bieber",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Justin Bieber",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-13",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Yummy",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-13",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-Justin Bieber|album-Yummy",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 95
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku14",
+          "type": "DIGITAL",
+          "name": "MS000014",
+          "inventory": {
+            "id": "inventory14",
+            "embeddedSellerSKU": {
+              "id": "sellerSku14",
+              "name": "MS000014",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "blackbear",
+              "name": "blackbear",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Post-teen Pop",
+          "searchTerms": "blackbear - hot girl bummer",
+          "embeddedSku": {
+            "id": "blackbear-hot-girl-bummer",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-blackbear",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "blackbear",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-14",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "hot girl bummer",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-14",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "post-teen-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-post-teen-pop",
+          "simpleTypeFilters": "artist-blackbear|album-hot girl bummer",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 94
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku15",
+          "type": "DIGITAL",
+          "name": "MS000015",
+          "inventory": {
+            "id": "inventory15",
+            "embeddedSellerSKU": {
+              "id": "sellerSku15",
+              "name": "MS000015",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "camila-cabello",
+              "name": "Camila Cabello",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Post-teen Pop",
+          "searchTerms": "Camila Cabello - My Oh My (feat. DaBaby)",
+          "embeddedSku": {
+            "id": "camila-cabello-my-oh-my-feat-dababy",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-camila-cabello",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Camila Cabello",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-15",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Romance",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-15",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "post-teen-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-post-teen-pop",
+          "simpleTypeFilters": "artist-Camila Cabello|album-Romance",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 94
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku16",
+          "type": "DIGITAL",
+          "name": "MS000016",
+          "inventory": {
+            "id": "inventory16",
+            "embeddedSellerSKU": {
+              "id": "sellerSku16",
+              "name": "MS000016",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "lewis-capaldi",
+              "name": "Lewis Capaldi",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "Lewis Capaldi - Someone You Loved",
+          "embeddedSku": {
+            "id": "lewis-capaldi-someone-you-loved",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-lewis-capaldi",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Lewis Capaldi",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-16",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Divinely Uninspired To A Hellish Extent",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-16",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-Lewis Capaldi|album-Divinely Uninspired To A Hellish Extent",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 94
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku17",
+          "type": "DIGITAL",
+          "name": "MS000017",
+          "inventory": {
+            "id": "inventory17",
+            "embeddedSellerSKU": {
+              "id": "sellerSku17",
+              "name": "MS000017",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "regard",
+              "name": "Regard",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "Regard - Ride It",
+          "embeddedSku": {
+            "id": "regard-ride-it",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-regard",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Regard",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-17",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Ride It",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-17",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-Regard|album-Ride It",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 94
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku18",
+          "type": "DIGITAL",
+          "name": "MS000018",
+          "inventory": {
+            "id": "inventory18",
+            "embeddedSellerSKU": {
+              "id": "sellerSku18",
+              "name": "MS000018",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "travis-scott",
+              "name": "Travis Scott",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Post-teen Pop",
+          "searchTerms": "Travis Scott - HIGHEST IN THE ROOM",
+          "embeddedSku": {
+            "id": "travis-scott-highest-in-the-room",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-travis-scott",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Travis Scott",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-18",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "HIGHEST IN THE ROOM",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-18",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "post-teen-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-post-teen-pop",
+          "simpleTypeFilters": "artist-Travis Scott|album-HIGHEST IN THE ROOM",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 94
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku19",
+          "type": "DIGITAL",
+          "name": "MS000019",
+          "inventory": {
+            "id": "inventory19",
+            "embeddedSellerSKU": {
+              "id": "sellerSku19",
+              "name": "MS000019",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "anuel-aa",
+              "name": "Anuel AA",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "Anuel AA - China",
+          "embeddedSku": {
+            "id": "anuel-aa-china",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-anuel-aa",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Anuel AA",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-19",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "China",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-19",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-Anuel AA|album-China",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 93
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku20",
+          "type": "DIGITAL",
+          "name": "MS000020",
+          "inventory": {
+            "id": "inventory20",
+            "embeddedSellerSKU": {
+              "id": "sellerSku20",
+              "name": "MS000020",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "bad-bunny",
+              "name": "Bad Bunny",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Trap",
+          "searchTerms": "Bad Bunny - Vete",
+          "embeddedSku": {
+            "id": "bad-bunny-vete",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-bad-bunny",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Bad Bunny",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-20",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Vete",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-20",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "trap",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-trap",
+          "simpleTypeFilters": "artist-Bad Bunny|album-Vete",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 93
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku21",
+          "type": "DIGITAL",
+          "name": "MS000021",
+          "inventory": {
+            "id": "inventory21",
+            "embeddedSellerSKU": {
+              "id": "sellerSku21",
+              "name": "MS000021",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "dababy",
+              "name": "DaBaby",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Hip Hop",
+          "searchTerms": "DaBaby - BOP",
+          "embeddedSku": {
+            "id": "dababy-bop",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-dababy",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "DaBaby",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-21",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "KIRK",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-21",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "hip-hop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-hip-hop",
+          "simpleTypeFilters": "artist-DaBaby|album-KIRK",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 93
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1577836800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1577836800,
+          "id": "sellerSku22",
+          "type": "DIGITAL",
+          "name": "MS000022",
+          "inventory": {
+            "id": "inventory22",
+            "embeddedSellerSKU": {
+              "id": "sellerSku22",
+              "name": "MS000022",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "future",
+              "name": "Future",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Hip Hop",
+          "searchTerms": "Future - Life Is Good (feat. Drake)",
+          "embeddedSku": {
+            "id": "future-life-is-good-feat-drake",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-future",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Future",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-22",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Life Is Good (feat. Drake)",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-22",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "hip-hop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-hip-hop",
+          "simpleTypeFilters": "artist-Future|album-Life Is Good (feat. Drake)",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 93
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku23",
+          "type": "DIGITAL",
+          "name": "MS000023",
+          "inventory": {
+            "id": "inventory23",
+            "embeddedSellerSKU": {
+              "id": "sellerSku23",
+              "name": "MS000023",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "selena-gomez",
+              "name": "Selena Gomez",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "Selena Gomez - Lose You To Love Me",
+          "embeddedSku": {
+            "id": "selena-gomez-lose-you-to-love-me",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-selena-gomez",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Selena Gomez",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-23",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Lose You To Love Me",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-23",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-Selena Gomez|album-Lose You To Love Me",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 93
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku24",
+          "type": "DIGITAL",
+          "name": "MS000024",
+          "inventory": {
+            "id": "inventory24",
+            "embeddedSellerSKU": {
+              "id": "sellerSku24",
+              "name": "MS000024",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "shawn-mendes",
+              "name": "Shawn Mendes",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "Shawn Mendes - Señorita",
+          "embeddedSku": {
+            "id": "shawn-mendes-senorita",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-shawn-mendes",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Shawn Mendes",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-24",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Señorita",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-24",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-Shawn Mendes|album-Señorita",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 93
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku25",
+          "type": "DIGITAL",
+          "name": "MS000025",
+          "inventory": {
+            "id": "inventory25",
+            "embeddedSellerSKU": {
+              "id": "sellerSku25",
+              "name": "MS000025",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "the-weeknd",
+              "name": "The Weeknd",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "The Weeknd - Heartless",
+          "embeddedSku": {
+            "id": "the-weeknd-heartless",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-the-weeknd",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "The Weeknd",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-25",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Heartless",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-25",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-The Weeknd|album-Heartless",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 93
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku26",
+          "type": "DIGITAL",
+          "name": "MS000026",
+          "inventory": {
+            "id": "inventory26",
+            "embeddedSellerSKU": {
+              "id": "sellerSku26",
+              "name": "MS000026",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "don-toliver",
+              "name": "Don Toliver",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Hip Hop",
+          "searchTerms": "Don Toliver - No Idea",
+          "embeddedSku": {
+            "id": "don-toliver-no-idea",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-don-toliver",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Don Toliver",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-26",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "No Idea",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-26",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "hip-hop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-hip-hop",
+          "simpleTypeFilters": "artist-Don Toliver|album-No Idea",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 92
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku27",
+          "type": "DIGITAL",
+          "name": "MS000027",
+          "inventory": {
+            "id": "inventory27",
+            "embeddedSellerSKU": {
+              "id": "sellerSku27",
+              "name": "MS000027",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "juice-wrld",
+              "name": "Juice WRLD",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "Juice WRLD - Bandit (with YoungBoy Never Broke Again)",
+          "embeddedSku": {
+            "id": "juice-wrld-bandit-with-youngboy-never-broke-again",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-juice-wrld",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Juice WRLD",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-27",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Bandit (with YoungBoy Never Broke Again)",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-27",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-Juice WRLD|album-Bandit (with YoungBoy Never Broke Again)",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 92
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1514764800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1514764800,
+          "id": "sellerSku28",
+          "type": "DIGITAL",
+          "name": "MS000028",
+          "inventory": {
+            "id": "inventory28",
+            "embeddedSellerSKU": {
+              "id": "sellerSku28",
+              "name": "MS000028",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "juice-wrld",
+              "name": "Juice WRLD",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Hip Pop",
+          "searchTerms": "Juice WRLD - Lucid Dreams",
+          "embeddedSku": {
+            "id": "juice-wrld-lucid-dreams",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-juice-wrld",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Juice WRLD",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-28",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Goodbye & Good Riddance",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-28",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "hip-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-hip-pop",
+          "simpleTypeFilters": "artist-Juice WRLD|album-Goodbye & Good Riddance",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 92
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku29",
+          "type": "DIGITAL",
+          "name": "MS000029",
+          "inventory": {
+            "id": "inventory29",
+            "embeddedSellerSKU": {
+              "id": "sellerSku29",
+              "name": "MS000029",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "rauw-alejandro",
+              "name": "Rauw Alejandro",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Post-teen Pop",
+          "searchTerms": "Rauw Alejandro - Fantasias",
+          "embeddedSku": {
+            "id": "rauw-alejandro-fantasias",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-rauw-alejandro",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Rauw Alejandro",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-29",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Fantasias",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-29",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "post-teen-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-post-teen-pop",
+          "simpleTypeFilters": "artist-Rauw Alejandro|album-Fantasias",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 92
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku30",
+          "type": "DIGITAL",
+          "name": "MS000030",
+          "inventory": {
+            "id": "inventory30",
+            "embeddedSellerSKU": {
+              "id": "sellerSku30",
+              "name": "MS000030",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "tones-and-i",
+              "name": "Tones and I",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "Tones and I - Dance Monkey",
+          "embeddedSku": {
+            "id": "tones-and-i-dance-monkey",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-tones-and-i",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Tones and I",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-30",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "The Kids Are Coming",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-30",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-Tones and I|album-The Kids Are Coming",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 92
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku31",
+          "type": "DIGITAL",
+          "name": "MS000031",
+          "inventory": {
+            "id": "inventory31",
+            "embeddedSellerSKU": {
+              "id": "sellerSku31",
+              "name": "MS000031",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "dalex",
+              "name": "Dalex",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Latin Pop",
+          "searchTerms": "Dalex - Hola - Remix",
+          "embeddedSku": {
+            "id": "dalex-hola-remix",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-dalex",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Dalex",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-31",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Hola (Remix)",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-31",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "latin-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-latin-pop",
+          "simpleTypeFilters": "artist-Dalex|album-Hola (Remix)",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 91
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku32",
+          "type": "DIGITAL",
+          "name": "MS000032",
+          "inventory": {
+            "id": "inventory32",
+            "embeddedSellerSKU": {
+              "id": "sellerSku32",
+              "name": "MS000032",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "dan-shay",
+              "name": "Dan + Shay",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Post-teen Pop",
+          "searchTerms": "Dan + Shay - 10,000 Hours (with Justin Bieber)",
+          "embeddedSku": {
+            "id": "dan-shay-10-000-hours-with-justin-bieber",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-dan-shay",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Dan + Shay",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-32",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "10,000 Hours (with Justin Bieber)",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-32",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "post-teen-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-post-teen-pop",
+          "simpleTypeFilters": "artist-Dan + Shay|album-10,000 Hours (with Justin Bieber)",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 91
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku33",
+          "type": "DIGITAL",
+          "name": "MS000033",
+          "inventory": {
+            "id": "inventory33",
+            "embeddedSellerSKU": {
+              "id": "sellerSku33",
+              "name": "MS000033",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "ed-sheeran",
+              "name": "Ed Sheeran",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Post-teen Pop",
+          "searchTerms": "Ed Sheeran - South of the Border (feat. Camila Cabello & Cardi B)",
+          "embeddedSku": {
+            "id": "ed-sheeran-south-of-the-border-feat-camila-cabello-and-cardi-b",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-ed-sheeran",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Ed Sheeran",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-33",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "No.6 Collaborations Project",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-33",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "post-teen-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-post-teen-pop",
+          "simpleTypeFilters": "artist-Ed Sheeran|album-No.6 Collaborations Project",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 91
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku34",
+          "type": "DIGITAL",
+          "name": "MS000034",
+          "inventory": {
+            "id": "inventory34",
+            "embeddedSellerSKU": {
+              "id": "sellerSku34",
+              "name": "MS000034",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "harry-styles",
+              "name": "Harry Styles",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "Harry Styles - Adore You",
+          "embeddedSku": {
+            "id": "harry-styles-adore-you",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-harry-styles",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Harry Styles",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-34",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Adore You",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-34",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-Harry Styles|album-Adore You",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 91
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku35",
+          "type": "DIGITAL",
+          "name": "MS000035",
+          "inventory": {
+            "id": "inventory35",
+            "embeddedSellerSKU": {
+              "id": "sellerSku35",
+              "name": "MS000035",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "j-balvin",
+              "name": "J Balvin",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "J Balvin - LA CANCIÓN",
+          "embeddedSku": {
+            "id": "j-balvin-la-cancion",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-j-balvin",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "J Balvin",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-35",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "OASIS",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-35",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-J Balvin|album-OASIS",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 91
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku36",
+          "type": "DIGITAL",
+          "name": "MS000036",
+          "inventory": {
+            "id": "inventory36",
+            "embeddedSellerSKU": {
+              "id": "sellerSku36",
+              "name": "MS000036",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "lil-uzi-vert",
+              "name": "Lil Uzi Vert",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Hip Hop",
+          "searchTerms": "Lil Uzi Vert - Futsal Shuffle 2020",
+          "embeddedSku": {
+            "id": "lil-uzi-vert-futsal-shuffle-2020",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-lil-uzi-vert",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Lil Uzi Vert",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-36",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Futsal Shuffle 2020",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-36",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "hip-hop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-hip-hop",
+          "simpleTypeFilters": "artist-Lil Uzi Vert|album-Futsal Shuffle 2020",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 91
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku37",
+          "type": "DIGITAL",
+          "name": "MS000037",
+          "inventory": {
+            "id": "inventory37",
+            "embeddedSellerSKU": {
+              "id": "sellerSku37",
+              "name": "MS000037",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "meduza",
+              "name": "MEDUZA",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Dance Pop",
+          "searchTerms": "MEDUZA - Lose Control",
+          "embeddedSku": {
+            "id": "meduza-lose-control",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-meduza",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "MEDUZA",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-37",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Lose Control",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-37",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "dance-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-dance-pop",
+          "simpleTypeFilters": "artist-MEDUZA|album-Lose Control",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 91
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku38",
+          "type": "DIGITAL",
+          "name": "MS000038",
+          "inventory": {
+            "id": "inventory38",
+            "embeddedSellerSKU": {
+              "id": "sellerSku38",
+              "name": "MS000038",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "sam-smith",
+              "name": "Sam Smith",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Post-teen Pop",
+          "searchTerms": "Sam Smith - How Do You Sleep?",
+          "embeddedSku": {
+            "id": "sam-smith-how-do-you-sleep",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-sam-smith",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Sam Smith",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-38",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "How Do You Sleep?",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-38",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "post-teen-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-post-teen-pop",
+          "simpleTypeFilters": "artist-Sam Smith|album-How Do You Sleep?",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 91
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku39",
+          "type": "DIGITAL",
+          "name": "MS000039",
+          "inventory": {
+            "id": "inventory39",
+            "embeddedSellerSKU": {
+              "id": "sellerSku39",
+              "name": "MS000039",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "tyga",
+              "name": "Tyga",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Indie Poptimism",
+          "searchTerms": "Tyga - Ayy Macarena",
+          "embeddedSku": {
+            "id": "tyga-ayy-macarena",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-tyga",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Tyga",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-39",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Ayy Macarena",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-39",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "indie-poptimism",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-indie-poptimism",
+          "simpleTypeFilters": "artist-Tyga|album-Ayy Macarena",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 91
+        },
+        {
+          "createdBy": "musicadmin",
+          "createdDate": 1546300800,
+          "lastModifiedBy": "musicadmin",
+          "lastModifiedDate": 1546300800,
+          "id": "sellerSku40",
+          "type": "DIGITAL",
+          "name": "MS000040",
+          "inventory": {
+            "id": "inventory40",
+            "embeddedSellerSKU": {
+              "id": "sellerSku40",
+              "name": "MS000040",
+              "repositoryName": "sellerSkuRepository"
+            }
+          },
+          "productsRef": [
+            {
+              "id": "y2k",
+              "name": "Y2K",
+              "repositoryName": "productRepository"
+            }
+          ],
+          "imageURLs": [],
+          "keywords": "Post-teen Pop",
+          "searchTerms": "Y2K - Lalala",
+          "embeddedSku": {
+            "id": "y2k-lalala",
+            "name": null,
+            "repositoryName": "SKURepository"
+          },
+          "embeddedSeller": {
+            "id": "seller14",
+            "name": "Demo Seller",
+            "repositoryName": "sellerRepository"
+          },
+          "orderedItems": [],
+          "packagedItems": [],
+          "attributeValues": [
+            {
+              "id": "av-artist-y2k",
+              "attributeId": "artist",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Y2K",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-album-40",
+              "attributeId": "album",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "SIMPLE",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "Lalala",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            },
+            {
+              "id": "av-genre-40",
+              "attributeId": "genre",
+              "attributeName": "",
+              "attributeDescription": "",
+              "attributeOptions": [],
+              "type": "LIST",
+              "areaUsageType": "PRODUCT_RELATED_DATA",
+              "value": "post-teen-pop",
+              "minValue": 0,
+              "maxValue": 0,
+              "active": true,
+              "checked": "checked"
+            }
+          ],
+          "logicalTypeFilters": "",
+          "listTypeFilters": "genre-post-teen-pop",
+          "simpleTypeFilters": "artist-Y2K|album-Lalala",
+          "rangeFilters": [],
+          "numericFilters": [],
+          "documentURLs": [],
+          "publishedForSale": true,
+          "randomGenerated": false,
+          "popularity": 91
+        }
+      ],
+      "totalElements": 40,
+      "last": true,
+      "number": 0,
+      "size": 40
+    }
+  },
+  "genreLabels": {
+    "post-teen-pop": "Post-teen Pop",
+    "latin-hip-hop": "Latin Hip Hop",
+    "dance-pop": "Dance Pop",
+    "hip-hop": "Hip Hop",
+    "electropop": "Electropop",
+    "trap": "Trap",
+    "hip-pop": "Hip Pop",
+    "latin-pop": "Latin Pop",
+    "indie-poptimism": "Indie Poptimism",
+    "neo-soul": "Neo Soul",
+    "reggaeton": "Reggaeton",
+    "urban-contemporary": "Urban Contemporary",
+    "gangster-rap": "Gangster Rap",
+    "tropical": "Tropical",
+    "album-rock": "Album Rock",
+    "pop-edm": "Pop Edm",
+    "permanent-wave": "Permanent Wave",
+    "big-room": "Big Room",
+    "classic-rock": "Classic Rock",
+    "southern-hip-hop": "Southern Hip Hop",
+    "new-jack-swing": "New Jack Swing",
+    "progressive-electro-house": "Progressive Electro House",
+    "hard-rock": "Hard Rock",
+    "electro-house": "Electro House"
+  },
+  "meta": {
+    "source": "tidytuesday/spotify_songs.csv (2020-01-21)",
+    "generatedAt": "2026-08-08T02:34:03.619Z",
+    "tracks": 40,
+    "artists": 1697,
+    "genres": 24,
+    "targetTracks": 4000,
+    "perGenre": 166,
+    "sample": true
+  }
+}

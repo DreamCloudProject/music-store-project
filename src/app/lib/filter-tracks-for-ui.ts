@@ -2,10 +2,20 @@ import type { CmsSellerSkuItem, GetTracksParams } from "../api/tracks.types";
 
 export function filterTracksForUi(
   tracks: CmsSellerSkuItem[],
-  params: Required<Pick<GetTracksParams, "artists" | "genres" | "search">> &
+  params: Required<
+    Pick<GetTracksParams, "artists" | "genres" | "search" | "playlistSkuIds">
+  > &
     Pick<GetTracksParams, "year">,
 ): CmsSellerSkuItem[] {
   return Object.entries({
+    playlist: (out: CmsSellerSkuItem[]) => {
+      if (!params.playlistSkuIds.length) return out;
+      const allowed = new Set(params.playlistSkuIds);
+      return out.filter((t) => {
+        const skuId = t.embeddedSku?.id?.trim();
+        return skuId ? allowed.has(skuId) : false;
+      });
+    },
     artists: (out: CmsSellerSkuItem[]) => {
       if (!params.artists.length) return out;
       const allowed = new Set(params.artists);

@@ -39,6 +39,7 @@ const cmsSellerSkuItemSchema = z.looseObject({
   searchTerms: z.string().optional(),
   createdDate: z.number().optional(),
   lastModifiedDate: z.number().optional(),
+  embeddedSku: z.looseObject({ id: z.string() }).nullish(),
   attributeValues: z
     .array(
       z.object({
@@ -69,7 +70,7 @@ function catalogStorageKey(): string {
   return `music-store:catalog:docs:${import.meta.env.VITE_API_BASE_URL}`;
 }
 
-function readCachedTracksCatalog(): CmsSellerSkuItem[] | null {
+export function readCachedTracksCatalog(): CmsSellerSkuItem[] | null {
   try {
     const raw = localStorage.getItem(catalogStorageKey());
     if (!raw) return null;
@@ -228,9 +229,6 @@ export async function fetchTracksPage(
 }
 
 export async function fetchTracksCatalogAll(): Promise<CmsSellerSkuItem[]> {
-  const cached = readCachedTracksCatalog();
-  if (cached) return cached;
-
   const filters = tracksSearchFiltersSchema.parse({});
   const page = await postTracksSearch(buildCmsSearchArgs(filters));
   writeCachedTracksCatalog(page.items);

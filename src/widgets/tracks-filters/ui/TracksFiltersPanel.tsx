@@ -14,14 +14,16 @@ export function TracksFiltersPanel({
   label = "Искать по:",
   className,
 }: TracksFiltersPanelProps) {
-  const navigate = useNavigate({ from: "/" });
+  const navigate = useNavigate();
   const {
-    artists: selectedArtists,
-    genres: selectedGenres,
+    artists: selectedArtists = [],
+    genres: selectedGenres = [],
     year: selectedYear,
-  } = useSearch({
-    from: "/",
-  });
+  } = useSearch({ strict: false }) as {
+    artists?: string[];
+    genres?: string[];
+    year?: string;
+  };
 
   const { data: { artists = [], genres = [], years = [] } = {} } =
     useTrackFiltersQuery();
@@ -42,10 +44,11 @@ export function TracksFiltersPanel({
           selected={selectedArtists}
           onSelectedChange={(next) =>
             void navigate({
-              search: (prev) => ({
+              to: ".",
+              search: ((prev: Record<string, unknown>) => ({
                 ...prev,
                 artists: next,
-              }),
+              })) as never,
               replace: true,
             })
           }
@@ -63,10 +66,11 @@ export function TracksFiltersPanel({
           value={selectedYear}
           onValueChange={(next) =>
             void navigate({
-              search: (prev) => ({
+              to: ".",
+              search: ((prev: Record<string, unknown>) => ({
                 ...prev,
                 year: next,
-              }),
+              })) as never,
               replace: true,
             })
           }
@@ -80,10 +84,11 @@ export function TracksFiltersPanel({
           selected={selectedGenres}
           onSelectedChange={(next) =>
             void navigate({
-              search: (prev) => ({
+              to: ".",
+              search: ((prev: Record<string, unknown>) => ({
                 ...prev,
                 genres: next,
-              }),
+              })) as never,
               replace: true,
             })
           }

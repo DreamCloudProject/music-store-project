@@ -39,6 +39,121 @@ const beanRequestPath = `${apiRoot}/bean/request`;
 const resolveRequestUrl = (path: string) =>
   /^https?:\/\//i.test(path) ? path : new URL(path, location.origin).href;
 
+const splitList = (raw: string) =>
+  raw
+    .split(/[|,]/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+const paginationParams: ParamField[] = [
+  {
+    name: "offset",
+    label: "offset",
+    defaultValue: "0",
+    description: "пагинация",
+  },
+  {
+    name: "limit",
+    label: "limit",
+    defaultValue: "50",
+    description: "пагинация; page = floor(offset/limit)+1",
+  },
+];
+
+function paginationFromValues(values: Record<string, string>) {
+  const offset = Number(values.offset ?? 0) || 0;
+  const limit = Number(values.limit ?? 50) || 50;
+  const page = limit > 0 ? Math.floor(offset / limit) + 1 : 1;
+  return { offset, limit, visiblePages: 10, page };
+}
+
+const buildSearchArgs = (
+  values: Record<string, string>,
+  withPagination: boolean,
+) => {
+  const artists = splitList(values.artists ?? "");
+  const genres = splitList(values.genres ?? "");
+  const search = (values.search ?? "").trim();
+  const year = (values.year ?? "").trim();
+  const offset = Number(values.offset ?? 0) || 0;
+  const limit = Number(values.limit ?? 10) || 10;
+  const page = limit > 0 ? Math.floor(offset / limit) + 1 : 1;
+
+  return {
+    type: "SellerSKU",
+    query: {
+      isPublishedForSale: true,
+      ...(artists.length ? { artist: artists.join("|") } : {}),
+      ...(genres.length ? { genre: genres.join("|") } : {}),
+    },
+    ignoreRegexWrap: [
+      "name",
+      "embeddedSku",
+      "productsRef",
+      "isPublishedForSale",
+    ],
+    ...(withPagination ? { offset, limit, visiblePages: 10, page } : {}),
+    ...(search
+      ? { searchTerm: search, filteringStrategy: "EXCLUDE" }
+      : artists.length || genres.length
+        ? { filteringStrategy: "INCLUDE" }
+        : {}),
+    ...(year === "newer" || year === "older"
+      ? {
+          sortName: "lastModifiedDate",
+          sortDirection: year === "older" ? "ASC" : "DESC",
+        }
+      : {}),
+  };
+};
+
+const searchParams: ParamField[] = [
+  {
+    name: "search",
+    label: "search",
+    defaultValue: "",
+    placeholder: "love",
+    description: "searchTerm; при непустом значении filteringStrategy=EXCLUDE",
+  },
+  {
+    name: "artists",
+    label: "artists",
+    defaultValue: "",
+    placeholder: "Ed Sheeran|Maroon 5",
+    description: "pipe/comma → query.artist",
+  },
+  {
+    name: "genres",
+    label: "genres",
+    defaultValue: "",
+    placeholder: "dance-pop|hip-hop",
+    description: "pipe/comma → query.genre",
+  },
+  {
+    name: "year",
+    label: "year",
+    defaultValue: "",
+    description: "newer/older → sort",
+    options: [
+      { value: "", label: "(none)" },
+      { value: "newer", label: "newer" },
+      { value: "older", label: "older" },
+    ],
+  },
+  {
+    name: "offset",
+    label: "offset",
+    defaultValue: "0",
+    description: "пагинация",
+  },
+  {
+    name: "limit",
+    label: "limit",
+    defaultValue: "10",
+    description: "пагинация; page = floor(offset/limit)+1",
+  },
+];
+
 const CMS_HEADERS = {
   "Content-Type": "application/json",
   "Site-Context": "site",
@@ -274,6 +389,289 @@ const ENDPOINTS: EndpointOp[] = [
       username: values.email,
     }),
   },
+  {
+    id: "cms-playlists-products",
+    tag: "CMS Playlists",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "1. Плейлисты (CMS Product в корне playlists)",
+    description:
+      "productServiceImpl.searchProducts. Корневая CMS Category `playlists` — только таксономия; в UI это плейлисты (Product). Product-артисты сюда не входят. Цепочка: Category(playlists) → Product(playlist) → SKU → SellerSKU(=Track в UI).",
+    headers: {
+      "Content-Type": "application/json",
+      "Site-Context": "site",
+      "Lang-Context": "ru",
+    },
+    params: [
+      {
+        name: "categoryId",
+        label: "fallIntoCategories._id",
+        defaultValue: "playlists",
+        description: "корневая CMS category; для плейлистов всегда playlists",
+      },
+      ...paginationParams,
+    ],
+    buildBody: (values) => {
+      const categoryId =
+        (values.categoryId ?? "playlists").trim() || "playlists";
+      return {
+        beanId: "productServiceImpl",
+        scope: "PROTOTYPE",
+        functionName: "searchProducts",
+        args: [
+          {
+            "0": {
+              query: {
+                "fallIntoCategories._id": { $in: [categoryId] },
+              },
+              ignoreRegexWrap: [],
+              ...paginationFromValues(values),
+              sortName: "text",
+              sortDirection: "ASC",
+            },
+          },
+        ],
+      };
+    },
+  },
+  {
+    id: "cms-playlist-skus",
+    tag: "CMS Playlists",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "2. Треки плейлиста (CMS SKU)",
+    description:
+      "SKUServiceImpl.searchSKUs. В UI это ещё не полный Track: обложка/text есть, MP3 нет. id SKU → embeddedSku.id / skuId.",
+    headers: {
+      "Content-Type": "application/json",
+      "Site-Context": "site",
+      "Lang-Context": "ru",
+    },
+    params: [
+      {
+        name: "productId",
+        label: "fallIntoProducts._id",
+        defaultValue: "playlist-current-day",
+        placeholder: "playlist-current-day",
+        description: "Playlist id (= Product.id) из шага 1",
+      },
+      ...paginationParams,
+    ],
+    buildBody: (values) => {
+      const productId =
+        (values.productId ?? "playlist-current-day").trim() ||
+        "playlist-current-day";
+      return {
+        beanId: "SKUServiceImpl",
+        scope: "PROTOTYPE",
+        functionName: "searchSKUs",
+        args: [
+          {
+            "0": {
+              query: {
+                "fallIntoProducts._id": { $in: [productId] },
+              },
+              ignoreRegexWrap: [],
+              ...paginationFromValues(values),
+              sortName: "text",
+              sortDirection: "ASC",
+            },
+          },
+        ],
+      };
+    },
+  },
+  {
+    id: "cms-seller-sku-by-embedded",
+    tag: "CMS Playlists",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "3. Трек с файлом (CMS SellerSKU → UI Track)",
+    description:
+      "searchManagerServiceImpl.search type=SellerSKU. Полная модель трека: атрибуты + documentURLs (MP3).",
+    headers: {
+      "Content-Type": "application/json",
+      "Site-Context": "site",
+      "Lang-Context": "ru",
+    },
+    params: [
+      {
+        name: "embeddedSkuId",
+        label: "embeddedSku.id",
+        defaultValue: "sick-individuals-justin-prime-feat-bymia-not-alone",
+        description: "SKU.id / Track.skuId",
+      },
+      {
+        name: "searchTerm",
+        label: "searchTerm",
+        defaultValue: "",
+        description: "обычно пусто при точном embeddedSku.id",
+      },
+      {
+        name: "offset",
+        label: "offset",
+        defaultValue: "0",
+      },
+      {
+        name: "limit",
+        label: "limit",
+        defaultValue: "10",
+      },
+    ],
+    buildBody: (values) => {
+      const embeddedSkuId = (values.embeddedSkuId ?? "").trim();
+      const searchTerm = (values.searchTerm ?? "").trim();
+      const offset = Number(values.offset ?? 0) || 0;
+      const limit = Number(values.limit ?? 10) || 10;
+      const page = limit > 0 ? Math.floor(offset / limit) + 1 : 1;
+      return {
+        beanId: "searchManagerServiceImpl",
+        scope: "PROTOTYPE",
+        functionName: "search",
+        args: [
+          {
+            "0": {
+              type: "SellerSKU",
+              searchTerm,
+              query: {
+                isPublishedForSale: true,
+                ...(embeddedSkuId ? { "embeddedSku.id": embeddedSkuId } : {}),
+              },
+              ignoreRegexWrap: [
+                "id",
+                "name",
+                "embeddedSku",
+                "productsRef",
+                "isPublishedForSale",
+              ],
+              offset,
+              limit,
+              visiblePages: 10,
+              page,
+              sortName: "createdDate",
+              sortDirection: "DESC",
+            },
+          },
+        ],
+      };
+    },
+  },
+  {
+    id: "tracks-search",
+    tag: "Tracks",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "Поиск треков (search)",
+    description:
+      "CMS bean searchManagerServiceImpl.functionName=search. Параметры как в fetchTracksPage.",
+    headers: {
+      "Content-Type": "application/json",
+      "Site-Context": "site",
+      "Lang-Context": "ru",
+    },
+    params: searchParams,
+    buildBody: (values) => ({
+      beanId: "searchManagerServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "search",
+      args: [{ "0": buildSearchArgs(values, true) }],
+    }),
+  },
+  {
+    id: "tracks-catalog-all",
+    tag: "Tracks",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "Каталог треков целиком",
+    description:
+      "search без пагинации (catalogAll на клиенте). Те же фильтры, что в приложении, без offset/limit/page.",
+    headers: {
+      "Content-Type": "application/json",
+      "Site-Context": "site",
+      "Lang-Context": "ru",
+    },
+    params: searchParams.filter(
+      (p) => p.name !== "offset" && p.name !== "limit",
+    ),
+    buildBody: (values) => ({
+      beanId: "searchManagerServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "search",
+      args: [{ "0": buildSearchArgs(values, false) }],
+    }),
+  },
+  {
+    id: "filters-artists",
+    tag: "Filters",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "Значения фильтра: исполнители",
+    description: "simpleFilterValues — attributeId как в fetchTrackFilters.",
+    headers: {
+      "Content-Type": "application/json",
+      "Site-Context": "site",
+      "Lang-Context": "ru",
+    },
+    params: [
+      {
+        name: "attributeId",
+        label: "attributeId",
+        defaultValue: "artist",
+        description: 'args[0]["0"]',
+      },
+    ],
+    buildBody: (values) => ({
+      beanId: "searchManagerServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "simpleFilterValues",
+      args: [{ "0": values.attributeId || "artist" }],
+    }),
+  },
+  {
+    id: "filters-genres",
+    tag: "Filters",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "Значения фильтра: жанры",
+    description: "listFilterValues — attributeId как в fetchTrackFilters.",
+    headers: {
+      "Content-Type": "application/json",
+      "Site-Context": "site",
+      "Lang-Context": "ru",
+    },
+    params: [
+      {
+        name: "attributeId",
+        label: "attributeId",
+        defaultValue: "genre",
+        description: 'args[0]["0"]',
+      },
+    ],
+    buildBody: (values) => ({
+      beanId: "searchManagerServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "listFilterValues",
+      args: [{ "0": values.attributeId || "genre" }],
+    }),
+  },
+  {
+    id: "tracks-json",
+    tag: "Static / MSW",
+    method: "GET",
+    path: "/tracks.json",
+    summary: "Локальный каталог tracks.json",
+    description:
+      "Статика из public/. MSW читает её для SellerSKU search и фильтров.",
+  },
+  {
+    id: "playlists-json",
+    tag: "Static / MSW",
+    method: "GET",
+    path: "/playlists.json",
+    summary: "Локальные плейлисты playlists.json",
+    description:
+      "CMS-shaped Product page. MSW searchProducts отдаёт этот файл.",
+  },
 ];
 
 const METHOD_COLOR: Record<HttpMethod, string> = {
@@ -409,7 +807,7 @@ function ApiSwaggerExplorer() {
             Music Store API
           </h1>
           <p className="truncate text-[12px] text-white/70">
-            Методы авторизации · base{" "}
+            Все HTTP-запросы приложения · base{" "}
             <code className="rounded bg-white/10 px-1">{apiRoot}</code>
           </p>
         </div>
@@ -424,14 +822,17 @@ function ApiSwaggerExplorer() {
             Music Store API
           </h2>
           <p className="mb-3 max-w-[720px] text-[14px] leading-relaxed">
-            Сейчас только auth. Три флоу сверху вниз: логин (вход → сессия →
-            выход), регистрация (логин свободен? → активен? → создать), код из
-            письма (выслать → проверить → активировать). Каталог подтянется с
-            MUS-51. Режим:{" "}
+            Auth, плейлисты CMS и каталог треков. Логин / регистрация / код из
+            письма; затем CMS Playlists 1→2→3 и Tracks / Filters. Режим:{" "}
             <strong>{isLiveApiBase ? "живой CMS" : "MSW / localhost"}</strong>
             {isLiveApiBase
               ? " — MSW для этой story отключён, fetch идёт на VITE_API_BASE_URL."
               : " — ответы через MSW handlers (относительный VITE_API_BASE_URL)."}
+          </p>
+          <p className="mb-3 max-w-[720px] text-[13px] leading-relaxed text-[#6b7280]">
+            Цепочка плейлистов: <code>CMS Playlists</code> шаги 1 → 2 → 3.
+            Скопируйте Product.id из шага 1 в fallIntoProducts, затем SKU.id в
+            embeddedSku.id.
           </p>
           <div className="flex flex-wrap gap-x-6 gap-y-1 text-[13px]">
             <div>

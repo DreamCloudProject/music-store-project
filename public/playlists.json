@@ -1,0 +1,115 @@
+{
+  "result": {
+    "pages": [],
+    "data": {
+      "content": [
+        {
+          "id": "playlist-current-day",
+          "name": null,
+          "active": true,
+          "searchTerms": "Daily Playlist,Плейлист дня",
+          "translations": [
+            {
+              "text": "Плейлист дня",
+              "lang": {
+                "isoCode": "ru"
+              }
+            },
+            {
+              "text": "Daily Playlist",
+              "lang": {
+                "isoCode": "en"
+              }
+            }
+          ],
+          "alias": "Product",
+          "parentCategories": ["playlists"],
+          "skuIds": [
+            "tones-and-i-dance-monkey",
+            "arizona-zervas-roxanne",
+            "karol-g-tusa",
+            "maroon-5-memories",
+            "post-malone-circles",
+            "roddy-ricch-the-box",
+            "the-weeknd-blinding-lights",
+            "billie-eilish-everything-i-wanted",
+            "dua-lipa-don-t-start-now",
+            "trevor-daniel-falling",
+            "the-black-eyed-peas-ritmo-bad-boys-for-life",
+            "billie-eilish-bad-guy"
+          ],
+          "imageURLs": [],
+          "text": "Плейлист дня"
+        },
+        {
+          "id": "top-100-dance",
+          "name": null,
+          "active": true,
+          "searchTerms": "Top 100 (Dance),Танцевальные хиты",
+          "translations": [
+            {
+              "text": "Танцевальные хиты",
+              "lang": {
+                "isoCode": "ru"
+              }
+            },
+            {
+              "text": "Top 100 (Dance)",
+              "lang": {
+                "isoCode": "en"
+              }
+            }
+          ],
+          "alias": "Product",
+          "parentCategories": ["playlists"],
+          "skuIds": [
+            "tones-and-i-dance-monkey",
+            "arizona-zervas-roxanne",
+            "karol-g-tusa",
+            "maroon-5-memories",
+            "post-malone-circles",
+            "roddy-ricch-the-box"
+          ],
+          "imageURLs": [],
+          "text": "Танцевальные хиты"
+        },
+        {
+          "id": "indie-charge",
+          "name": null,
+          "active": true,
+          "searchTerms": "Indie Charge,Инди-заряд",
+          "translations": [
+            {
+              "text": "Инди-заряд",
+              "lang": {
+                "isoCode": "ru"
+              }
+            },
+            {
+              "text": "Indie Charge",
+              "lang": {
+                "isoCode": "en"
+              }
+            }
+          ],
+          "alias": "Product",
+          "parentCategories": ["playlists"],
+          "skuIds": [
+            "the-weeknd-blinding-lights",
+            "billie-eilish-everything-i-wanted",
+            "dua-lipa-don-t-start-now",
+            "trevor-daniel-falling",
+            "the-black-eyed-peas-ritmo-bad-boys-for-life",
+            "billie-eilish-bad-guy"
+          ],
+          "imageURLs": [],
+          "text": "Инди-заряд"
+        }
+      ],
+      "totalElements": 3,
+      "last": true,
+      "number": 0,
+      "size": 3
+    }
+  }
+}
