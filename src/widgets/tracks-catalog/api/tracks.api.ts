@@ -6,7 +6,7 @@ import type {
   CmsSellerSkuItem,
   CmsSellerSkuSearchArgs,
   TracksPageResponse,
-} from "./tracks.types";
+} from "../api/tracks.types";
 
 interface FetchTracksFilters {
   search?: string;
@@ -40,6 +40,14 @@ const cmsSellerSkuItemSchema = z.looseObject({
   searchTerms: z.string().optional(),
   createdDate: z.number().optional(),
   lastModifiedDate: z.number().optional(),
+  productsRef: z
+    .array(
+      z.looseObject({
+        id: z.string(),
+        name: z.string().nullish(),
+      }),
+    )
+    .optional(),
   attributeValues: z
     .array(
       z.object({
@@ -109,7 +117,11 @@ function buildCmsSearchArgs(
     type: "SellerSKU",
     query: {
       isPublishedForSale: true,
-      ...(artists.length ? { artist: artists.join("|") } : {}),
+      ...(artists.length === 1
+        ? { "productsRef.id": artists[0] }
+        : artists.length > 1
+          ? { "productsRef.id": { $in: artists } }
+          : {}),
       ...(genres.length ? { genre: genres.join("|") } : {}),
     },
     ignoreRegexWrap: [
@@ -284,6 +296,14 @@ export function parseTracksRequestBody(body: unknown): ParsedTracksRequest {
                       artist: z.string().optional(),
                       genre: z.string().optional(),
                       id: z.string().optional(),
+                      "productsRef.id": z
+                        .union([
+                          z.string(),
+                          z.looseObject({
+                            $in: z.array(z.string()).optional(),
+                          }),
+                        ])
+                        .optional(),
                     })
                     .optional(),
                 })
@@ -304,11 +324,19 @@ export function parseTracksRequestBody(body: unknown): ParsedTracksRequest {
           inner.offset === undefined &&
           inner.limit === undefined &&
           inner.page === undefined;
+        const productsRefId = inner.query?.["productsRef.id"];
+        const artistsFromRef =
+          typeof productsRefId === "string"
+            ? splitPipe(productsRefId)
+            : (productsRefId?.$in?.map((id) => id.trim()).filter(Boolean) ??
+              []);
         return {
           offset: inner.offset ?? defaults.offset,
           limit: inner.limit ?? defaults.limit,
           search: inner.searchTerm,
-          artists: splitPipe(inner.query?.artist),
+          artists: artistsFromRef.length
+            ? artistsFromRef
+            : splitPipe(inner.query?.artist),
           genres: splitPipe(inner.query?.genre),
           ids: splitPipe(inner.query?.id),
           year:

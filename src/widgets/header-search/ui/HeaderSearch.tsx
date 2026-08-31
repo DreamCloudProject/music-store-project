@@ -4,13 +4,6 @@ import { useEffect, useMemo, useRef, useState, type SubmitEvent } from "react";
 
 import { SearchField } from "@/shared/ui/search-field";
 
-const emptyCatalogSearch = {
-  search: "",
-  artists: [] as string[],
-  genres: [] as string[],
-  year: undefined as string | undefined,
-};
-
 export function HeaderSearch() {
   const navigate = useNavigate();
   const catalogMatch = useMatch({ from: "/_studio/", shouldThrow: false });
@@ -44,12 +37,11 @@ export function HeaderSearch() {
           return;
         }
         void navigate({
-          to: "/",
-          search: {
-            ...emptyCatalogSearch,
-            ...catalogSearch,
+          to: ".",
+          search: ((prev: Record<string, unknown>) => ({
+            ...prev,
             search: value,
-          },
+          })) as never,
           replace: true,
         });
       },
@@ -59,7 +51,7 @@ export function HeaderSearch() {
       debounceRef.current?.cancel();
       debounceRef.current = null;
     };
-  }, [catalogSearch, myTracksMatch, navigate]);
+  }, [myTracksMatch, navigate]);
 
   useEffect(() => {
     if (urlSearch === lastSearchRef.current) return;
@@ -82,12 +74,11 @@ export function HeaderSearch() {
       }
       if (!catalogMatch || !(catalogSearch?.search ?? "")) return;
       void navigate({
-        to: "/",
-        search: {
-          ...emptyCatalogSearch,
-          ...catalogSearch,
+        to: ".",
+        search: ((prev: Record<string, unknown>) => ({
+          ...prev,
           search: "",
-        },
+        })) as never,
         replace: true,
       });
       return;
@@ -116,12 +107,11 @@ export function HeaderSearch() {
       return;
     }
     void navigate({
-      to: "/",
-      search: {
-        ...emptyCatalogSearch,
-        ...catalogSearch,
+      to: ".",
+      search: ((prev: Record<string, unknown>) => ({
+        ...prev,
         search: lastSearchRef.current,
-      },
+      })) as never,
       replace: false,
     });
   };
@@ -139,7 +129,7 @@ export function HeaderSearch() {
           type: "submit",
           "aria-label": "Искать",
         }}
-        className="text-white placeholder:text-[#4e4e4e] border-[#4e4e4e] hover:shadow-[inset_0_-1px_0_0_#4e4e4e] focus-visible:shadow-[inset_0_-1px_0_0_#4e4e4e]"
+        className="border-border-muted text-fg placeholder:text-fg-muted hover:shadow-[inset_0_-1px_0_0_var(--border-muted)] focus-visible:shadow-[inset_0_-1px_0_0_var(--border-muted)]"
       />
     </form>
   );

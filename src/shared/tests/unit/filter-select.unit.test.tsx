@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
@@ -51,6 +51,28 @@ describe("FilterSelect", () => {
 
     expect(onValueChange).toHaveBeenCalledWith("pop");
     expect(onSelectedChange).toHaveBeenCalledWith(["pop"]);
+  });
+
+  it("loads the next page when the menu opens with more items than fit", async () => {
+    const user = userEvent.setup();
+    const onLoadMore = vi.fn();
+
+    render(
+      <FilterSelect
+        multiselect
+        options={options}
+        triggerLabel="исполнителю"
+        selected={[]}
+        onSelectedChange={vi.fn()}
+        hasNextPage
+        onLoadMore={onLoadMore}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "исполнителю" }));
+    await waitFor(() => {
+      expect(onLoadMore).toHaveBeenCalled();
+    });
   });
 
   it("toggles multiselect item and keeps the first selected value synchronized", async () => {
