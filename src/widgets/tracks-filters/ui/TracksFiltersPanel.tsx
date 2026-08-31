@@ -10,7 +10,10 @@ import {
 } from "@/shared/ui/carousel";
 import { FilterSelect } from "@/shared/ui/filter-select";
 
-import { useTrackFiltersQuery } from "../api/track-filters.query";
+import {
+  useArtistProductsQuery,
+  useTrackFiltersQuery,
+} from "../api/track-filters.query";
 
 export interface TracksFiltersPanelProps {
   label?: string;
@@ -22,7 +25,9 @@ function ArtistFilter({ preferDrag }: { preferDrag?: boolean }) {
   const { artists: selectedArtists = [] } = useSearch({
     strict: false,
   }) as { artists?: string[] };
-  const { data: { artists = [] } = {} } = useTrackFiltersQuery();
+  const artistsQuery = useArtistProductsQuery();
+  const artists =
+    artistsQuery.data?.pages.flatMap((page) => page.items) ?? [];
 
   return (
     <FilterSelect
@@ -30,6 +35,11 @@ function ArtistFilter({ preferDrag }: { preferDrag?: boolean }) {
       multiselect
       options={artists}
       selected={selectedArtists}
+      hasNextPage={artistsQuery.hasNextPage}
+      isFetchingNextPage={artistsQuery.isFetchingNextPage}
+      onLoadMore={() => {
+        void artistsQuery.fetchNextPage();
+      }}
       onSelectedChange={(next) =>
         void navigate({
           to: ".",

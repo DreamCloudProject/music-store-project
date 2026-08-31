@@ -9,13 +9,17 @@ export function filterTracksForUi(
     artists: (out: CmsSellerSkuItem[]) => {
       if (!params.artists.length) return out;
       const allowed = new Set(params.artists);
-      return out.filter((t) =>
-        allowed.has(
+      return out.filter((t) => {
+        const refIds = (t.productsRef ?? [])
+          .map((ref) => ref.id.trim())
+          .filter(Boolean);
+        if (refIds.some((id) => allowed.has(id))) return true;
+        return allowed.has(
           t.attributeValues
             ?.find((av) => av.attributeId === "artist")
             ?.value?.trim() ?? "",
-        ),
-      );
+        );
+      });
     },
     genres: (out: CmsSellerSkuItem[]) => {
       if (!params.genres.length) return out;

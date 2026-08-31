@@ -59,12 +59,86 @@ export const handlers = [
 
     const bean = z
       .looseObject({
+        beanId: z.string().optional(),
         functionName: z.string().optional(),
-        args: z.array(z.object({ "0": z.string().optional() })).optional(),
+        args: z.array(z.unknown()).optional(),
       })
       .safeParse(body).data;
+    const arg0 = z
+      .looseObject({ "0": z.unknown().optional() })
+      .safeParse(bean?.args?.[0]).data?.["0"];
 
-    if (bean?.functionName === "simpleFilterValues" && bean.args?.[0]?.["0"]) {
+    if (
+      bean?.functionName === "searchProducts" ||
+      bean?.beanId === "productServiceImpl"
+    ) {
+      const inner = z
+        .looseObject({
+          offset: z.number().optional(),
+          limit: z.number().optional(),
+          query: z
+            .looseObject({
+              "fallIntoCategories._id": z
+                .looseObject({
+                  $in: z.array(z.string()).optional(),
+                })
+                .optional(),
+            })
+            .optional(),
+        })
+        .safeParse(arg0).data;
+      const categoryId = inner?.query?.["fallIntoCategories._id"]?.$in?.[0];
+      const offset = inner?.offset ?? 0;
+      const limit = inner?.limit ?? 50;
+      if (categoryId === "artists") {
+        const cmsItems =
+          (await loadCmsCatalogFromPublic()).result?.data?.content ?? [];
+        const byId = new Map<string, string>();
+        for (const item of cmsItems) {
+          for (const ref of item.productsRef ?? []) {
+            const name = ref.name?.trim();
+            if (ref.id && name) byId.set(ref.id, name);
+          }
+        }
+        const all = [...byId.entries()]
+          .map(([id, name]) => ({
+            id,
+            text: name,
+            searchTerms: `${name},${name}`,
+            translations: [{ text: name, lang: { isoCode: "ru" as const } }],
+            skuIds: [] as string[],
+          }))
+          .sort((a, b) => a.text.localeCompare(b.text, "ru"));
+        const content = all.slice(offset, offset + limit);
+        const totalElements = all.length;
+        return HttpResponse.json({
+          result: {
+            data: {
+              content,
+              totalElements,
+              last: offset + content.length >= totalElements,
+              number: limit > 0 ? Math.floor(offset / limit) : 0,
+              size: limit,
+            },
+          },
+        });
+      }
+      return HttpResponse.json({
+        result: {
+          data: {
+            content: [],
+            totalElements: 0,
+            last: true,
+            number: 0,
+            size: limit,
+          },
+        },
+      });
+    }
+
+    const attributeId = z.string().safeParse(arg0).data;
+
+    if (bean?.functionName === "simpleFilterValues" && attributeId) {
       const cmsItems =
         (await loadCmsCatalogFromPublic()).result?.data?.content ?? [];
       const byId = new Map<string, string>();
@@ -91,7 +165,7 @@ export const handlers = [
       });
     }
 
-    if (bean?.functionName === "listFilterValues" && bean.args?.[0]?.["0"]) {
+    if (bean?.functionName === "listFilterValues" && attributeId) {
       const cmsItems =
         (await loadCmsCatalogFromPublic()).result?.data?.content ?? [];
       const genreLabels: Record<string, string> = {

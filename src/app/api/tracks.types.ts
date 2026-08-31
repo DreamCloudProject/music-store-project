@@ -32,7 +32,7 @@ export interface CmsSellerSkuItem {
   searchTerms?: string;
   createdDate?: number;
   lastModifiedDate?: number;
-  productsRef?: { id: string; name: string }[];
+  productsRef?: { id: string; name?: string | null }[];
   attributeValues?: CmsAttributeValue[];
   documentURLs?: { url: string; name?: string; type?: string }[];
   imageURLs?: string[];

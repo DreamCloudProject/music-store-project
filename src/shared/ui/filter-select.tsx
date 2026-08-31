@@ -26,6 +26,9 @@ interface FilterSelectPropsBase {
   showControls?: boolean;
   /** Приоритет драга (карусель): не открывать на pointerdown, только тап без сдвига. */
   preferDrag?: boolean;
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
+  onLoadMore?: () => void;
   "aria-label"?: string;
   className?: string;
 }
@@ -104,11 +107,15 @@ export function FilterSelect(props: FilterSelectProps) {
     horizontal = false,
     showControls = false,
     preferDrag = false,
+    hasNextPage = false,
+    isFetchingNextPage = false,
+    onLoadMore,
     "aria-label": ariaLabel,
     className,
   } = props;
 
   const [open, setOpen] = React.useState(false);
+  const viewportRef = React.useRef<HTMLDivElement>(null);
   const trackRef = React.useRef<{
     id: number;
     x: number;
@@ -131,6 +138,26 @@ export function FilterSelect(props: FilterSelectProps) {
     window.addEventListener("pointermove", onMove);
     return () => window.removeEventListener("pointermove", onMove);
   }, [preferDrag]);
+
+  const tryLoadMore = React.useCallback(() => {
+    if (!hasNextPage || isFetchingNextPage) return;
+    onLoadMore?.();
+  }, [hasNextPage, isFetchingNextPage, onLoadMore]);
+
+  React.useEffect(() => {
+    if (!open || !hasNextPage || isFetchingNextPage) return;
+    const id = requestAnimationFrame(() => {
+      const viewport =
+        viewportRef.current ??
+        document.querySelector<HTMLElement>(
+          "[data-radix-scroll-area-viewport]",
+        );
+      if (!viewport || viewport.scrollHeight <= viewport.clientHeight + 2) {
+        tryLoadMore();
+      }
+    });
+    return () => cancelAnimationFrame(id);
+  }, [hasNextPage, isFetchingNextPage, open, options.length, tryLoadMore]);
 
   const selected = props.value
     ? [
@@ -206,7 +233,7 @@ export function FilterSelect(props: FilterSelectProps) {
     <div className={cn("relative", className)}>
       <DropdownMenu
         open={preferDrag ? open : undefined}
-        onOpenChange={preferDrag ? setOpen : undefined}
+        onOpenChange={setOpen}
       >
         {preferDrag ? (
           <span className="relative inline-flex">
@@ -242,11 +269,41 @@ export function FilterSelect(props: FilterSelectProps) {
           onCloseAutoFocus={(e: Event) => e.preventDefault()}
         >
           <ScrollArea
+            viewportRef={viewportRef}
+            onViewportScroll={(event) => {
+              if (horizontal) return;
+              const viewport = event.currentTarget;
+              if (
+                viewport.scrollHeight -
+                  viewport.scrollTop -
+                  viewport.clientHeight <
+                40
+              ) {
+                tryLoadMore();
+              }
+            }}
+            onWheel={(event) => {
+              if (horizontal) return;
+              const viewport =
+                viewportRef.current ??
+                (event.currentTarget.querySelector(
+                  "[data-radix-scroll-area-viewport]",
+                ) as HTMLElement | null);
+              if (!viewport) return;
+              const atBottom =
+                viewport.scrollHeight -
+                  viewport.scrollTop -
+                  viewport.clientHeight <
+                2;
+              if (atBottom && event.deltaY > 0) tryLoadMore();
+            }}
             className={cn(
               "text-xl leading-[1.2] w-full min-h-0 min-w-0",
               horizontal
                 ? "h-[calc(1.2em+1px)]"
-                : `max-h-[calc(5*1.2em+4*28px+1px)]`,
+                : hasNextPage || options.length > 5
+                  ? "h-[calc(5*1.2em+4*28px+1px)]"
+                  : "max-h-[calc(5*1.2em+4*28px+1px)]",
             )}
           >
             {React.createElement(
@@ -269,7 +326,7 @@ export function FilterSelect(props: FilterSelectProps) {
                     : "flex flex-row gap-6",
                 ),
               },
-              options.map((opt) =>
+              ...options.map((opt) =>
                 React.createElement(
                   (props.multiselect
                     ? DropdownMenuCheckboxItem
@@ -309,6 +366,13 @@ export function FilterSelect(props: FilterSelectProps) {
                   opt.label,
                 ),
               ),
+              hasNextPage || isFetchingNextPage
+                ? React.createElement("div", {
+                    key: "filter-select-sentinel",
+                    "aria-hidden": true,
+                    className: "h-4 shrink-0",
+                  })
+                : null,
             )}
           </ScrollArea>
         </DropdownMenuContent>

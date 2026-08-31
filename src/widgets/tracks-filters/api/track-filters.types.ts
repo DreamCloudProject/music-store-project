@@ -4,7 +4,11 @@ export interface FilterOption {
 }
 
 export interface TrackFiltersResponse {
-  artists: FilterOption[];
   genres: FilterOption[];
   years: FilterOption[];
+}
+
+export interface ArtistProductsPage {
+  items: FilterOption[];
+  nextOffset: number | null;
 }
