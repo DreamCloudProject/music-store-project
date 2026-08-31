@@ -114,11 +114,8 @@ function VolumeSlider({
 }
 
 function NoteCover({ coverUrl }: { coverUrl?: string }) {
-  const [broken, setBroken] = useState(false);
-
-  useEffect(() => {
-    setBroken(false);
-  }, [coverUrl]);
+  const [failedUrl, setFailedUrl] = useState<string | undefined>();
+  const broken = Boolean(coverUrl) && failedUrl === coverUrl;
 
   return (
     <div className="flex size-[51px] shrink-0 items-center justify-center bg-cover-bg">
@@ -127,7 +124,7 @@ function NoteCover({ coverUrl }: { coverUrl?: string }) {
           src={coverUrl}
           alt=""
           className="size-full object-cover"
-          onError={() => setBroken(true)}
+          onError={() => setFailedUrl(coverUrl)}
         />
       ) : (
         <svg
@@ -174,13 +171,10 @@ function TrackMeta({
   favorite: boolean;
   onFavoriteToggle: () => void;
 }) {
-  const [coverReady, setCoverReady] = useState(!track.coverUrl);
-  const [broken, setBroken] = useState(false);
-
-  useEffect(() => {
-    setBroken(false);
-    setCoverReady(!track.coverUrl);
-  }, [track.id, track.coverUrl]);
+  const [loadedUrl, setLoadedUrl] = useState<string | undefined>();
+  const [failedUrl, setFailedUrl] = useState<string | undefined>();
+  const broken = Boolean(track.coverUrl) && failedUrl === track.coverUrl;
+  const coverReady = !track.coverUrl || loadedUrl === track.coverUrl || broken;
 
   const pending = Boolean(track.coverUrl) && !coverReady && !broken;
 
@@ -199,8 +193,8 @@ function TrackMeta({
             src={track.coverUrl}
             alt=""
             className="hidden"
-            onLoad={() => setCoverReady(true)}
-            onError={() => setBroken(true)}
+            onLoad={() => setLoadedUrl(track.coverUrl)}
+            onError={() => setFailedUrl(track.coverUrl)}
           />
           <Skeleton
             className="size-[51px] shrink-0 rounded-[2px]"
@@ -240,9 +234,7 @@ function TrackMeta({
               aria-label={
                 favorite ? "Убрать из избранного" : "Добавить в избранное"
               }
-              title={
-                favorite ? "Убрать из избранного" : "Добавить в избранное"
-              }
+              title={favorite ? "Убрать из избранного" : "Добавить в избранное"}
               aria-pressed={favorite}
               data-favorite={favorite ? "true" : "false"}
               onClick={onFavoriteToggle}

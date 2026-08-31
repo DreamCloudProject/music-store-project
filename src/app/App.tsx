@@ -25,6 +25,7 @@ import { TracksFiltersPanel } from "@/widgets/tracks-filters";
 import {
   fetchTracksCatalogAll,
   fetchTracksPage,
+  readCachedTracksCatalog,
   tracksCatalogCacheTtlMs,
 } from "./api/tracks.api";
 import type {
@@ -91,8 +92,11 @@ function App() {
     queryKey: ["tracks", "catalog-full"],
     enabled: !skipCatalog,
     retry: false,
-    queryFn: async () => fetchTracksCatalogAll(),
-    staleTime: tracksCatalogCacheTtlMs,
+    queryFn: fetchTracksCatalogAll,
+    placeholderData: () => readCachedTracksCatalog() ?? undefined,
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
     gcTime: tracksCatalogCacheTtlMs,
   });
 
@@ -124,7 +128,9 @@ function App() {
     number
   >({
     queryKey: ["tracks", "paged", params],
-    staleTime: tracksCatalogCacheTtlMs,
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
     gcTime: tracksCatalogCacheTtlMs,
     initialPageParam: 0,
     select: (infinite) => {

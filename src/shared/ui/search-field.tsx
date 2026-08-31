@@ -37,7 +37,7 @@ const SearchField = React.forwardRef<HTMLInputElement, SearchFieldProps>(
           placeholder="Поиск"
           aria-label={ariaLabel}
           className={cn(
-            "w-full h-auto min-h-0 py-[15px] px-0 pl-[28px] rounded-none border-0 border-b border-[#4e4e4e] bg-transparent shadow-none text-[16px] font-normal leading-[1.15] tracking-[0.001em] text-white placeholder:text-[#4e4e4e] focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:shadow-[inset_0_-1px_0_0_#4e4e4e] focus-visible:shadow-[inset_0_-1px_0_0_#4e4e4e] transition-shadow [&::-webkit-search-cancel-button]:[filter:brightness(0)_invert(1)] [&::-webkit-search-cancel-button]:cursor-pointer",
+            "h-auto min-h-0 w-full rounded-none border-0 border-b border-border-muted bg-transparent px-0 py-[15px] pl-[28px] text-[16px] font-normal leading-[1.15] tracking-[0.001em] text-fg shadow-none transition-shadow placeholder:text-fg-muted hover:shadow-[inset_0_-1px_0_0_var(--border-muted)] focus-visible:shadow-[inset_0_-1px_0_0_var(--border-muted)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none dark:[&::-webkit-search-cancel-button]:[filter:brightness(0)_invert(1)] [&::-webkit-search-cancel-button]:cursor-pointer",
             className,
           )}
           {...props}
@@ -45,8 +45,8 @@ const SearchField = React.forwardRef<HTMLInputElement, SearchFieldProps>(
         <InputGroupAddon
           align="inline-start"
           className={cn(
-            "text-[#4e4e4e] transition-colors group-focus-within:text-white",
-            props.value && "text-white",
+            "text-fg-muted transition-colors group-focus-within:text-fg",
+            props.value && "text-fg",
           )}
         >
           <Button

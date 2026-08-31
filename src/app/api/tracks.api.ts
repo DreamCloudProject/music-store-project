@@ -39,6 +39,14 @@ const cmsSellerSkuItemSchema = z.looseObject({
   searchTerms: z.string().optional(),
   createdDate: z.number().optional(),
   lastModifiedDate: z.number().optional(),
+  productsRef: z
+    .array(
+      z.looseObject({
+        id: z.string(),
+        name: z.string().nullish(),
+      }),
+    )
+    .optional(),
   attributeValues: z
     .array(
       z.object({
@@ -69,7 +77,7 @@ function catalogStorageKey(): string {
   return `music-store:catalog:docs:${import.meta.env.VITE_API_BASE_URL}`;
 }
 
-function readCachedTracksCatalog(): CmsSellerSkuItem[] | null {
+export function readCachedTracksCatalog(): CmsSellerSkuItem[] | null {
   try {
     const raw = localStorage.getItem(catalogStorageKey());
     if (!raw) return null;
@@ -107,7 +115,11 @@ function buildCmsSearchArgs(
     type: "SellerSKU",
     query: {
       isPublishedForSale: true,
-      ...(artists.length ? { artist: artists.join("|") } : {}),
+      ...(artists.length === 1
+        ? { "productsRef.id": artists[0] }
+        : artists.length > 1
+          ? { "productsRef.id": { $in: artists } }
+          : {}),
       ...(genres.length ? { genre: genres.join("|") } : {}),
     },
     ignoreRegexWrap: [
@@ -228,9 +240,6 @@ export async function fetchTracksPage(
 }
 
 export async function fetchTracksCatalogAll(): Promise<CmsSellerSkuItem[]> {
-  const cached = readCachedTracksCatalog();
-  if (cached) return cached;
-
   const filters = tracksSearchFiltersSchema.parse({});
   const page = await postTracksSearch(buildCmsSearchArgs(filters));
   writeCachedTracksCatalog(page.items);
@@ -263,6 +272,14 @@ export function parseTracksRequestBody(body: unknown): ParsedTracksRequest {
                     .looseObject({
                       artist: z.string().optional(),
                       genre: z.string().optional(),
+                      "productsRef.id": z
+                        .union([
+                          z.string(),
+                          z.looseObject({
+                            $in: z.array(z.string()).optional(),
+                          }),
+                        ])
+                        .optional(),
                     })
                     .optional(),
                 })
@@ -283,11 +300,19 @@ export function parseTracksRequestBody(body: unknown): ParsedTracksRequest {
           inner.offset === undefined &&
           inner.limit === undefined &&
           inner.page === undefined;
+        const productsRefId = inner.query?.["productsRef.id"];
+        const artistsFromRef =
+          typeof productsRefId === "string"
+            ? splitPipe(productsRefId)
+            : (productsRefId?.$in?.map((id) => id.trim()).filter(Boolean) ??
+              []);
         return {
           offset: inner.offset ?? defaults.offset,
           limit: inner.limit ?? defaults.limit,
           search: inner.searchTerm,
-          artists: splitPipe(inner.query?.artist),
+          artists: artistsFromRef.length
+            ? artistsFromRef
+            : splitPipe(inner.query?.artist),
           genres: splitPipe(inner.query?.genre),
           year:
             inner.sortDirection === "ASC"
