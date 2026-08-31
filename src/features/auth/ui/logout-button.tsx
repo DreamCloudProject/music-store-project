@@ -1,13 +1,17 @@
-import { Button } from "@/shared/ui/button";
+import { useQueryClient } from "@tanstack/react-query";
+
 import { cn } from "@/shared/lib";
+import { Button } from "@/shared/ui/button";
 
 import { logout } from "../api/auth-api";
 import { useAuthStore } from "../model/auth-store";
 
 export function LogoutButton({ className }: { className?: string }) {
+  const queryClient = useQueryClient();
   const handleLogout = async () => {
     await logout();
     useAuthStore.getState().clearSession();
+    queryClient.clear();
   };
 
   return (

@@ -45,10 +45,9 @@ describe("SignInForm", () => {
     await user.click(screen.getByRole("button", { name: "Войти" }));
 
     await waitFor(() => {
-      expect(useAuthStore.getState().session).toEqual({
-        token: "msw-token:demo@music.store",
-        username: "demo@music.store",
-      });
+      const session = useAuthStore.getState().session;
+      expect(session?.username).toBe("demo@music.store");
+      expect(session?.token).toBe("msw-token:demo@music.store");
     });
   });
 });

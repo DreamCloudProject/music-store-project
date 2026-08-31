@@ -34,4 +34,21 @@ describe("HeaderSearch", () => {
       expect(searchbox).toHaveValue("techno");
     });
   });
+
+  it("keeps search on my-tracks", async () => {
+    const user = userEvent.setup();
+
+    renderWithProviders(<HeaderSearch />, { initialEntry: "/my-tracks" });
+
+    const searchbox = await screen.findByRole("searchbox", {
+      name: "Поиск по трекам",
+    });
+
+    await user.type(searchbox, "  zhu  ");
+    await user.click(screen.getByRole("button", { name: "Искать" }));
+
+    await waitFor(() => {
+      expect(searchbox).toHaveValue("zhu");
+    });
+  });
 });

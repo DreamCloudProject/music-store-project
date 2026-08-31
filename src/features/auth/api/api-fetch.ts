@@ -38,7 +38,7 @@ async function reauthorize(): Promise<boolean> {
   return false;
 }
 
-/** Fetch с Bearer-токеном; при 401 — validateToken и один повтор (не для auth URL). */
+/** Fetch с Bearer-токеном. 401 — validateToken и один повтор. 500 (CMS вместо 401) — validateToken, при провале сессия сбрасывается, роутер уводит на логин. Не для auth URL. */
 export async function apiFetch(
   input: RequestInfo | URL,
   init?: RequestInit,
@@ -49,10 +49,14 @@ export async function apiFetch(
   }
 
   const response = await fetch(input, withAuthHeaders(init));
-  if (response.status !== 401) return response;
-
-  const renewed = await reauthorize();
-  if (!renewed) return response;
-
-  return fetch(input, withAuthHeaders(init));
+  if (response.status === 401) {
+    const renewed = await reauthorize();
+    if (!renewed) return response;
+    return fetch(input, withAuthHeaders(init));
+  }
+  if (response.status === 500) {
+    await reauthorize();
+    return response;
+  }
+  return response;
 }

@@ -126,8 +126,13 @@ function SidebarNav({
   const navLinkClassName = cn(
     "block cursor-pointer font-normal text-base leading-[1.15] tracking-[0.001em] text-fg no-underline",
     "hover:text-accent-hover focus-visible:text-accent-hover focus-visible:outline-none",
-    "active:text-accent-active",
+    "active:text-accent-active data-[status=active]:text-accent-hover",
   );
+  const navActiveProps = {
+    className: "text-accent-hover",
+    "aria-current": "page" as const,
+  };
+  const navActiveOptions = { exact: true, includeSearch: false };
 
   return (
     <nav id={id} aria-label="Основная навигация">
@@ -138,6 +143,8 @@ function SidebarNav({
             search={homeSearch}
             title="Главное"
             className={navLinkClassName}
+            activeProps={navActiveProps}
+            activeOptions={navActiveOptions}
             onClick={onNavigate}
           >
             Главное
@@ -145,10 +152,12 @@ function SidebarNav({
         </li>
         <li>
           <Link
-            to="/"
-            search={homeSearch}
+            to="/my-tracks"
+            search={{ search: "" }}
             title="Мои треки"
             className={navLinkClassName}
+            activeProps={navActiveProps}
+            activeOptions={navActiveOptions}
             onClick={onNavigate}
           >
             Мои треки

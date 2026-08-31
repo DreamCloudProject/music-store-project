@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { fetchTracksPage } from "../../api/tracks.api";
+import { fetchTracksPage } from "@/widgets/tracks-catalog";
 
 describe("fetchTracksPage", () => {
   it("returns tracks from the mocked CMS bean API", async () => {

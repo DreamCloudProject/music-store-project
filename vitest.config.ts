@@ -18,7 +18,7 @@ export default mergeConfig(
           extends: true,
           test: {
             name: "unit",
-            setupFiles: ["./src/shared/tests/setup.ts"],
+            setupFiles: ["./src/app/tests/setup.ts"],
             include: [
               "src/**/*.test.ts",
               "src/**/*.test.tsx",

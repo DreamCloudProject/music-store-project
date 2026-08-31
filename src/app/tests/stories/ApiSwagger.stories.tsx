@@ -52,6 +52,21 @@ const emailParam: ParamField = {
   description: "MSW demo: demo@music.store / password; код 123456",
 };
 
+const bearerParam: ParamField = {
+  name: "bearer",
+  label: "Bearer token",
+  defaultValue: "msw-token:demo@music.store",
+  description:
+    "Токен из login. Execute ставит заголовок Authorization: Bearer …",
+};
+
+const sellerSkuIdParam: ParamField = {
+  name: "sellerSkuId",
+  label: "sellerSkuId",
+  defaultValue: "sellerSku1",
+  description: "id трека (SellerSKU). MSW: sellerSku1 из tracks.json",
+};
+
 const ENDPOINTS: EndpointOp[] = [
   {
     id: "auth-token",
@@ -82,7 +97,7 @@ const ENDPOINTS: EndpointOp[] = [
     path: `${apiRoot}/auth/validate-token`,
     summary: "2. validateToken — проверить сессию",
     description:
-      "Пока пользователь в ЛК. auth-api.validateToken, из apiFetch при 401.",
+      "Пока пользователь в ЛК. auth-api.validateToken, из apiFetch при 401 и при 500 CMS.",
     headers: CMS_HEADERS,
     params: [
       emailParam,
@@ -274,6 +289,56 @@ const ENDPOINTS: EndpointOp[] = [
       username: values.email,
     }),
   },
+  {
+    id: "fav-get",
+    tag: "Избранное",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "1. getFavoriteSellerSKUs — список избранных треков",
+    description:
+      "sellerRegistrationServiceImpl, без аргументов. USER. result: LinkedHashSet<SellerSKU>. Приложение берёт id и подсвечивает сердца в таблице.",
+    headers: CMS_HEADERS,
+    params: [bearerParam],
+    buildBody: () => ({
+      beanId: "sellerRegistrationServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "getFavoriteSellerSKUs",
+      args: [],
+    }),
+  },
+  {
+    id: "fav-add",
+    tag: "Избранное",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "2. addFavoriteSellerSKU — добавить трек",
+    description:
+      "args[0].0 = sellerSkuId. result: LinkedHashSet<String> id после добавления.",
+    headers: CMS_HEADERS,
+    params: [bearerParam, sellerSkuIdParam],
+    buildBody: (values) => ({
+      beanId: "sellerRegistrationServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "addFavoriteSellerSKU",
+      args: [{ "0": values.sellerSkuId }],
+    }),
+  },
+  {
+    id: "fav-remove",
+    tag: "Избранное",
+    method: "POST",
+    path: beanRequestPath,
+    summary: "3. removeFavoriteSellerSKU — убрать трек",
+    description: "args[0].0 = sellerSkuId. result: void / null.",
+    headers: CMS_HEADERS,
+    params: [bearerParam, sellerSkuIdParam],
+    buildBody: (values) => ({
+      beanId: "sellerRegistrationServiceImpl",
+      scope: "PROTOTYPE",
+      functionName: "removeFavoriteSellerSKU",
+      args: [{ "0": values.sellerSkuId }],
+    }),
+  },
 ];
 
 const METHOD_COLOR: Record<HttpMethod, string> = {
@@ -338,9 +403,16 @@ function ApiSwaggerExplorer() {
     setPending((p) => ({ ...p, [op.id]: true }));
     const started = performance.now();
     try {
+      const values = paramValues[op.id] ?? {};
+      const requestHeaders: Record<string, string> = {
+        ...(op.headers ?? {}),
+      };
+      if (values.bearer) {
+        requestHeaders.Authorization = `Bearer ${values.bearer}`;
+      }
       const init: RequestInit = {
         method: op.method,
-        headers: op.headers,
+        headers: requestHeaders,
       };
       if (op.method !== "GET" && op.method !== "DELETE" && op.buildBody) {
         init.body = assembledBody(op);
@@ -424,10 +496,9 @@ function ApiSwaggerExplorer() {
             Music Store API
           </h2>
           <p className="mb-3 max-w-[720px] text-[14px] leading-relaxed">
-            Сейчас только auth. Три флоу сверху вниз: логин (вход → сессия →
-            выход), регистрация (логин свободен? → активен? → создать), код из
-            письма (выслать → проверить → активировать). Каталог подтянется с
-            MUS-51. Режим:{" "}
+            Сейчас auth и избранное. Auth сверху вниз: логин, регистрация, код из
+            письма. Избранное: get → add → remove (sellerRegistrationServiceImpl).
+            Режим:{" "}
             <strong>{isLiveApiBase ? "живой CMS" : "MSW / localhost"}</strong>
             {isLiveApiBase
               ? " — MSW для этой story отключён, fetch идёт на VITE_API_BASE_URL."

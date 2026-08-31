@@ -26,8 +26,7 @@ function ArtistFilter({ preferDrag }: { preferDrag?: boolean }) {
     strict: false,
   }) as { artists?: string[] };
   const artistsQuery = useArtistProductsQuery();
-  const artists =
-    artistsQuery.data?.pages.flatMap((page) => page.items) ?? [];
+  const artists = artistsQuery.data?.pages.flatMap((page) => page.items) ?? [];
 
   return (
     <FilterSelect

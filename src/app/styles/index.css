@@ -464,4 +464,110 @@
   .track-fav-toggle[data-favorite="true"] .fav-icon__cross {
     opacity: 1;
   }
+
+  .track-fav-toggle[data-pulse] .fav-icon__heart,
+  .track-fav-toggle[data-pulse] .fav-icon__cross {
+    transition: none;
+  }
+
+  .track-fav-toggle[data-pulse="add"] {
+    animation: fav-pulse-add 1.1s ease-in-out infinite;
+  }
+
+  .track-fav-toggle[data-pulse="add"] .fav-icon__cross {
+    animation: fav-pulse-cross-add 1.1s ease-in-out infinite;
+  }
+
+  .track-fav-toggle[data-pulse="remove"] {
+    animation: fav-pulse-remove 1.1s ease-in-out infinite;
+  }
+
+  .track-fav-toggle[data-pulse="remove"] .fav-icon__cross {
+    animation: fav-pulse-cross-remove 1.1s ease-in-out infinite;
+  }
+
+  @keyframes fav-pulse-add {
+    0%,
+    72% {
+      --fav-fill: var(--fav-on-fill);
+      --fav-stroke: var(--fav-on-stroke);
+      color: var(--fav-on-stroke);
+    }
+    80%,
+    96% {
+      --fav-fill: transparent;
+      --fav-stroke: var(--fav-idle-stroke);
+      color: var(--fav-idle-stroke);
+    }
+  }
+
+  @keyframes fav-pulse-remove {
+    0%,
+    72% {
+      --fav-fill: transparent;
+      --fav-stroke: var(--fav-idle-stroke);
+      color: var(--fav-idle-stroke);
+    }
+    80%,
+    96% {
+      --fav-fill: var(--fav-on-fill);
+      --fav-stroke: var(--fav-on-stroke);
+      color: var(--fav-on-stroke);
+    }
+  }
+
+  @keyframes fav-pulse-cross-add {
+    0%,
+    72% {
+      opacity: 1;
+    }
+    80%,
+    96% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fav-pulse-cross-remove {
+    0%,
+    72% {
+      opacity: 0;
+    }
+    80%,
+    96% {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .track-fav-toggle[data-pulse],
+    .track-fav-toggle[data-pulse] .fav-icon__cross {
+      animation: none;
+    }
+  }
+
+  .tracks-table {
+    display: grid;
+    align-items: stretch;
+    grid-template-columns: 1fr 1fr 1fr 100px;
+    grid-auto-rows: minmax(60px, auto);
+    column-gap: 16px;
+    row-gap: 12px;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  .tracks-table thead,
+  .tracks-table tbody,
+  .tracks-table tr {
+    display: contents;
+  }
+
+  .tracks-table th,
+  .tracks-table td {
+    display: flex;
+    align-items: center;
+    border: none;
+    background: none;
+    padding: 0;
+  }
 }

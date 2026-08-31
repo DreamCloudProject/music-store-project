@@ -231,10 +231,7 @@ export function FilterSelect(props: FilterSelectProps) {
 
   return (
     <div className={cn("relative", className)}>
-      <DropdownMenu
-        open={preferDrag ? open : undefined}
-        onOpenChange={setOpen}
-      >
+      <DropdownMenu open={preferDrag ? open : undefined} onOpenChange={setOpen}>
         {preferDrag ? (
           <span className="relative inline-flex">
             {triggerButton}

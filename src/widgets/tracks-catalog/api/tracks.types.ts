@@ -37,6 +37,7 @@ export interface CmsSellerSkuItem {
   documentURLs?: { url: string; name?: string; type?: string }[];
   imageURLs?: string[];
   publishedForSale?: boolean;
+  favorite?: boolean;
 }
 
 export interface CmsSearchResultPayload {

@@ -2,7 +2,7 @@ import { http, HttpResponse } from "msw";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { apiFetch, useAuthStore } from "../../";
-import { server } from "@/shared/tests/setup";
+import { server } from "@/app/tests/setup";
 
 afterEach(() => {
   useAuthStore.getState().clearSession();
@@ -52,5 +52,50 @@ describe("apiFetch", () => {
 
     expect(response.status).toBe(401);
     expect(useAuthStore.getState().session).toBeNull();
+  });
+
+  it("clears the session when CMS returns 500 for an expired token", async () => {
+    let catalogCalls = 0;
+    server.use(
+      http.post("*/api/v1/bean/request", () => {
+        catalogCalls += 1;
+        return HttpResponse.json(
+          { timestamp: 1, status: 500, error: "Internal Server Error" },
+          { status: 500 },
+        );
+      }),
+    );
+
+    useAuthStore.getState().setSession({
+      token: "msw-token:__expired__",
+      username: "demo@music.store",
+    });
+
+    const response = await apiFetch("/api/v1/bean/request", { method: "POST" });
+
+    expect(response.status).toBe(500);
+    expect(catalogCalls).toBe(1);
+    expect(useAuthStore.getState().session).toBeNull();
+  });
+
+  it("keeps the session when CMS returns 500 but the token is still valid", async () => {
+    server.use(
+      http.post("*/api/v1/bean/request", () =>
+        HttpResponse.json(
+          { timestamp: 1, status: 500, error: "Internal Server Error" },
+          { status: 500 },
+        ),
+      ),
+    );
+
+    useAuthStore.getState().setSession({
+      token: "msw-token:demo@music.store",
+      username: "demo@music.store",
+    });
+
+    const response = await apiFetch("/api/v1/bean/request", { method: "POST" });
+
+    expect(response.status).toBe(500);
+    expect(useAuthStore.getState().session?.username).toBe("demo@music.store");
   });
 });

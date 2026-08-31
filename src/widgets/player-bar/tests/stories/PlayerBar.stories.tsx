@@ -5,9 +5,24 @@ import { expect, userEvent, waitFor, within } from "storybook/test";
 import { PlayerBar, type PlayerBarTrack } from "../../";
 
 const queue: PlayerBarTrack[] = [
-  { id: "1", title: "Ты та...", artist: "Баста" },
-  { id: "2", title: "Not Alone", artist: "FaderX" },
-  { id: "3", title: "Horizon", artist: "Sick Individuals" },
+  {
+    id: "1",
+    title: "Ты та...",
+    artist: "Баста",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+  },
+  {
+    id: "2",
+    title: "Not Alone",
+    artist: "FaderX",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+  },
+  {
+    id: "3",
+    title: "Horizon",
+    artist: "Sick Individuals",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+  },
 ];
 
 function PlayerBarHarness({
@@ -63,6 +78,17 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: () => <PlayerBarHarness />,
+};
+
+export const WithoutTrack: Story = {
+  render: () => <PlayerBar />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitFor(() => {
+      expect(canvas.getByLabelText("Загрузка трека")).toBeInTheDocument();
+    });
+    expect(canvas.queryByText("Ты та...")).not.toBeInTheDocument();
+  },
 };
 
 export const PlayPause: Story = {

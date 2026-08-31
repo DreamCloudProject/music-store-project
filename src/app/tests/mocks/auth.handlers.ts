@@ -26,6 +26,32 @@ const users = new Map<string, MockUser>([
   ],
 ]);
 
+function persistUsers() {
+  if (import.meta.env.MODE === "test") return;
+  if (typeof sessionStorage === "undefined") return;
+  sessionStorage.setItem("msw-users", JSON.stringify([...users.values()]));
+}
+
+(() => {
+  if (import.meta.env.MODE === "test") return;
+  if (typeof sessionStorage === "undefined") return;
+  const stored = z
+    .array(
+      z.object({
+        email: z.string(),
+        password: z.string(),
+        firstName: z.string(),
+        lastName: z.string(),
+        active: z.boolean(),
+        verificationCode: z.string(),
+      }),
+    )
+    .safeParse(JSON.parse(sessionStorage.getItem("msw-users") ?? "[]")).data;
+  for (const user of stored ?? []) {
+    users.set(user.email, user);
+  }
+})();
+
 function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
 }
@@ -34,8 +60,20 @@ function issueToken(email: string) {
   return `msw-token:${email}`;
 }
 
+function tokenEmail(token: string) {
+  if (!token.startsWith("msw-token:")) return null;
+  return normalizeEmail(token.slice("msw-token:".length));
+}
+
 function setVerificationCode(user: MockUser) {
   user.verificationCode = MOCK_VERIFICATION_CODE;
+  persistUsers();
+}
+
+export function requestUserEmail(request: Request): string | null {
+  const auth = request.headers.get("Authorization");
+  if (!auth?.startsWith("Bearer ")) return null;
+  return tokenEmail(auth.slice("Bearer ".length).trim());
 }
 
 /** 401 если Bearer есть, но токен невалиден. Без заголовка — пропуск (каталог/тесты). */
@@ -47,12 +85,10 @@ export function unauthorizedIfInvalidBearer(request: Request): Response | null {
   }
 
   const token = auth.slice("Bearer ".length).trim();
-  const email = token.startsWith("msw-token:")
-    ? normalizeEmail(token.slice("msw-token:".length))
-    : "";
+  const email = tokenEmail(token);
   const user = email ? users.get(email) : undefined;
 
-  if (!user?.active || token !== issueToken(user.email)) {
+  if (!user?.active) {
     return HttpResponse.json({ message: "unauthorized" }, { status: 401 });
   }
 
@@ -198,6 +234,7 @@ export function handleAuthBean(body: unknown): Response | null {
       active: false,
       verificationCode: MOCK_VERIFICATION_CODE,
     });
+    persistUsers();
 
     return HttpResponse.json({ result: true });
   }
@@ -247,6 +284,7 @@ export const authHttpHandlers = [
     }
 
     user.active = true;
+    persistUsers();
     return HttpResponse.json({ result: true });
   }),
 

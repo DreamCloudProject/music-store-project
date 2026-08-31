@@ -4,6 +4,7 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
+  Outlet,
   RouterProvider,
 } from "@tanstack/react-router";
 import { render, type RenderOptions } from "@testing-library/react";
@@ -28,9 +29,16 @@ export function createTestProviders({
   children: ReactNode;
   initialEntry?: string;
 }) {
-  const rootRoute = createRootRoute();
-  const indexRoute = createRoute({
+  const rootRoute = createRootRoute({
+    component: () => <Outlet />,
+  });
+  const studioRoute = createRoute({
     getParentRoute: () => rootRoute,
+    id: "_studio",
+    component: () => <Outlet />,
+  });
+  const indexRoute = createRoute({
+    getParentRoute: () => studioRoute,
     path: "/",
     validateSearch: (raw) => searchSchema.parse(raw),
     component: () => <>{children}</>,
@@ -53,10 +61,17 @@ export function createTestProviders({
     }),
     component: () => <>{children}</>,
   });
+  const myTracksRoute = createRoute({
+    getParentRoute: () => studioRoute,
+    path: "/my-tracks",
+    validateSearch: (raw) =>
+      z.object({ search: z.string().optional().default("") }).parse(raw),
+    component: () => <>{children}</>,
+  });
   const router = createRouter({
     history: createMemoryHistory({ initialEntries: [initialEntry] }),
     routeTree: rootRoute.addChildren([
-      indexRoute,
+      studioRoute.addChildren([indexRoute, myTracksRoute]),
       signInRoute,
       signUpRoute,
       verifyCodeRoute,

@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { useAuthStore } from "@/features/auth";
+import { TracksPage } from "@/pages/tracks";
 
 import { handlers } from "../../tests";
-import App from "../../App";
 
 const meta = {
-  title: "App/App",
-  component: App,
+  title: "Pages/Tracks",
+  component: TracksPage,
   parameters: {
     msw: {
       handlers,
@@ -22,7 +22,7 @@ const meta = {
       useAuthStore.getState().clearSession();
     };
   },
-} satisfies Meta<typeof App>;
+} satisfies Meta<typeof TracksPage>;
 
 export default meta;
 
